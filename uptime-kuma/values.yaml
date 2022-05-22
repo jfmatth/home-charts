@@ -49,6 +49,7 @@ ingress:
 # @default -- See values.yaml
 persistence:
   data:
+    # storageClass: longhorn
     enabled: true
     type: pvc
     accessMode: ReadWriteOnce
