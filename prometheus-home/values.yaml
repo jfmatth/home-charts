@@ -1,9 +1,0 @@
-grafana:
-  plugins:
-    - grafana-piechart-panel
-
-
-  ingress:
-    enabled: true 
-    hosts:
-    - grafana.192.168.2.101.nip.io
