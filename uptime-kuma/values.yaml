@@ -40,7 +40,7 @@ ingress:
   main:
     enabled: true
     hosts:
-      - host: monitor.192.168.2.101.nip.io
+      - host: uptime.147.182.249.127.nip.io
         paths:
           - path: /
             pathType: ImplementationSpecific

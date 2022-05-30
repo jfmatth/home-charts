@@ -25,7 +25,7 @@ Kubernetes: `>=1.16.0-0`
 ```console
 helm repo add k8s-at-home https://k8s-at-home.com/charts/
 helm repo update
-helm install uptime-kuma k8s-at-home/uptime-kuma
+helm install uptime-kuma k8s-at-home/uptime-kuma -f values.yaml
 ```
 
 ## Installing the Chart
