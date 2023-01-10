@@ -768,6 +768,7 @@ grafana:
     #   - grafana.domain.com
     hosts:
       - grafana.192.168.100.51.nip.io
+      - grafana.104.182.229.89.nip.io
 
     ## Path for grafana ingress
     path: /
