@@ -29,13 +29,28 @@ ssh-add
 
 ### Install master and all nodes
 ```
-export SERVER_IP=192.168.100.52
+export VER=v1.25.5+k3s1
+export MASTER_IP=192.168.100.52
 export USER=jfmatth
 export NODE1_IP=192.168.100.51
+export NODE2_IP=192.168.100.54
+export NODE3_IP=192.168.100.53
 
-k3sup install --ip $SERVER_IP --user $USER --local-path ~/.kube/config --context default
+k3sup install --ip $MASTER_IP --user $USER --local-path ~/.kube/config --context default --k3s-extra-args '--disable local-storage' --k3s-version $VER
 k3sup ready --context default --kubeconfig ~/.kube/config
-k3sup join --ip $NODE1_IP --server-ip $SERVER_IP --user $USER
+k3sup join --ip $NODE1_IP --server-ip $MASTER_IP --user $USER --k3s-version $VER
+k3sup join --ip $NODE2_IP --server-ip $MASTER_IP --user $USER --k3s-version $VER
+k3sup join --ip $NODE3_IP --server-ip $MASTER_IP --user $USER --k3s-version $VER
 
 k get nodes -o wide
+```
+
+## Longhorn install 
+https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/
+
+```
+helm repo add longhorn https://charts.longhorn.io
+helm repo update
+
+helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version 1.4.0
 ```
