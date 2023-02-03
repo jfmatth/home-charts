@@ -11,13 +11,19 @@ k3sup --help
 
 Make sure to validate the pre-requisits are done on each node
 
-## Layout at home
+## Home Systems
 
 Master = Lenovo M910Q - 8gb, 128GB, i5  https://www.2ndgear.com/lenovo/lenovo-thinkcentre-m910q-tiny/  - 192.168.100.52
 
-Node-1 = HP Laptop (temporary), replace at some point - 192.168.100.51
-Node-2 = Lenovo M910Q - 16gb, 256GB, i5 https://www.2ndgear.com/lenovo/lenovo-thinkcentre-m910q-tiny/ - 192.168.100.53
-(future) Node-3 = Lenovo M910Q - 16gb, 256GB, i5 https://www.2ndgear.com/lenovo/lenovo-thinkcentre-m910q-tiny/ - 192.168.100.54
+### Node configuration (via Ansible eventually)
+
+1. SUDO
+
+    Tell sudoers to allow sudo without password
+
+    ```
+    %sudo   ALL=(ALL:ALL) NOPASSWD: ALL
+    ```
 
 ## K3s install
 
