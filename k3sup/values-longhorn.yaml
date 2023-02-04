@@ -79,7 +79,7 @@ persistence:
   defaultClass: true
   defaultFsType: ext4
   defaultMkfsParams: ""
-  defaultClassReplicaCount: 3
+  defaultClassReplicaCount: 2
   defaultDataLocality: disabled # best-effort otherwise
   reclaimPolicy: Delete
   migratable: false
@@ -118,9 +118,7 @@ defaultSettings:
   storageOverProvisioningPercentage: ~
   storageMinimalAvailablePercentage: ~
   upgradeChecker: ~
-  
   defaultReplicaCount: 2
-  
   defaultLonghornStaticStorageClass: ~
   backupstorePollInterval: ~
   failedBackupTTL: ~

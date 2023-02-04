@@ -8,14 +8,13 @@ sudo install k3sup /usr/local/bin/
 
 k3sup --help
 ```
-
 Make sure to validate the pre-requisits are done on each node
 
 ## Home Systems
 
 Master = Lenovo M910Q - 8gb, 128GB, i5  https://www.2ndgear.com/lenovo/lenovo-thinkcentre-m910q-tiny/  - 192.168.100.52
 
-### Node configuration (via **Ansible eventually**)
+### Node configuration (via **cloud-init and Ansible eventually**)
 
 1. SUDO
     Tell sudoers to allow sudo without password
@@ -33,10 +32,9 @@ Master = Lenovo M910Q - 8gb, 128GB, i5  https://www.2ndgear.com/lenovo/lenovo-th
 
 4. Future - Update apt packages
 
-
 ## K3s install
 
-### make sure SSH key is available
+### make sure SSH key is available on client machine connecting via SSH
 ```
 eval `ssh-agent`
 ssh-add 
@@ -81,7 +79,9 @@ https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/
 
     Changes made to the values file:
     1. defaultSettings.createDefaultDiskLabeledNodes: true  
-        This tells longhorn to only use storage on labeled nodes.  To label a node, use the following:  
+        This tells longhorn to only use storage on labeled nodes.  
+        
+        To label a node, use the following:  
         ```kubectl label nodes <node> node.longhorn.io/create-default-disk=true```
 
     2. defaultSettings.defaultReplicaCount: 2  
