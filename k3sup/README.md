@@ -40,22 +40,63 @@ eval `ssh-agent`
 ssh-add 
 ```
 
-### Install master and all nodes
+### Install master and all nodes - Using  https://github.com/alexellis/k3sup#create-a-multi-master-ha-setup-with-embedded-etcd
+
 ```
 export VER=v1.25.5+k3s1
-export MASTER_IP=192.168.100.52
 export USER=jfmatth
-export NODE1_IP=192.168.100.51
-export NODE2_IP=192.168.100.54
-export NODE3_IP=192.168.100.53
-export NODE4_IP=192.168.100.55
+export MASTER1_IP=192.168.100.52
+export MASTER2_IP=192.168.100.51
+export MASTER3_IP=192.168.100.56
 
-k3sup install --ip $MASTER_IP --user $USER --local-path ~/.kube/config --context default --k3s-extra-args '--disable local-storage' --k3s-version $VER
-k3sup ready --context default --kubeconfig ~/.kube/config
-k3sup join --ip $NODE1_IP --server-ip $MASTER_IP --user $USER --k3s-version $VER
-k3sup join --ip $NODE2_IP --server-ip $MASTER_IP --user $USER --k3s-version $VER
-k3sup join --ip $NODE3_IP --server-ip $MASTER_IP --user $USER --k3s-version $VER
-k3sup join --ip $NODE4_IP --server-ip $MASTER_IP --user $USER --k3s-version $VER
+export NODE1_IP=192.168.100.53
+export NODE2_IP=192.168.100.54
+
+k3sup install \
+  --ip $MASTER1_IP \
+  --user $USER \
+  --cluster \
+  --local-path ~/.kube/config \
+  --context default \
+  --k3s-extra-args '--disable local-storage' \
+  --k3s-version $VER
+  
+k3sup ready \
+  --context default  \
+  --kubeconfig ~/.kube/config
+
+k3sup join \
+  --ip $MASTER2_IP \
+  --user $USER \
+  --server \
+  --server-ip $MASTER1_IP \
+  --server-user $USER \
+  --k3s-extra-args '--disable local-storage' \
+  --k3s-version $VER
+
+k3sup join \
+  --ip $MASTER3_IP \
+  --user $USER \
+  --server \
+  --server-ip $MASTER1_IP \
+  --server-user $USER \
+  --k3s-extra-args '--disable local-storage' \
+  --k3s-version $VER
+
+
+k3sup join \
+  --ip $NODE1_IP \
+  --server-ip $MASTER1_IP \
+  --user $USER \
+  --k3s-version $VER
+
+k3sup join \
+  --ip $NODE2_IP \
+  --server-ip $MASTER_IP \
+  --user $USER \
+  --k3s-version $VER
+
+
 
 k get nodes -o wide
 ```
@@ -67,6 +108,7 @@ https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/
     ```
     kubectl label nodes k3s-master node.longhorn.io/create-default-disk=true
     kubectl label nodes k3s-node-4 node.longhorn.io/create-default-disk=true
+    kubectl label nodes k3s-master-2 node.longhorn.io/create-default-disk=true
     ```
 
 - Install longhorn via Helm  
