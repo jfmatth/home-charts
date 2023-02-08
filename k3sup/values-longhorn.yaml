@@ -68,7 +68,7 @@ image:
 service:
   ui:
     type: ClusterIP
-    nodePort: null
+
   manager:
     type: ClusterIP
     nodePort: ""
@@ -118,7 +118,9 @@ defaultSettings:
   storageOverProvisioningPercentage: ~
   storageMinimalAvailablePercentage: ~
   upgradeChecker: ~
+
   defaultReplicaCount: 2
+
   defaultLonghornStaticStorageClass: ~
   backupstorePollInterval: ~
   failedBackupTTL: ~
