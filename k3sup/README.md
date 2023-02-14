@@ -106,26 +106,20 @@ https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/
 
 - Label nodes to hold storage  
     ```
-    kubectl label nodes k3s-master node.longhorn.io/create-default-disk=true
-    kubectl label nodes k3s-node-4 node.longhorn.io/create-default-disk=true
-    kubectl label nodes k3s-master-2 node.longhorn.io/create-default-disk=true
+    kubectl label nodes k3s-node-4    node.longhorn.io/create-default-disk=true
+    kubectl label nodes k3s-master-1v node.longhorn.io/create-default-disk=true
+    kubectl label nodes k3s-master-2v node.longhorn.io/create-default-disk=true
     ```
 
 - Install longhorn via Helm  
+  The values file has two settings changed:  
+    - createDefaultDiskLabeledNodes: true  - Only put volumes on labeled nodes
+    - defaultReplicaCount: 2 - Change the replica count to 2
+  
+  
     ```
     helm repo add longhorn https://charts.longhorn.io
     helm repo update
 
     helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version 1.4.0 --values values-longhorn.yaml
     ```
-
-    Changes made to the values file:
-    1. defaultSettings.createDefaultDiskLabeledNodes: true  
-        This tells longhorn to only use storage on labeled nodes.  
-        
-        To label a node, use the following:  
-        ```kubectl label nodes <node> node.longhorn.io/create-default-disk=true```
-
-    2. defaultSettings.defaultReplicaCount: 2  
-        Should be obvious, only keep 2 replicas of data.  We do this since we only have two physical machines with SSD, the rest are VM's.
-
