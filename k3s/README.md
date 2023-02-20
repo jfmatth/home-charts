@@ -23,9 +23,13 @@ Make sure to validate the pre-requisits are done on each node
     sudo apt-get install qemu-guest-agent -y
     ```
 
+    reboot  
+
 3. Future - Remove IPv6
 
 4. Future - Update apt packages
+
+5. Future - Remove multipathd service / socket
 
 ## [Cluster install](https://github.com/alexellis/k3sup#create-a-multi-master-ha-setup-with-embedded-etcd)
 
@@ -40,9 +44,9 @@ sh k3s-install.sh
 
 - Label nodes to hold storage  
 ```
-kubectl label nodes k3s-node-4    node.longhorn.io/create-default-disk=true
 kubectl label nodes k3s-master-1v node.longhorn.io/create-default-disk=true
 kubectl label nodes k3s-master-2v node.longhorn.io/create-default-disk=true
+kubectl label nodes k3s-master-3v node.longhorn.io/create-default-disk=true
 ```
 
 - Install longhorn via Helm  

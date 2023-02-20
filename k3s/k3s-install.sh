@@ -1,13 +1,7 @@
 eval `ssh-agent`
 ssh-add
 
-export VER=v1.25.5+k3s1
-export USER=jfmatth
-export MASTER1_IP=192.168.100.52
-export MASTER2_IP=192.168.100.51
-export MASTER3_IP=192.168.100.56
-export NODE1_IP=192.168.100.53
-export NODE2_IP=192.168.100.54
+source ./servers.sh
 
 echo "Installing Master1 $MASTER1_IP"
 k3sup install \
@@ -58,6 +52,13 @@ k3sup join \
   --user $USER \
   --k3s-version $VER
 
-k get nodes -o wide
+echo "Joining node3 $NODE3_IP"
+k3sup join \
+  --ip $NODE3_IP \
+  --server-ip $MASTER1_IP \
+  --user $USER \
+  --k3s-version $VER
+
+kubectl get nodes -o wide
 
 killall ssh-agent
