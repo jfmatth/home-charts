@@ -42,29 +42,36 @@ sh k3s-install.sh
 
 ## [Longhorn install](https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/)
 
-- Label nodes to hold storage  
+### Label nodes to hold storage  
 ```
 kubectl label nodes k3s-master-1v node.longhorn.io/create-default-disk=true
 kubectl label nodes k3s-master-2v node.longhorn.io/create-default-disk=true
 kubectl label nodes k3s-master-3v node.longhorn.io/create-default-disk=true
 ```
 
-- Install longhorn via Helm  
+### Install longhorn via Helm  
 The values file has two settings changed:  
   - createDefaultDiskLabeledNodes: true  - Only put volumes on labeled nodes
   - defaultReplicaCount: 2 - Change the replica count to 2
 
-
 ```
 helm repo add longhorn https://charts.longhorn.io
 helm repo update
-
 helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version 1.4.0 --values values-longhorn.yaml --atomic
+```
+
+## [Service Load Balancer](https://docs.k3s.io/networking#service-load-balancer)
+By default, K3s will put the load balancer on every node, but I only want it on the masters, so we'll need to add a label to the masters.
+
+```
+kubectl label nodes k3s-master-1v svccontroller.k3s.cattle.io/enablelb=true
+kubectl label nodes k3s-master-2v svccontroller.k3s.cattle.io/enablelb=true
+kubectl label nodes k3s-master-3v svccontroller.k3s.cattle.io/enablelb=true
 ```
 
 ## Uninstall cluster
 
-- Remove Longhorn 
+### Remove Longhorn 
 
 Have to set the uninstall flag to true first in the settings  
 
@@ -73,12 +80,10 @@ kubectl -n longhorn-system edit settings.longhorn.io deleting-confirmation-flag
 helm uninstall longhorn -n longhorn-system
 ```
 
-- Remove K3s (in reverse order from install)  
+### Remove K3s (in reverse order from install)  
 
 Use uninstall-k3s.sh  
 
 ```
 sh uninstall-k3s.sh
 ```
-
-
