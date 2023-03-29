@@ -37,7 +37,7 @@ Install order: Master1, Master2, Master3, Node1, Node2
 
 Run k3s-install.sh command
 ```
-sh k3s-install.sh
+bash k3s-install.sh
 ```
 
 ## [Longhorn install](https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/)
@@ -50,9 +50,14 @@ kubectl label nodes k3s-master-3v node.longhorn.io/create-default-disk=true
 ```
 
 ### Install longhorn via Helm  
+
 The values file has two settings changed:  
-  - createDefaultDiskLabeledNodes: true  - Only put volumes on labeled nodes
-  - defaultReplicaCount: 2 - Change the replica count to 2
+  - defaultSettings.createDefaultDiskLabeledNodes: true
+  - defaultSettings.defaultReplicaCount: 3
+  - longhornUI.replicas: 1
+  - ingress.enabled: true
+  - ingress.host: longhorn.192.168.100.51.nip.io
+  - ingress.path: /
 
 ```
 helm repo add longhorn https://charts.longhorn.io
@@ -67,6 +72,11 @@ By default, K3s will put the load balancer on every node, but I only want it on 
 kubectl label nodes k3s-master-1v svccontroller.k3s.cattle.io/enablelb=true
 kubectl label nodes k3s-master-2v svccontroller.k3s.cattle.io/enablelb=true
 kubectl label nodes k3s-master-3v svccontroller.k3s.cattle.io/enablelb=true
+```
+
+## Shutdown cluster
+```
+bash ./shutdown-k3s.sh
 ```
 
 ## Uninstall cluster
@@ -85,5 +95,5 @@ helm uninstall longhorn -n longhorn-system
 Use uninstall-k3s.sh  
 
 ```
-sh uninstall-k3s.sh
+bash uninstall-k3s.sh
 ```

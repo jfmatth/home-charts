@@ -1,6 +1,15 @@
 defaultSettings:
   createDefaultDiskLabeledNodes: true
-  defaultReplicaCount: 2
+  defaultReplicaCount: 3
+
+longhornUI:
+  replicas: 1
+
+ingress:
+  ## Set to true to enable ingress record generation
+  enabled: true
+  host: longhorn.192.168.100.51.nip.io
+  path: /
 
 
 # # Default values for longhorn.
