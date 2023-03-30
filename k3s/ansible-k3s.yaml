@@ -1,0 +1,50 @@
+---
+- name: Configure all K3s nodes
+  hosts: all
+  tasks:
+    - name: Disable FirewallD
+      ansible.builtin.systemd:
+        name: firewalld
+        enabled: false
+        state: stopped
+
+    - name: Disable all IPv6 
+      sysctl:
+        name: net.ipv6.conf.all.disable_ipv6
+        value: '1'
+        state: present
+        reload: yes
+
+    - name: Disable default IPv6
+      sysctl:
+          name: net.ipv6.conf.default.disable_ipv6
+          value: '1'
+          state: present
+          reload: yes
+
+    - name: Install qemu-guest-agent
+      ansible.builtin.yum:
+        name: qemu-guest-agent
+        state: latest
+        update_cache: true
+
+    - name: Start qemu-guest-agent
+      ansible.builtin.systemd:
+        name: qemu-guest-agent
+        enabled: true
+        state: started
+
+    - name: Install iscsi utilities
+      ansible.builtin.yum:
+        name: iscsi-initiator-utils
+        state: latest
+
+    # - name: Disable iscsi 
+    #   ansible.builtin.systemd:
+    #     name: iscsi.service
+    #     enabled: false
+
+    - name: Update everything in YUM
+      ansible.builtin.yum:
+        name: '*'
+        state: latest
