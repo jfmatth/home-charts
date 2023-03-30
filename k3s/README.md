@@ -8,36 +8,37 @@ sudo install k3sup /usr/local/bin/
 
 k3sup --help
 ```
+
+## Node configuration (Centos8-stream)
 Make sure to validate the pre-requisits are done on each node
 
-### Node configuration (via **cloud-init and Ansible eventually**)
-
-1. SUDO
+- SUDO
     Tell sudoers to allow sudo without password
     ```
-    %sudo   ALL=(ALL:ALL) NOPASSWD: ALL
+    %wheel   ALL=(ALL:ALL) NOPASSWD: ALL
     ```
 
-2. qemu-guest-agent
-    ```
-    sudo apt-get install qemu-guest-agent -y
-    ```
+- Copy SSH Keys to node (ssh-copy-id)
 
-    reboot  
 
-3. Future - Remove IPv6
+## Run Ansible playbook(s)
 
-4. Future - Update apt packages
+```
+eval `ssh-agent`
+ssh-add
+ansible-playbook ansible-k3s.yaml -i ansible-hosts.yaml -b
+```
 
-5. Future - Remove multipathd service / socket
+### K3s install playbook (future)
+https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart-ha-cluster.md
+
 
 ## [Cluster install](https://github.com/alexellis/k3sup#create-a-multi-master-ha-setup-with-embedded-etcd)
 
-Install order: Master1, Master2, Master3, Node1, Node2  
+Install order: Master1, Master2, Master3, Node1, Node2, Node
 
-Run k3s-install.sh command
 ```
-bash k3s-install.sh
+./k3s-install.sh
 ```
 
 ## [Longhorn install](https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/)
@@ -91,8 +92,6 @@ helm uninstall longhorn -n longhorn-system
 ```
 
 ### Remove K3s (in reverse order from install)  
-
-Use uninstall-k3s.sh  
 
 ```
 bash uninstall-k3s.sh
