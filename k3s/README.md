@@ -8,11 +8,9 @@ sudo install k3sup /usr/local/bin/
 
 k3sup --help
 ```
+
+## Node configuration (Centos8-stream)
 Make sure to validate the pre-requisits are done on each node
-
-## Node configuration
-
-Currently running Centos8-Stream on ProxMox
 
 - SUDO
     Tell sudoers to allow sudo without password
@@ -25,23 +23,20 @@ Currently running Centos8-Stream on ProxMox
 
 ## Run Ansible playbook(s)
 
-### k3s-configure.yaml
 ```
 eval `ssh-agent`
 ssh-add
-ansible-playbook k3s-configure.yaml -i ansible-hosts.yaml -b
+ansible-playbook ansible-k3s.yaml -i ansible-hosts.yaml -b
 ```
 
-### K3s install playbook
+### K3s install playbook (future)
 https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart-ha-cluster.md
-
 
 
 ## [Cluster install](https://github.com/alexellis/k3sup#create-a-multi-master-ha-setup-with-embedded-etcd)
 
-Install order: Master1, Master2, Master3, Node1, Node2  
+Install order: Master1, Master2, Master3, Node1, Node2, Node
 
-Run k3s-install.sh command
 ```
 ./k3s-install.sh
 ```
@@ -97,8 +92,6 @@ helm uninstall longhorn -n longhorn-system
 ```
 
 ### Remove K3s (in reverse order from install)  
-
-Use uninstall-k3s.sh  
 
 ```
 bash uninstall-k3s.sh
