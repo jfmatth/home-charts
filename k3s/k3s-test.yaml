@@ -1,0 +1,7 @@
+---
+all:
+  children:
+    k3smasters:
+      hosts:
+          microk8s-1:
+            ansible_host: 192.168.100.159
