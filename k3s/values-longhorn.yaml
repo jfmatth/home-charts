@@ -8,7 +8,7 @@ longhornUI:
 ingress:
   ## Set to true to enable ingress record generation
   enabled: true
-  host: longhorn.192.168.100.51.nip.io
+  host: longhorn.192.168.100.70.nip.io
   path: /
 
 

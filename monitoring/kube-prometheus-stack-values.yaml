@@ -113,7 +113,7 @@ grafana:
   ingress:
     enabled: true 
     hosts:
-    - grafana.192.168.100.51.nip.io
+    - grafana.192.168.100.70.nip.io
     
 #  resources:
 #    limits:

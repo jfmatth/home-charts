@@ -45,9 +45,9 @@ Install order: Master1, Master2, Master3, Node1, Node2, Node
 
 ### Label nodes to hold storage  
 ```
-kubectl label nodes k3s-master-1v node.longhorn.io/create-default-disk=true
-kubectl label nodes k3s-master-2v node.longhorn.io/create-default-disk=true
-kubectl label nodes k3s-master-3v node.longhorn.io/create-default-disk=true
+kubectl label nodes k3s-master-1 node.longhorn.io/create-default-disk=true
+kubectl label nodes k3s-master-2 node.longhorn.io/create-default-disk=true
+kubectl label nodes k3s-master-3 node.longhorn.io/create-default-disk=true
 ```
 
 ### Install longhorn via Helm  
@@ -70,9 +70,9 @@ helm install longhorn longhorn/longhorn --namespace longhorn-system --create-nam
 By default, K3s will put the load balancer on every node, but I only want it on the masters, so we'll need to add a label to the masters.
 
 ```
-kubectl label nodes k3s-master-1v svccontroller.k3s.cattle.io/enablelb=true
-kubectl label nodes k3s-master-2v svccontroller.k3s.cattle.io/enablelb=true
-kubectl label nodes k3s-master-3v svccontroller.k3s.cattle.io/enablelb=true
+kubectl label nodes k3s-master-1 svccontroller.k3s.cattle.io/enablelb=true
+kubectl label nodes k3s-master-2 svccontroller.k3s.cattle.io/enablelb=true
+kubectl label nodes k3s-master-3 svccontroller.k3s.cattle.io/enablelb=true
 ```
 
 ## Shutdown cluster

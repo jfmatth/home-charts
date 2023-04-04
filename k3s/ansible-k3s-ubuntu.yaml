@@ -31,24 +31,31 @@
         enabled: true
         state: started
 
-    # - name: Install iscsi utilities
-    #   ansible.builtin.yum:
-    #     name: iscsi-initiator-utils
-    #     state: latest
+    - name: Install iscsi utilities
+      ansible.builtin.apt:
+        name: open-iscsi
+        state: latest
 
-    # - name: Enable iscsid.service
-    #   ansible.builtin.systemd:
-    #     name: iscsid.service
-    #     enabled: true
-    #     state: started
+    - name: Enable iscsid.service
+      ansible.builtin.systemd:
+        name: iscsid.service
+        enabled: true
+        state: started
 
-    # - name: Enable iscsid.socket  
-    #   ansible.builtin.systemd:
-    #     name: iscsid.socket
-    #     enabled: true
-
+    - name: Enable iscsid.socket  
+      ansible.builtin.systemd:
+        name: iscsid.socket
+        enabled: true
 
     - name: Update everything in APT
       ansible.builtin.apt:
         name: '*'
         state: latest
+
+    - name: Remove useless packages from the cache
+      ansible.builtin.apt:
+        autoclean: yes
+
+    - name: Remove dependencies that are no longer required
+      ansible.builtin.apt:
+        autoremove: yes
