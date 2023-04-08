@@ -1,6 +1,6 @@
 prometheus:
   prometheusSpec:
-    retention: 30d
+    retention: 10d
 
 #    replicas: 2
 #    podAntiAffinity: "hard"
