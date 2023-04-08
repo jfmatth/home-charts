@@ -10,5 +10,5 @@ helm install prometheus --create-namespace -n monitoring prometheus-community/ku
 
 ## Install Loki too
 ```
-helm install loki-stack grafana/loki-stack -n monitoring --set promtail.enabled=true,loki.persistence.enabled=true,loki.persistence.size=10Gi
+helm install loki-stack grafana/loki-stack -n monitoring --set promtail.enabled=true,loki.persistence.enabled=true,loki.persistence.size=2Gi
 ```
