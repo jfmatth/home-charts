@@ -5,18 +5,22 @@ metadata:
   name: "sotb-1"
   namespace: "default"
   labels:
-    team: acid
+    team: home
 
 spec:
-  teamId: "acid"
+  teamId: "home"
   postgresql:
     version: "15"
   numberOfInstances: 2
-  enableConnectionPooler: true
+  enableConnectionPooler: false
+  enableMasterLoadBalancer: true
   volume:
-    size: "1Gi"
+    size: "6Gi"
     storageClass: longhorn-single
 
+  users:
+    adminsyymgnc: []
+    
   allowedSourceRanges:
     # IP ranges to access your cluster go here
   
@@ -25,5 +29,5 @@ spec:
       cpu: 100m
       memory: 100Mi
     limits:
-      cpu: 200m
-      memory: 500Mi
+      cpu: 750m
+      memory: 1500Mi
