@@ -3,7 +3,6 @@ ssh-add
 
 source ./servers.sh
 
-ssh $NODE3_IP 'k3s-killall.sh'
 ssh $NODE2_IP 'k3s-killall.sh'
 ssh $NODE1_IP 'k3s-killall.sh'
 ssh $MASTER3_IP 'k3s-killall.sh'

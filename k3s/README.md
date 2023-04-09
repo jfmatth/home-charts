@@ -65,6 +65,11 @@ helm repo add longhorn https://charts.longhorn.io
 helm repo update
 helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version 1.4.0 --values values-longhorn.yaml --atomic
 ```
+Add a StorageClass for no HA
+```
+kubectl apply -f longhorn-classes.yaml
+```
+
 
 ## [Service Load Balancer](https://docs.k3s.io/networking#service-load-balancer)
 By default, K3s will put the load balancer on every node, but I only want it on the masters, so we'll need to add a label to the masters.
