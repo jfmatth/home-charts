@@ -2,15 +2,13 @@ prometheus:
   prometheusSpec:
     retention: 10d
 
-#    replicas: 2
-#    podAntiAffinity: "hard"
     storageSpec:
       volumeClaimTemplate:
         spec:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 10Gi
+              storage: 20Gi
 
 grafana:
 
@@ -20,9 +18,6 @@ grafana:
     - grafana.192.168.100.70.nip.io
 
 alertmanager:
-
-  ## Deploy alertmanager
-  ##
   enabled: false
 
 kubeControllerManager:
