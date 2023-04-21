@@ -1,6 +1,7 @@
 defaultSettings:
   createDefaultDiskLabeledNodes: true
-  defaultReplicaCount: 3
+  defaultReplicaCount: 2
+  replicaAutoBalance: best-effort
 
 longhornUI:
   replicas: 1

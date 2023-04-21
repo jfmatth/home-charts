@@ -26,7 +26,7 @@ Make sure to validate the pre-requisits are done on each node
 ```
 eval `ssh-agent`
 ssh-add
-ansible-playbook ansible-k3s.yaml -i ansible-hosts.yaml -b
+ansible-playbook ansible-k3s-ubuntu.yaml -i ansible-hosts.yaml -b
 ```
 
 ### K3s install playbook (future)
@@ -34,8 +34,6 @@ https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart
 
 
 ## [Cluster install](https://github.com/alexellis/k3sup#create-a-multi-master-ha-setup-with-embedded-etcd)
-
-Install order: Master1, Master2, Master3, Node1, Node2, Node
 
 ```
 ./k3s-install.sh
@@ -48,13 +46,14 @@ Install order: Master1, Master2, Master3, Node1, Node2, Node
 kubectl label nodes k3s-master-1 node.longhorn.io/create-default-disk=true
 kubectl label nodes k3s-master-2 node.longhorn.io/create-default-disk=true
 kubectl label nodes k3s-master-3 node.longhorn.io/create-default-disk=true
+
 ```
 
 ### Install longhorn via Helm  
 
 The values file has two settings changed:  
   - defaultSettings.createDefaultDiskLabeledNodes: true
-  - defaultSettings.defaultReplicaCount: 3
+  - defaultSettings.defaultReplicaCount: 2
   - longhornUI.replicas: 1
   - ingress.enabled: true
   - ingress.host: longhorn.192.168.100.51.nip.io

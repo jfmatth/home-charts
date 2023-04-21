@@ -16,9 +16,18 @@ all:
             ansible_host: 192.168.100.80
           k3s-node-2:
             ansible_host: 192.168.100.81
-          # k3s-node-3:
-          #   ansible_host: 192.168.100.82
-          # k3s-node-4:
-          #   ansible_host: 192.168.100.71
+          k3s-node-3:
+            ansible_host: 192.168.100.82
+
+    # k3sstorage:
+    #   hosts:
+    #       k3s-storage-1:
+    #         ansible_host: 192.168.100.75
+    #       k3s-storage-2:
+    #         ansible_host: 192.168.100.76
+    #       k3s-storage-3:
+    #         ansible_host: 192.168.100.77
+
+
           # k3s-node-5:
           #   ansible_host: 192.168.100.72
