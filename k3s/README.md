@@ -100,3 +100,7 @@ helm uninstall longhorn -n longhorn-system
 ```
 bash uninstall-k3s.sh
 ```
+
+### Upgrading
+https://docs.k3s.io/upgrades/automated#:~:text=You%20can%20manage%20K3s%20cluster%20upgrades%20using%20Rancher%27s,nodes%20should%20be%20upgraded%20through%20a%20label%20selector.
+
