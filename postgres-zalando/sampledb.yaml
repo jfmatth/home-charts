@@ -3,7 +3,6 @@ apiVersion: "acid.zalan.do/v1"
 
 metadata:
   name: "sotb-1"
-  namespace: "default"
   labels:
     team: home
 
