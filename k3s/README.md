@@ -39,7 +39,17 @@ https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart
 ./k3s-install.sh
 ```
 
-## [Longhorn install](https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/)
+## NFS Provisioner install
+```
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+    --set nfs.server=192.168.100.100 \
+    --set nfs.path=/mnt/nfs \
+    --set storageClass.name=nfs \
+    --namespace kube-system
+```
+
+## OLD - [Longhorn install](https://longhorn.io/docs/1.4.0/deploy/install/install-with-helm/)
 
 ### Label nodes to hold storage  
 ```
