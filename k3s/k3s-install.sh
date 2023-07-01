@@ -54,26 +54,6 @@ k3sup join \
   --user $USER \
   --k3s-version $VER
 
-echo "Joining $NODE4_IP"
-k3sup join \
-  --ip $NODE4_IP \
-  --server-ip $MASTER1_IP \
-  --user $USER \
-  --k3s-version $VER
-
-echo "Joining $NODE5_IP"
-k3sup join \
-  --ip $NODE5_IP \
-  --server-ip $MASTER1_IP \
-  --user $USER \
-  --k3s-version $VER
-
-echo "Joining $NODE6_IP"
-k3sup join \
-  --ip $NODE6_IP \
-  --server-ip $MASTER1_IP \
-  --user $USER \
-  --k3s-version $VER
 
 kubectl get nodes -o wide
 

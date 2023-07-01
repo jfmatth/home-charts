@@ -3,12 +3,6 @@
   hosts: all
   become: true
   tasks:
-    # - name: Disable FirewallD
-    #   ansible.builtin.systemd:
-    #     name: firewalld
-    #     enabled: false
-    #     state: stopped
-
     - name: Set disable_ipv6 parameters in the sysctl configuration file
       ansible.posix.sysctl:
         name: "{{ item }}"
@@ -31,21 +25,15 @@
         enabled: true
         state: started
 
-    - name: Install iscsi utilities
+    - name: Remove iscsi utilities
       ansible.builtin.apt:
         name: open-iscsi
-        state: latest
+        state: absent
 
-    - name: Enable iscsid.service
-      ansible.builtin.systemd:
-        name: iscsid.service
-        enabled: true
-        state: started
-
-    - name: Enable iscsid.socket  
-      ansible.builtin.systemd:
-        name: iscsid.socket
-        enabled: true
+    - name: NFS common utilities
+      ansible.builtin.apt:
+        name: nfs-common
+        state: present
 
     - name: Update everything in APT
       ansible.builtin.apt:
