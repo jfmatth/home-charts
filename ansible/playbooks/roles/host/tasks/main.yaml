@@ -1,0 +1,11 @@
+# main proxmox role tasks
+---
+- name: Install proxmoxer
+  ansible.builtin.apt:
+    name: python3-proxmoxer
+    state: present
+
+- name: Install requests
+  ansible.builtin.apt:
+    name: python3-requests
+    state: present

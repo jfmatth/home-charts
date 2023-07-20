@@ -1,0 +1,34 @@
+---
+  - name: clone to new VM
+    community.general.proxmox_kvm:
+      api_user: root@pam
+      api_password: got1proxmox
+      api_host: 192.168.100.40
+      clone: random
+      vmid: '{{ cloneid }}'
+      newid: '{{ targetid }}'
+      name: '{{ hostname }}'
+      node: prox1
+      storage: zfs
+      format: qcow2
+      timeout: 500
+      ipconfig:
+        ipconfig0: '{{ip}},gw=192.168.100.254'
+
+
+
+# ---
+#   - name: Is {{ hostname }} built?
+#     ansible.builtin.shell: pvesh get /cluster/resources -type vm | grep {{ targetid }}
+#     ignore_errors: true
+#     register: built
+
+#   - name: clone template to  {{ hostname }}
+#     ansible.builtin.raw: qm clone {{ cloneid }} {{ targetid }} --name {{ hostname }}
+#     when: built.rc != 0
+
+#   - name: configure VM
+#     ansible.builtin.raw: qm set {{ targetid }} --cores 2 --memory 2048
+
+#   - name: config network
+#     ansible.builtin.raw: qm set {{ targetid }} --ipconfig0 ip={{ ip }},gw=192.168.100.254

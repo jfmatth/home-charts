@@ -45,11 +45,12 @@ https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart
 ```
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
 helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
-    --set nfs.server=192.168.100.100 \
+    --set nfs.server=192.168.100.101 \
     --set nfs.path=/mnt/nfs \
     --set storageClass.name=nfs \
     --namespace kube-system \
-    --set storageClass.defaultClass=true
+    --set storageClass.defaultClass=true \
+    --set storageClass.archiveOnDelete=false
 ```
 
 
@@ -57,9 +58,9 @@ helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs
 By default, K3s will put the load balancer on every node, but I only want it on the masters, so we'll need to add a label to the masters.
 
 ```
-kubectl label nodes k3s-master-1.homedc.net svccontroller.k3s.cattle.io/enablelb=true
-kubectl label nodes k3s-master-2.homedc.net svccontroller.k3s.cattle.io/enablelb=true
-kubectl label nodes k3s-master-3.homedc.net svccontroller.k3s.cattle.io/enablelb=true
+kubectl label nodes k3s-master-1 svccontroller.k3s.cattle.io/enablelb=true
+kubectl label nodes k3s-master-2 svccontroller.k3s.cattle.io/enablelb=true
+kubectl label nodes k3s-master-3 svccontroller.k3s.cattle.io/enablelb=true
 ```
 
 ## Shutdown cluster
