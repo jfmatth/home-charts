@@ -1,6 +1,6 @@
 ---
 - name: Configure all K3s nodes
-  hosts: all
+  hosts: k3s
   become: true
   tasks:
     - name: Set disable_ipv6 parameters in the sysctl configuration file
@@ -19,11 +19,10 @@
         state: latest
         update_cache: true
 
-    - name: Start qemu-guest-agent
+    - name: Enable qemu-guest-agent
       ansible.builtin.systemd:
         name: qemu-guest-agent
         enabled: true
-        state: started
 
     - name: Remove iscsi utilities
       ansible.builtin.apt:

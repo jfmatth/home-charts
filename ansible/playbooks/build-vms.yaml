@@ -1,0 +1,16 @@
+---
+- hosts: prox1
+  roles:
+    - role: proxmox_vm
+      vars:
+        hostname: k3s-master-1
+        cloneid: 900
+        targetid: 140
+        ip: 192.168.100.140/24
+
+    # - role: proxmox_vm
+    #   vars:
+    #     hostname: k3s-master-2
+    #     cloneid: 900
+    #     targetid: 141
+    #     ip: 192.168.100.141/24

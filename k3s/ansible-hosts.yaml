@@ -4,30 +4,19 @@ all:
     k3smasters:
       hosts:
           k3s-master-1:
-            ansible_host: 192.168.100.70
+            ansible_host: 192.168.100.140
           k3s-master-2:
-            ansible_host: 192.168.100.71
+            ansible_host: 192.168.100.141
           k3s-master-3:
-            ansible_host: 192.168.100.72
+            ansible_host: 192.168.100.142
 
     k3snodes:
       hosts:
           k3s-node-1:
-            ansible_host: 192.168.100.80
+            ansible_host: 192.168.100.145
           k3s-node-2:
-            ansible_host: 192.168.100.81
+            ansible_host: 192.168.100.146
           k3s-node-3:
-            ansible_host: 192.168.100.82
+            ansible_host: 192.168.100.147
 
-    # k3sstorage:
-    #   hosts:
-    #       k3s-storage-1:
-    #         ansible_host: 192.168.100.75
-    #       k3s-storage-2:
-    #         ansible_host: 192.168.100.76
-    #       k3s-storage-3:
-    #         ansible_host: 192.168.100.77
-
-
-          # k3s-node-5:
-          #   ansible_host: 192.168.100.72
+    

@@ -1,0 +1,59 @@
+all:
+   children:
+      proxmox:
+         hosts:
+            prox1:
+               ansible_host: 192.168.100.40
+               ansible_user: root
+
+            prox2:
+               ansible_host: 192.168.100.41
+               ansible_user: root
+
+            prox3:
+               ansible_host: 192.168.100.42
+               ansible_user: root
+
+      k3s:
+         hosts:
+            k3s-master-1:
+               ansible_host: 192.168.100.140
+               ansible_user: jfmatth
+               vmid: 140
+               hostname: k3s-master-1
+
+            k3s-master-2:
+               ansible_host: 192.168.100.141
+               ansible_user: jfmatth
+               vmid: 141
+               hostname: k3s-master-2
+
+            k3s-master-3:
+               ansible_host: 192.168.100.142
+               ansible_user: jfmatth
+               vmid: 142
+               hostname: k3s-master-3
+
+            k3s-node-1:
+               ansible_host: 192.168.100.145
+               ansible_user: jfmatth
+               vmid: 145
+               hostname: k3s-node-1
+
+
+            k3s-node-2:
+               ansible_host: 192.168.100.146
+               ansible_user: jfmatth
+               vmid: 146
+               hostname: k3s-node-2
+
+            k3s-node-3:
+               ansible_host: 192.168.100.147
+               ansible_user: jfmatth
+               vmid: 147
+               hostname: k3s-node-3
+
+
+
+# root@pam!ansible1
+# 960a3554-4539-4681-ad80-545eda91c274
