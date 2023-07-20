@@ -4,6 +4,6 @@ ingress:
     {}
   ingressClassName: ""
   hosts:
-    - host: postgres.192.168.100.70.nip.io
+    - host: postgres.192.168.100.140.nip.io
       paths: ["/"]
   tls: []
