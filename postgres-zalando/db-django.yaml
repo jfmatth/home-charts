@@ -2,32 +2,30 @@ kind: "postgresql"
 apiVersion: "acid.zalan.do/v1"
 
 metadata:
-  name: "django"
+  name: "utility"
+
   labels:
-    team: home
+    team: acid
 
 spec:
-  teamId: "home"
+  teamId: "acid"
   postgresql:
     version: "15"
   numberOfInstances: 3
-  enableConnectionPooler: false
   enableMasterLoadBalancer: true
   volume:
-    size: "10Gi"
-    # storageClass: longhorn-single
-
+    size: "20Gi"
   users:
-    adminsyymgnc: []
     user: []
-    
+  databases:
+    django: user
   allowedSourceRanges:
     # IP ranges to access your cluster go here
   
   resources:
     requests:
       cpu: 100m
-      memory: 100Mi
+      memory: 500Mi
     limits:
-      cpu: 2000m
-      memory: 1000Mi
+      cpu: 2500m
+      memory: 3000Mi

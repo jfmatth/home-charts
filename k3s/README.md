@@ -57,12 +57,9 @@ helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs
 ## [Service Load Balancer](https://docs.k3s.io/networking#service-load-balancer)
 By default, K3s will put the load balancer on every node, but I only want it on the masters, so we'll need to add a label to the masters.
 
-**Don't need this with only one master**
 
 ```
 kubectl label nodes k3s-master-1 svccontroller.k3s.cattle.io/enablelb=true
-kubectl label nodes k3s-master-2 svccontroller.k3s.cattle.io/enablelb=true
-kubectl label nodes k3s-master-3 svccontroller.k3s.cattle.io/enablelb=true
 ```
 
 ## Shutdown cluster

@@ -10,11 +10,13 @@ helm repo update
 
 helm install postgres-operator postgres-operator-charts/postgres-operator \
     -n postgres \
-    --create-namespace
+    --create-namespace \
+    --version 1.9.0
 
 helm install postgres-operator-ui postgres-operator-ui-charts/postgres-operator-ui \
     -n postgres \
-    -f postgresUI-values.yaml
+    -f postgresUI-values.yaml \
+    --version 1.9.0
 
 ```
 
