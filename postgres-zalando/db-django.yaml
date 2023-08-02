@@ -2,7 +2,7 @@ kind: "postgresql"
 apiVersion: "acid.zalan.do/v1"
 
 metadata:
-  name: "utility"
+  name: "pg-util"
 
   labels:
     team: acid
