@@ -1,4 +1,5 @@
 # K3s Home cluster
+**Need to account for new k3s-prod cluster**
 
 ## [K3sup install](https://github.com/alexellis/k3sup#download-k3sup-tldr)
 

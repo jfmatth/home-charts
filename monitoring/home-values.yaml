@@ -8,14 +8,14 @@ prometheus:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 20Gi
+              storage: 10Gi
 
 grafana:
 
   ingress:
     enabled: true 
     hosts:
-    - grafana.192.168.100.140.nip.io
+    - grafana.192.168.100.130.nip.io
 
 alertmanager:
   enabled: false
