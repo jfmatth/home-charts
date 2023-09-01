@@ -1,0 +1,4 @@
+service:
+  merge:
+    spec:
+      type: LoadBalancer
