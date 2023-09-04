@@ -1,0 +1,18 @@
+# on the K3s server, put this file into /var/lib/rancher/k3s/manifests
+# find the svc port for 80, goto http://<k3sip>:<port>/dashboard/  <-- don't forget the trailing slash
+
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    dashboard:
+      enabled: true
+    ports:
+      traefik:
+        expose: true # this is not recommended in production deployments, but I want to be able to see my dashboard locally
+    logs:
+      access:
+        enabled: true
