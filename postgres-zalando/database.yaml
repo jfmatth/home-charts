@@ -30,4 +30,5 @@ spec:
   databases:
     piku: django
     play: django
-    sample-piku: django
+    samplepiku: django
+    sampledb: django
