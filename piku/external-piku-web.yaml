@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: piku-inbound-web
+spec:
+  ports:
+  - name: svc-piku-https
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  - name: svc-piku-http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  clusterIP: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: piku-inbound-web
+subsets:
+- addresses:
+  - ip: 192.168.100.110
+  ports:
+  - name: endpoint-piku-https
+    port: 443
+    protocol: TCP
+  - name: endpoint-piku-http
+    port: 80
+    protocol: TCP
