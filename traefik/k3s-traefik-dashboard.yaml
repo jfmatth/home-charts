@@ -1,4 +1,4 @@
-# on the K3s server, put this file into /var/lib/rancher/k3s/manifests
+# on the K3s server, put this file into /var/lib/rancher/k3s/server/manifests
 # find the svc port for 80, goto http://<k3sip>:<port>/dashboard/  <-- don't forget the trailing slash
 
 apiVersion: helm.cattle.io/v1

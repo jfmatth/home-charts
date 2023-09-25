@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: piku-service
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "false"
+
+spec:
+  rules:
+    - host: piku.k.3756home.org
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name:  piku-service
+                port:
+                  name: http
