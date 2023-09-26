@@ -16,22 +16,10 @@ https://stackoverflow.com/questions/52857825/what-is-an-endpoint-in-kubernetes
 - Endpoint.yaml
 - Ingress.yaml
 
-**Do not name the endpoint, won't work**
-
-## Method 2 - Service + EndPointSlice + Ingress (HTTP ONLY)
-
-## Method 3 - IngressRouteTCP from Traefik
-https://doc.traefik.io/traefik/routing/providers/kubernetes-crd/#kind-ingressroutetcp
+## Method 2 - Have HTTPS terminate via cert-manager at Ingress, and then pass traffic back to Piku HTTP - Working (9/24/23)
 
 - service.yaml
 - endpoint.yaml
-- ingressroutetcp.yaml
+- ingress.yaml
 
-Not working yet :()
-
-
-## Testing
-Traefik has some info I'm working with ```https://doc.traefik.io/traefik/routing/providers/kubernetes-crd/#configuration-examples```
-
-### 
-
+The ingress.yaml file has the unique settings per piku application.  The service.yaml and endpoint.yaml are the same for all apps, all traffic is sent to piku.

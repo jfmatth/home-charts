@@ -4,6 +4,7 @@ metadata:
   name: piku-service
   annotations:
     cert-manager.io/cluster-issuer: clusterissuer
+    traefik.ingress.kubernetes.io/router.middlewares: cert-manager-redirect@kubernetescrd
 
 spec:
   tls:
