@@ -3,9 +3,13 @@ kind: Ingress
 metadata:
   name: piku-service
   annotations:
-    traefik.ingress.kubernetes.io/router.tls: "false"
+    cert-manager.io/cluster-issuer: clusterissuer
 
 spec:
+  tls:
+  - hosts:
+    - piku.k.3756home.org
+    secretName: piku-https
   rules:
     - host: piku.k.3756home.org
       http:
