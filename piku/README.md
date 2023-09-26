@@ -4,7 +4,6 @@ Provide a way to get HTTP/HTTPS traffic through the Edgerouter into an internal 
 
 ```Internet -> EdgeRouter -> Master (192.168.100.140) -> Piku VM (192.168.100.110)```
 
-
 ## Resources
 BEST ONE HERE - Kris is a genius - https://kristhecodingunicorn.com/post/k8s_proxy_svc/
 
@@ -19,7 +18,6 @@ https://stackoverflow.com/questions/52857825/what-is-an-endpoint-in-kubernetes
 
 **Do not name the endpoint, won't work**
 
-
 ## Method 2 - Service + EndPointSlice + Ingress (HTTP ONLY)
 
 ## Method 3 - IngressRouteTCP from Traefik
@@ -29,6 +27,7 @@ https://doc.traefik.io/traefik/routing/providers/kubernetes-crd/#kind-ingressrou
 - endpoint.yaml
 - ingressroutetcp.yaml
 
+Not working yet :()
 
 
 ## Testing
