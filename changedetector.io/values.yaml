@@ -13,4 +13,4 @@ ingress:
   tls:
    - secretName: changedetector
      hosts:
-       - chart-example.local
+       - cd.k.3756home.org
