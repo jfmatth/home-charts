@@ -32,3 +32,4 @@ spec:
     play: django
     samplepiku: django
     sampledb: django
+    stockprices: django
