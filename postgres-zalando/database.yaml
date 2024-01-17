@@ -11,7 +11,7 @@ spec:
   teamId: "acid"
   postgresql:
     version: "15"
-  numberOfInstances: 2
+  numberOfInstances: 3
   enableMasterLoadBalancer: true
   volume:
     size: "20Gi"
@@ -26,10 +26,7 @@ spec:
 
   users:
     django: []
+    homedb: []
 
   databases:
-    piku: django
-    play: django
-    samplepiku: django
-    sampledb: django
     stockprices: django
