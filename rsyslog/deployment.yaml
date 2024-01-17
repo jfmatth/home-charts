@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rsyslog-deployment
+  namespace: rsyslog
+  labels:
+    app: rsyslog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rsyslog
+  template:
+    metadata:
+      labels:
+        app: rsyslog
+    spec:
+      containers:
+      - name: rsyslog
+        image: docker.io/jfmatth/rsyslog:latest
+        ports:
+        - containerPort: 514
+        resources:
+          requests:
+            cpu: 250m
+            memory: 524Mi
+        volumeMounts:
+          - name: rsyslog
+            mountPath: "/var/log"
+          - name: rsyslog-conf
+            mountPath: /etc/rsyslog.d/10-rsyslog.conf
+            subPath: 10-rsyslog.conf
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: rsyslog
+          persistentVolumeClaim:
+            claimName: rsyslog
+        - name: rsyslog-conf
+          configMap:
+            name: 50-rsyslog

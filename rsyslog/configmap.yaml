@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: 50-rsyslog
+  namespace: rsyslog
+
+data:
+  50-rsyslog.conf: |-
+    $ModLoad imudp
+    $UDPServerRun 514
+    $ModLoad imtcp
+    $InputTCPServerRun 514
+    $template RemoteStore, "/var/log/remote/%$year%/%$Month%/%$Day%/%$Hour%.log\"
+    source, !isequal, \"localhost\" -?RemoteStore\n:source, isequal, \"last\" ~ 

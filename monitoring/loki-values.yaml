@@ -1,47 +1,64 @@
+# 11/14/2023 - Move Loki / Grafana / Promtail to HELM from the single VM (loki-setup repo) idea to Kubernetes.  Redo values file
+
 promtail:
   enabled: true
-
-  extraPorts:
-    syslog:
-      name: tcp-syslog
-      containerPort: 1514
-      service:
-        port: 1514
-        type: LoadBalancer
-        # externalTrafficPolicy: Local
-        # loadBalancerIP: 123.234.123.234
-
-  config:
-    snippets:
-      extraScrapeConfigs: |
-        # Add an additional scrape config for syslog
-        - job_name: syslog
-          syslog:
-            listen_address: 0.0.0.0:{{ .Values.extraPorts.syslog.containerPort }}
-            labels:
-              job: syslog
-          relabel_configs:
-            - source_labels:
-                - __syslog_message_hostname
-              target_label: hostname
-
-            # example label values: kernel, CRON, kubelet
-            - source_labels:
-                - __syslog_message_app_name
-              target_label: app
-
-            # example label values: debug, notice, informational, warning, error
-            - source_labels:
-                - __syslog_message_severity
-              target_label: level
-
-
-
-
 
 loki:
   persistence:
     enabled: true
-    size: 2Gi
+    size: 10Gi
+
+  service:
+    type: ClusterIP
+
+grafana:
+  enabled: true
+
+  ingress:
+    enabled: true
+    hosts:
+    - grafana.192.168.100.140.nip.io
+
+# promtail:
+#   enabled: true
+
+#   extraPorts:
+#     syslog:
+#       name: tcp-syslog
+#       containerPort: 1514
+#       service:
+#         port: 1514
+#         type: LoadBalancer
+#         # externalTrafficPolicy: Local
+#         # loadBalancerIP: 123.234.123.234
+
+#   config:
+#     snippets:
+#       extraScrapeConfigs: |
+#         # Add an additional scrape config for syslog
+#         - job_name: syslog
+#           syslog:
+#             listen_address: 0.0.0.0:{{ .Values.extraPorts.syslog.containerPort }}
+#             labels:
+#               job: syslog
+#           relabel_configs:
+#             - source_labels:
+#                 - __syslog_message_hostname
+#               target_label: hostname
+
+#             # example label values: kernel, CRON, kubelet
+#             - source_labels:
+#                 - __syslog_message_app_name
+#               target_label: app
+
+#             # example label values: debug, notice, informational, warning, error
+#             - source_labels:
+#                 - __syslog_message_severity
+#               target_label: level
+
+# loki:
+#   persistence:
+#     enabled: true
+#     size: 2Gi
 
 
