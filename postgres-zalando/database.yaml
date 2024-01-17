@@ -3,9 +3,9 @@ apiVersion: "acid.zalan.do/v1"
 
 metadata:
   name: "database"
-
   labels:
     team: acid
+  namespace: postgres
 
 spec:
   teamId: "acid"
@@ -29,4 +29,7 @@ spec:
     homedb: []
 
   databases:
-    stockprices: django
+    stockprices:
+      django
+      homedb
+
