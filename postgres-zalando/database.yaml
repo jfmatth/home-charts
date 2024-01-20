@@ -25,13 +25,8 @@ spec:
       memory: 3000Mi
 
   users:
-    django: []
     homedb: []
 
   databases:
-    stockprices:
-      django
-      homedb
-    investing:
-      homedb
+    stockprices: homedb
 
