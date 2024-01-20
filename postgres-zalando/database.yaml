@@ -14,7 +14,7 @@ spec:
   numberOfInstances: 3
   enableMasterLoadBalancer: true
   volume:
-    size: "20Gi"
+    size: "10Gi"
 
   resources:
     requests:
@@ -31,5 +31,7 @@ spec:
   databases:
     stockprices:
       django
+      homedb
+    investing:
       homedb
 
