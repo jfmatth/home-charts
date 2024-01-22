@@ -7,11 +7,14 @@ metadata:
     team: acid
   namespace: postgres
 
+  annotations:
+      kubectl.kubernetes.io/last-applied-configuration: ""
+
 spec:
   teamId: "acid"
   postgresql:
     version: "15"
-  numberOfInstances: 3
+  numberOfInstances: 1
   enableMasterLoadBalancer: true
   volume:
     size: "10Gi"
