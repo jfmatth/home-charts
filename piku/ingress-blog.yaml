@@ -11,9 +11,20 @@ spec:
   tls:
   - hosts:
     - blog.drmatthew.org
+    - drmatthew.org
     secretName: piku-blog-https
   rules:
     - host: blog.drmatthew.org
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name:  vm111
+                port:
+                  name: http
+    - host: drmatthew.org
       http:
         paths:
           - path: /
