@@ -32,4 +32,5 @@ spec:
 
   databases:
     stockprices: homedb
+    quotes: homedb
 
