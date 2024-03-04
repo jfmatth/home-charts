@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: piku-blog-https
+  name: piku-quotes-https
   namespace: piku
   annotations:
     cert-manager.io/cluster-issuer: clusterissuer
@@ -10,21 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - blog.drmatthew.org
-    - drmatthew.org
-    secretName: piku-blog-https
+    - quotes.3756home.org
+    secretName: piku-quotes-https
   rules:
-    - host: blog.drmatthew.org
-      http:
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name:  vm111
-                port:
-                  name: http
-    - host: drmatthew.org
+    - host: quotes.3756home.org
       http:
         paths:
           - path: /
