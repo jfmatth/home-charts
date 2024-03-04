@@ -11,13 +11,13 @@ loki:
   service:
     type: ClusterIP
 
-grafana:
-  enabled: true
+# grafana:
+#   enabled: true
 
-  ingress:
-    enabled: true
-    hosts:
-    - grafana.192.168.100.140.nip.io
+#   ingress:
+#     enabled: true
+#     hosts:
+#     - grafana.192.168.100.140.nip.io
 
 # promtail:
 #   enabled: true
