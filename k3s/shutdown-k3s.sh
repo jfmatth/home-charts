@@ -1,7 +1,7 @@
 eval `ssh-agent`
 ssh-add
 
-source ./servers.sh
+source ./prod-servers.sh
 
 ssh $NODE3_IP 'k3s-killall.sh'
 ssh $NODE2_IP 'k3s-killall.sh'
