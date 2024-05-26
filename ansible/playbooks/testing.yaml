@@ -1,0 +1,7 @@
+- name: Create new VM with minimal options
+  community.general.proxmox_kvm:
+    api_user: root@pam
+    api_password: got1proxmox
+    api_host: 192.168.100.140
+    name: test-ansible-1
+    node: prox1

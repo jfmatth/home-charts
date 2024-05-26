@@ -9,11 +9,20 @@
       newid: '{{ targetid }}'
       name: '{{ hostname }}'
       node: prox1
-      storage: zfs
+      storage: ZFS-SSD
       format: qcow2
       timeout: 500
       ipconfig:
         ipconfig0: '{{ip}},gw=192.168.100.254'
+
+  - name: Migrate VM on second node
+    community.general.proxmox_kvm:
+      api_user: root@pam
+      api_password: secret
+      api_host: helldorado
+      name: spynal
+      node: sabrewulf-2
+      migrate: true
 
 
 

@@ -3,10 +3,10 @@
   roles:
     - role: proxmox_vm
       vars:
-        hostname: k3s-master-1
-        cloneid: 900
-        targetid: 140
-        ip: 192.168.100.140/24
+        hostname: test-ansible-1
+        cloneid: 902
+        targetid: 500
+        ip: 192.168.100.199/24
 
     # - role: proxmox_vm
     #   vars:
