@@ -15,14 +15,63 @@
       ipconfig:
         ipconfig0: '{{ip}},gw=192.168.100.254'
 
-  - name: Migrate VM on second node
+  - name: Start VM
     community.general.proxmox_kvm:
       api_user: root@pam
-      api_password: secret
-      api_host: helldorado
-      name: spynal
-      node: sabrewulf-2
-      migrate: true
+      api_password: got1proxmox
+      api_host: 192.168.100.40
+      name: '{{ hostname }}'
+      node: prox1
+      state: started
+
+  # - name: Pause 
+  #   ansible.builtin.pause:
+  #     minutes: 3
+
+  - name: Set disable_ipv6 parameters in the sysctl configuration file
+    ansible.posix.sysctl:
+      name: "{{ item }}"
+      value: "1"
+      reload: false
+    loop:
+      - net.ipv6.conf.all.disable_ipv6
+      - net.ipv6.conf.default.disable_ipv6
+      - net.ipv6.conf.lo.disable_ipv6
+
+  - name: Install qemu-guest-agent
+    ansible.builtin.apt:
+      name: qemu-guest-agent
+      state: latest
+      update_cache: true
+
+  # - name: Start qemu-guest-agent
+  #   ansible.builtin.systemd:
+  #     name: qemu-guest-agent
+  #     enabled: true
+  #     state: started
+
+  - name: Remove iscsi utilities
+    ansible.builtin.apt:
+      name: open-iscsi
+      state: absent
+
+  - name: NFS common utilities
+    ansible.builtin.apt:
+      name: nfs-common
+      state: present
+
+  - name: Update everything in APT
+    ansible.builtin.apt:
+      name: '*'
+      state: latest
+
+  - name: Remove useless packages from the cache
+    ansible.builtin.apt:
+      autoclean: yes
+
+  - name: Remove dependencies that are no longer required
+    ansible.builtin.apt:
+      autoremove: yes
 
 
 
