@@ -14,11 +14,11 @@ spec:
   teamId: "acid"
   postgresql:
     version: "15"
-  numberOfInstances: 2
+  numberOfInstances: 1
 
   enableMasterLoadBalancer: true
   volume:
-    size: "10Gi"
+    size: "20Gi"
 
   resources:
     requests:
