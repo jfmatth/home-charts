@@ -1,9 +1,10 @@
 # Postgres operator using Zalando https://github.com/zalando/postgres-operator
 
+### Notes:
+- 6/15/2024 - v1.12.2 the UI works again. 
+
 
 ## Install operator and UI
-
-**There is a bug in 1.10 now that doesn't let the UI work**
 
 ```
 helm repo add postgres-operator-charts https://opensource.zalando.com/postgres-operator/charts/postgres-operator 
@@ -18,10 +19,21 @@ helm install postgres-operator postgres-operator-charts/postgres-operator \
 
 helm install postgres-operator-ui postgres-operator-ui-charts/postgres-operator-ui \
     -n postgres \
-    -f postgresUI-values.yaml \
-    --version 1.9.0
+    -f postgresUI-values.yaml
 
 ```
+## Upgrade the operator
+```
+helm upgrade postgres-operator postgres-operator-charts/postgres-operator \
+    -n postgres \
+    --reuse-values
+
+helm upgrade postgres-operator-ui postgres-operator-ui-charts/postgres-operator-ui \
+    -n postgres \
+    --reuse-values
+```
+
+
 
 ## Sample DB
 
