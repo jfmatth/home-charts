@@ -46,8 +46,8 @@ https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart
 ```
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
 helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
-    --set nfs.server=192.168.100.150 \
-    --set nfs.path=/srv/nfs100 \
+    --set nfs.server=192.168.100.50 \
+    --set nfs.path=/mnt/bcache0 \
     --set storageClass.name=nfs \
     --namespace kube-system \
     --set storageClass.defaultClass=true \
