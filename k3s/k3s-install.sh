@@ -1,25 +1,8 @@
 eval `ssh-agent`
 ssh-add
 
-# add extra context parameter
-if [ -z "$1" ]; then
-  context=default
-  source ./dev-servers.sh
-else
-  context=$1
-  source ./prod-servers.sh
-fi
-
-# echo "Installing Master1 $MASTER1_IP"
-# k3sup install \
-#   --ip $MASTER1_IP \
-#   --user $USER \
-#   --local-path ~/.kube/config \
-#   --cluster \
-#   --context default \
-#   --k3s-extra-args '--disable local-storage' \
-#   --k3s-version $VER
-
+context=default
+source ./prod-servers.sh
 
 echo "Installing Master1 $MASTER1_IP"
 k3sup install \
@@ -31,26 +14,7 @@ k3sup install \
   --k3s-extra-args '--disable local-storage' \
   --k3s-version $VER
 
-
-# echo "Installing Master2 $MASTER2_IP"
-# k3sup join \
-#   --ip $MASTER2_IP \
-#   --user $USER \
-#   --server \
-#   --server-ip $MASTER1_IP \
-#   --server-user $USER \
-#   --k3s-extra-args '--disable local-storage' \
-#   --k3s-version $VER
-
-# echo "Installing Master3 $MASTER3_IP"
-# k3sup join \
-#   --ip $MASTER3_IP \
-#   --user $USER \
-#   --server \
-#   --server-ip $MASTER1_IP \
-#   --server-user $USER \
-#   --k3s-extra-args '--disable local-storage' \
-#   --k3s-version $VER
+source ./prod-servers-lxc.sh
 
 echo "Joining node1 $NODE1_IP"
 k3sup join \
@@ -59,12 +23,12 @@ k3sup join \
   --user $USER \
   --k3s-version $VER
 
-echo "Joining node2 $NODE2_IP"
-k3sup join \
-  --ip $NODE2_IP \
-  --server-ip $MASTER1_IP \
-  --user $USER \
-  --k3s-version $VER
+# echo "Joining node2 $NODE2_IP"
+# k3sup join \
+#   --ip $NODE2_IP \
+#   --server-ip $MASTER1_IP \
+#   --user $USER \
+#   --k3s-version $VER
 
 # echo "Joining node3 $NODE3_IP"
 # k3sup join \
@@ -73,6 +37,12 @@ k3sup join \
 #   --user $USER \
 #   --k3s-version $VER
 
+# echo "Joining node3 $NODE4_IP"
+# k3sup join \
+#   --ip $NODE4_IP \
+#   --server-ip $MASTER1_IP \
+#   --user $USER \
+#   --k3s-version $VER
 
 kubectl get nodes -o wide
 
