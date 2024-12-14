@@ -4,6 +4,13 @@ Our Cluster will have an API endpoint that is virtual, 192.168.100.130:6443, tha
 
 The tough part was finding the ISO and target image for qemu guest agent features.
 
+Basic cluster build
+- Build VM
+- Apply-Config
+- Bootstrap first Kubernetes node
+- Add the other nodes (CP and workers)
+
+
 ## Download the ISO with QEMU agent support
 https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.8.4/nocloud-amd64.iso
 
