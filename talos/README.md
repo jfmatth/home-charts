@@ -28,7 +28,8 @@ https://www.talos.dev/v1.8/talos-guides/install/virtualized-platforms/proxmox/#q
 
 Got this line from here https://factory.talos.dev/?arch=amd64&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=nocloud&target=cloud&version=1.8.4
 ```
-talosctl gen config talos-k8s https://192.168.100.130:6443 --install-image factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.8.4 --force
+talosctl gen config talos-k8s https://192.168.100.130:6443 --install-image factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.8.4 --config-patch-control-plane @cp-1-patch.yaml --config-patch-worker @nd-1-patch.yaml
+
 ```
 
 ### Change the network config to controlpanel.yaml
@@ -54,7 +55,7 @@ talosctl apply-config --insecure --nodes DHCP_ADDRESS_HERE --file controlplane.y
 ## Bootstrap Kubernetes
 ** Note ** - DHCP addresses change at home each reset of VM
 ```
-talosctl --talosconfig=./talosconfig --nodes DHCP_ADDRESS_HERE bootstrap
+talosctl --talosconfig=./talosconfig -n DHCP_ADDRESS_HERE -e DHCP_ADDRESS_HERE bootstrap
 ```
 
 ## Add more control planes, they bootstrap automagically
