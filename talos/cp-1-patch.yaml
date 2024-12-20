@@ -17,6 +17,3 @@ machine:
       vip:
         ip: 192.168.100.130    # # `interfaces` is used to define the network interface configuration.
 
-  install:
-    disk: /dev/nvme0n1
-    wipe: true
