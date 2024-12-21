@@ -11,7 +11,7 @@ Basically, define a service and endpoint, and point the ingress to the endpoint.
 ## How - Service + EndPoints + Ingress (HTTP/HTTPS) - WORKING (9/24/23)
 - Service.yaml  
 - Endpoint.yaml
-- Ingress.yaml
+- (some ingress file)
 
 The ingress.yaml file has the unique URL per application.  The service.yaml and endpoint.yaml are the same for all apps, all traffic is sent to the VM
 

@@ -1,7 +1,7 @@
 eval `ssh-agent`
 ssh-add
 
-source ./servers.sh
+source ./prod-servers-lxc.sh
 
 # if [-z $(NODE3_IP) ]; then ssh $NODE3_IP 'k3s-agent-uninstall.sh' ; fi
 # if [-z $(NODE2_IP) ]; then ssh $NODE2_IP 'k3s-agent-uninstall.sh' ; fi
