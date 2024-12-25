@@ -1,0 +1,9 @@
+datadog:
+  providers:
+    talos:
+      enabled: true
+
+  kubelet:
+    tlsVerify: false
+
+  clusterName: talos-home
