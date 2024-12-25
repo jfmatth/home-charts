@@ -9,6 +9,9 @@ datadog:
     enabled: true
     containerCollectAll: true
 
+  processAgent:
+      enabled: true
+      processCollection: true
 
 
 # apiVersion: datadoghq.com/v2alpha1
