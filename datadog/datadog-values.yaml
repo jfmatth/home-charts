@@ -1,2 +1,29 @@
+---
+# Helm values
+registry: "gcr.io/datadoghq"
 datadog:
   apiKeyExistingSecret: "datadog-secret"
+  site: "us5.datadoghq.com"
+  logs:
+    enabled: true
+    containerCollectAll: true
+
+
+
+# apiVersion: datadoghq.com/v2alpha1
+# kind: DatadogAgent
+# metadata:
+#   name: datadog
+#   namespace: datadog
+# spec:
+#   global:
+#     clusterName: home-k3s
+#     site: us5.datadoghq.com
+#     credentials:
+#       apiSecret:
+#         secretName: datadog-secret
+#         keyName: api-key
+#   features:
+#     logCollection:
+#       enabled: true
+#       containerCollectAll: true
