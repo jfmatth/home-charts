@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: piku-pg-https
+  namespace: piku
+  annotations:
+    cert-manager.io/cluster-issuer: clusterissuer
+    traefik.ingress.kubernetes.io/router.middlewares: cert-manager-redirect@kubernetescrd
+
+spec:
+  tls:
+  - hosts:
+    - piku.3756home.org
+    secretName: piku-pg-https
+  rules:
+    - host: piku.3756home.org
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name:  vm111
+                port:
+                  name: http
