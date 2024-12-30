@@ -25,6 +25,12 @@
         enabled: true
         state: started
 
+    - name: Disable and Stop multipathd
+      ansible.builtin.systemd:
+        name: multipathd.service
+        enabled: false
+        state: stopped
+
     - name: Remove iscsi utilities
       ansible.builtin.apt:
         name: open-iscsi
