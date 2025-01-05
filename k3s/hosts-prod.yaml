@@ -4,15 +4,15 @@ all:
     k3smasters:
       hosts:
           k3s-prod-1:
-            ansible_host: 192.168.100.130
+            ansible_host: 192.168.100.140
 
-    # k3snodes:
-    #   hosts:
-    #       k3s-node-1:
-    #         ansible_host: 192.168.100.145
-    #       k3s-node-2:
-    #         ansible_host: 192.168.100.146
-    #       k3s-node-3:
-    #         ansible_host: 192.168.100.147
+    k3snodes:
+      hosts:
+          k3s-node-1:
+            ansible_host: 192.168.100.141
+          k3s-node-2:
+            ansible_host: 192.168.100.142
+          k3s-node-3:
+            ansible_host: 192.168.100.143
 
     

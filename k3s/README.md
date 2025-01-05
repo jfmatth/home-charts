@@ -29,7 +29,7 @@ Make sure to validate the pre-requisits are done on each node
 ```
 eval `ssh-agent`
 ssh-add
-ansible-playbook ansible-k3s-ubuntu.yaml -i ansible-hosts.yaml -b
+ansible-playbook ansible-k3s-ubuntu.yaml -i hosts-prod.yaml -b
 ```
 
 ### K3s install playbook (future)
