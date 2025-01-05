@@ -3,7 +3,7 @@ all:
   children:
     k3smasters:
       hosts:
-          k3s-prod-1:
+          k3s-master-1:
             ansible_host: 192.168.100.140
 
     k3snodes:
