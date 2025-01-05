@@ -17,15 +17,15 @@ machine:
       vip:
         ip: 192.168.100.130    # # `interfaces` is used to define the network interface configuration.
 
-cluster:
-  apiServer:
-    admissionControl:
-      - name: PodSecurity
-        configuration:
-          defaults:
-            audit: restricted
-            audit-version: latest
-            enforce: privilege
-            enforce-version: latest
-            warn: restricted
-            warn-version: latest
+# cluster:
+#   apiServer:
+#     admissionControl:
+#       - name: PodSecurity
+#         configuration:
+#           defaults:
+#             audit: restricted
+#             audit-version: latest
+#             enforce: privilege
+#             enforce-version: latest
+#             warn: restricted
+#             warn-version: latest

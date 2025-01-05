@@ -1,9 +1,19 @@
+registry: "gcr.io/datadoghq"
 datadog:
+  apiKeyExistingSecret: "datadog-secret"
+  site: "us5.datadoghq.com"
+  clusterName: talos-k8s
+  logs:
+    enabled: true
+    containerCollectAll: true
+
+  processAgent:
+      enabled: true
+      processCollection: true
+
   providers:
     talos:
       enabled: true
 
   kubelet:
     tlsVerify: false
-
-  clusterName: talos-home
