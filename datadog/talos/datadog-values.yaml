@@ -1,19 +1,11 @@
----
-# Helm values
 registry: "gcr.io/datadoghq"
 datadog:
   apiKeyExistingSecret: "datadog-secret"
   site: "us5.datadoghq.com"
-  clusterName: k3s-home
   logs:
     enabled: true
     containerCollectAll: true
 
-  processAgent:
-      enabled: true
-      processCollection: true
-
 providers:
   talos:
     enabled: true
-
