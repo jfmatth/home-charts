@@ -13,29 +13,16 @@ Basic cluster build
 ## Download the ISO with QEMU agent support (for proxmox)
 https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.8.4/nocloud-amd64.iso
 
-## Build 5 VM's on Proxmox
+## Build Control Plane on Proxmox
 3 x Control Plane  (2x2x32gb on Proxmox)  
 - Enable QEMU Guest
-- Set disk to write-back
-- Attach ISO ```talos-qemu-nocloud64.iso``` to VM's
-
-2 x Worker Nodes   (Physical Lenovo M910Q 4x32x256gb NVME)
-- NVME01 disk
 
 
 ## Generate controlplane.yaml and worker.yaml files with patches
-https://www.talos.dev/v1.8/talos-guides/install/virtualized-platforms/proxmox/#qemu-guest-agent-support
-
-All controlplane nodes are on Proxmox and need QEMU support
-
-Goto the talos ISO factory (factory.talos.dev) and generate the latest image and boot from it and put in the right image info below
+Goto https://factory.talos.dev and generate the ISO / images for QEMU support
 
 ```
-talosctl gen config talos-k8s https://192.168.100.130:6443 \
-    --install-image factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.9.4 \
-    --config-patch-control-plane @cp-1-patch.yaml \
-    --config-patch-worker @nd-1-patch.yaml \
-    --force
+talosctl gen config talos-k8s https://192.168.100.130:6443 --install-image factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.9.4 --config-patch-control-plane @cp-1-patch.yaml --config-patch-worker @nd-1-patch.yaml --force
 ```
 
 ## Add first node with it's DHCP address
