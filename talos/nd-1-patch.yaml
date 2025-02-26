@@ -1,3 +1,4 @@
+## These settings are needed if installing on bare-metal Lenovo desktops
 # machine:
 #   install:
 #     disk: /dev/nvme0n1

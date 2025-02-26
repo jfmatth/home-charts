@@ -1,26 +1,22 @@
 # Building Talos-k8s (v1.84)
 
-Our Cluster will have an API endpoint that is virtual, 192.168.100.130:6443, that is via the network changes below.  All nodes are DHCP which makes this easy.
 
-The tough part was finding the ISO and target image for qemu guest agent features.
+Patch files
+- cp-1-patch.yaml
+    - Virtual L2 Talos API endpoint (192.168.100.130)
+    - Certificate rotation for metrics-server
+    - Metrics server
+- nd-1-patch.yaml
+    - If running on Lenovo bare metal, this commented patch allows it to load onto NVME instead of SSD
 
-Basic cluster build
-- Build ControlPlane on proxmox
-- Build workers on bare-metal (lenovo)
-- Apply-Config
-- Bootstrap first Kubernetes node
-
-## Download the ISO with QEMU agent support (for proxmox)
-https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.8.4/nocloud-amd64.iso
-
-## Build Control Plane on Proxmox
-3 x Control Plane  (2x2x32gb on Proxmox)  
+## Preparation
+- Download the ISO with QEMU agent support (for proxmox) from https://factory.talos.dev/
+    - 1.9.4 page 
+        - https://factory.talos.dev/?arch=amd64&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=metal&target=metal&version=1.9.4
+- Build Control Plane VM's (2x2x32gb on Proxmox, **Enabled QEMU Guest**)
 - Enable QEMU Guest
 
-
 ## Generate controlplane.yaml and worker.yaml files with patches
-Goto https://factory.talos.dev and generate the ISO / images for QEMU support
-
 ```
 talosctl gen config talos-k8s https://192.168.100.130:6443 \
     --install-image factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.9.4 \
@@ -32,13 +28,14 @@ talosctl gen config talos-k8s https://192.168.100.130:6443 \
 ## Add first node with it's DHCP address
 DHCP address may change after inital apply, check Proxmox
 ```
-talosctl apply-config --insecure --nodes IP --file controlplane.yaml
+export IP=IPofVM
+talosctl apply-config --insecure --nodes $IP --file controlplane.yaml
 ```
 
 ## Bootstrap Kubernetes
 ** Note ** - DHCP addresses change at home each reset of VM
 ```
-talosctl --talosconfig=./talosconfig -n IP -e IP bootstrap
+talosctl --talosconfig=./talosconfig -n $IP -e $IP bootstrap
 ```
 
 ## Add more control planes, they bootstrap automagically
