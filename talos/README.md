@@ -56,13 +56,18 @@ talosctl config node 192.168.100.130
 talosctl kubeconfig -f
 ```
 
+# Gateway API setup
+Instead of an ingress controller, we are using the new Gateway API in Kubernetes 1.2+
+
 ## MetalLB Load Balancer  
+```metallb-ippool.yaml``` contains the IP addresses that will answer the external gateway 'call', this should be where the outside router points to (eventually)
+
 ```
 kubectl apply -f metallb-namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 kubectl apply -f metallb-ippool.yaml
 ```
-## Kubernetes gateway API
+## Kubernetes gateway API 1.2
 https://gateway-api.sigs.k8s.io/guides/#installing-gateway-api
 
 ```
@@ -72,18 +77,12 @@ kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/downloa
 ## NGINX Gateway Fabric
 https://docs.nginx.com/nginx-gateway-fabric/installation/installing-ngf/manifests/
 
-Namespace
+Due to Talos' security restrictions, the namespace yaml needs to specify relaxed security.
+
+Namespace + CRD + Fabric
 ```
 kubectl apply -f nginx-namespace.yaml
-```
-
-CRD's
-```
 kubectl apply -f https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v1.6.1/deploy/crds.yaml
-```
-
-Gateway Fabric
-```
 kubectl apply -f https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v1.6.1/deploy/default/deploy.yaml
 ```
 
