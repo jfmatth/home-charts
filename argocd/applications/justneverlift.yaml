@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: justneverlift
+  namespace: argocd
+spec:
+  project: default
+  source:
+    path: _helm
+    repoURL: https://github.com/jfmatth/justneverlift.com
+    targetRevision: HEAD
+  destination:
+    namespace:  jnl
+    server:     https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune:  true
+    syncOptions:
+    - CreateNamespace=true
