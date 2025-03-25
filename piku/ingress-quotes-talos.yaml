@@ -1,17 +1,17 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: piku-quotes-https
+  name: talos-endpoint
   namespace: piku
   annotations:
     cert-manager.io/cluster-issuer: clusterissuer
-    traefik.ingress.kubernetes.io/router.middlewares: cert-manager-redirect@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.middlewares: cert-manager-redirect@kubernetescrd
 
 spec:
   tls:
   - hosts:
     - quotes.3756home.org
-    secretName: piku-quotes-https
+    secretName: talos-endpoint-https
   rules:
     - host: quotes.3756home.org
       http:
@@ -20,6 +20,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name:  vm111
+                name:  talos
                 port:
                   name: http

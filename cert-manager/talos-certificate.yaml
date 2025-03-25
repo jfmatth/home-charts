@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: talos-certificate
+spec:
+  issuerRef:
+    name: gateway-clusterissuer
+    kind: ClusterIssuer
+  dnsNames:
+    - quotes.3756home.org
+  secretName: example-tls
+
+
+# Add Kind to ClusterIssuer since it wasn't finding the issuer originally
+## this helped, now need to have valid domain
