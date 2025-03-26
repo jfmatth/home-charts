@@ -16,3 +16,14 @@ spec:
         namespaces:
           from: All
 
+  - name: https-example
+    hostname: example.3756home.org
+    port: 443
+    protocol: HTTPS
+    allowedRoutes:
+      namespaces:
+        from: All
+    tls:
+      mode: Terminate
+      certificateRefs:
+        - name: https-examplehome-tls

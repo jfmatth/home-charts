@@ -1,25 +1,22 @@
 https://cert-manager.io/docs/installation/helm/#installing-cert-manager
 
+We will just modify the "gateway.yaml" file for new http / https endpoints (i.e. example.home3756.org, test.home...)
 
-# Talos
 
+## Certmanager for Gateway API
+
+```
+ helm repo add jetstack https://charts.jetstack.io --force-update
+ helm install cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v1.17.0  \
+  --set crds.enabled=true \
+  --set "extraArgs={--enable-gateway-api}"
+```
+
+## Let's Encrypt ClusterIssuer
 
 ```
 kubectl apply -f talos-clusterissuer.yaml -n cert-manager
-```
-## Annotated gateway example
-https://cert-manager.io/docs/usage/gateway/
-
-All requests are in Gateway with above
-```
-kubectl apply -f talos-gateway.yaml -n cert-manager
-```
-
-
-## Certificate method
-https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver
-
-```
-kubectl apply -f talos-gateway.yaml
-kubectl apply -f talos-clusterissuer.yaml
 ```
