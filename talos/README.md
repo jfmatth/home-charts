@@ -1,4 +1,4 @@
-# Building Talos-k8s (v1.84)
+# Building Talos-k8s (v1.94)
 
 
 Patch files
@@ -11,9 +11,9 @@ Patch files
 
 ## Preparation
 - Download the ISO with QEMU agent support (for proxmox) from https://factory.talos.dev/
-    - 1.9.4 page 
+    - 1.9.4 page
         - https://factory.talos.dev/?arch=amd64&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=metal&target=metal&version=1.9.4
-- Build Control Plane VM's (2x2x32gb on Proxmox, **Enabled QEMU Guest**)
+- Build 2 x Control Plane VM's (2x2x32gb on Proxmox, **Enabled QEMU Guest**)
 - Enable QEMU Guest
 
 ## Generate controlplane.yaml and worker.yaml files with patches
@@ -33,7 +33,6 @@ talosctl apply-config --insecure --nodes $IP --file controlplane.yaml
 ```
 
 ## Bootstrap Kubernetes
-** Note ** - DHCP addresses change at home each reset of VM
 ```
 talosctl --talosconfig=./talosconfig -n $IP -e $IP bootstrap
 ```
@@ -67,42 +66,8 @@ kubectl apply -f metallb-namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 kubectl apply -f metallb-ippool.yaml
 ```
-## Kubernetes gateway API 1.2
-https://gateway-api.sigs.k8s.io/guides/#installing-gateway-api
 
-```
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/standard-install.yaml
-```
-
-## NGINX Gateway Fabric
-https://docs.nginx.com/nginx-gateway-fabric/installation/installing-ngf/manifests/
-
-Due to Talos' security restrictions, the namespace yaml needs to specify relaxed security.
-
-Namespace + CRD + Fabric
-```
-kubectl apply -f nginx-namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v1.6.1/deploy/crds.yaml
-kubectl apply -f https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v1.6.1/deploy/default/deploy.yaml
-```
-
-```
-kubectl apply -f gateway.yaml
-```
-
-### Verify gateway is working
-https://docs.nginx.com/nginx-gateway-fabric/get-started/#create-an-example-application
-
-```
-kubectl apply -f cafe-pods.yaml
-kubectl get pods
-kubectl apply -f cafe-routes.yaml
-kubectl get service -A
-kubectl describe httproutes
-kubectl describe gateway
-```
-
-## Certmanager for Gateway API
+### Example
 
 
 
