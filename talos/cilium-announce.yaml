@@ -6,8 +6,8 @@ spec:
   nodeSelector:
     matchExpressions:
       - key: node-role.kubernetes.io/control-plane
-        operator: DoesNotExist
+        operator: Exists
   interfaces:
-  - ^eth[0-9]+
+  - eth0
   externalIPs: true
   loadBalancerIPs: true
