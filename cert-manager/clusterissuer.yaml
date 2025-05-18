@@ -13,6 +13,8 @@ spec:
      name: cert-manager-key
    solvers:
      - http01:
-         # The ingressClass used to create the necessary ingress routes
-         ingress:
-           class: traefik
+          gatewayHTTPRoute:
+            parentRefs:
+              - name: cert-manager-gateway
+                namespace: cert-manager
+                kind: Gateway
