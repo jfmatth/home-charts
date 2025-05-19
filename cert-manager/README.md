@@ -12,18 +12,18 @@ helm install `
   --create-namespace `
   --version v1.17.2 `
   --set config.enableGatewayAPI=true `
-  --set crds.enabled=true
+  --set crds.enabled=true `
+  --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
 
+```
+## Add Issuer
+```
+kubectl apply -f clusterissuer.yaml
 ```
 
 ## Add cert-manager-gateway for issuer
 ```
 kubectl apply -f gateway-certmanager.yaml
-```
-
-## Add Issuer
-```
-kubectl apply -f clusterissuer.yaml
 ```
 
 

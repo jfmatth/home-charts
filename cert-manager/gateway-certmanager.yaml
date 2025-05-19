@@ -23,6 +23,6 @@ spec:
         namespaces:
           from: All
       tls:
-        mode: Terminate
+        # mode: Terminate
         certificateRefs:
           - name: test-3756home

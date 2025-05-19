@@ -1,5 +1,5 @@
 apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
+kind: Issuer
 metadata:
  name: clusterissuer
  namespace: cert-manager
@@ -12,9 +12,10 @@ spec:
      # if not existing, it will register a new account and stores it
      name: cert-manager-key
    solvers:
-     - http01:
-          gatewayHTTPRoute:
-            parentRefs:
-              - name: cert-manager-gateway
-                namespace: cert-manager
-                kind: Gateway
+    - http01:
+        gatewayHTTPRoute:
+          # gatewayClass: cilium
+          parentRefs:
+            - name: cert-manager-gateway
+              namespace: cert-manager
+              kind: Gateway
