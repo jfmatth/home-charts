@@ -1,5 +1,5 @@
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
  name: clusterissuer
  namespace: cert-manager
@@ -14,8 +14,7 @@ spec:
    solvers:
     - http01:
         gatewayHTTPRoute:
-          # gatewayClass: cilium
           parentRefs:
-            - name: cert-manager-gateway
+            - name: http-only-gateway
               namespace: cert-manager
               kind: Gateway
