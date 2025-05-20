@@ -3,3 +3,8 @@
 #   install:
 #     disk: /dev/nvme0n1
 #     wipe: true
+
+# cluster:
+#   network:
+#     cni:
+#       name: none
