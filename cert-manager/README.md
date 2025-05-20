@@ -2,7 +2,7 @@ https://cert-manager.io/docs/installation/helm/#installing-cert-manager
 
 # Certmanager in Talos install
 
-- We already have the Kubernetes gateway api CRDs installed
+- We already have the Kubernetes gateway api CRDs installed from Cilium
 
 ```
 helm install `
