@@ -73,11 +73,29 @@ kubectl apply -f cilium-ippool.yaml
 addrole.bat <ip> controlplane.yaml 
 ```
 
-## Workder nodes
+## Worker nodes
 ```
 addrole.bat <ip> worker.yaml
+```
+
+## NFS Storage
+```
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner 
+
+helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner `
+    --set nfs.server=192.168.100.50 `
+    --set nfs.path=/mnt/bcache0 `
+    --set storageClass.name=nfs `
+    --namespace kube-system `
+    --set storageClass.defaultClass=true `
+    --set storageClass.archiveOnDelete=false
+```
 
 
 ## Cert-manager
 
 See Cert-Manager folder for instructions
+
+## Postgres Operator
+
+See postgres-zalando folder

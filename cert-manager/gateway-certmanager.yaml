@@ -4,26 +4,33 @@ kind: Gateway
 
 metadata:
   name: cert-manager-gateway
-  # namespace: cert-manager
+  namespace: cert-manager
   annotations:
     cert-manager.io/cluster-issuer: clusterissuer
 
 spec:
-  
   gatewayClassName: cilium
 
   listeners:
-    - name: testcert
-      hostname: test.3756home.org
-      port: 443
-      protocol: HTTPS
+    - name: http
+      protocol: HTTP
+      port: 80
+
       allowedRoutes:
         namespaces:
           from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: test-3756home
+
+    # - name: testcert
+    #   hostname: test.3756home.org
+    #   port: 443
+    #   protocol: HTTPS
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - name: test-3756home
 
     # - name: stocks
     #   hostname: stocks.3756home.org
@@ -37,14 +44,14 @@ spec:
     #     certificateRefs:
     #       - name: stocks-3756home
 
-    - name: blog
-      hostname: blog.3756home.org
-      port: 443
-      protocol: HTTPS
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: blog-3756home
+    # - name: blog
+    #   hostname: blog.3756home.org
+    #   port: 443
+    #   protocol: HTTPS
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - name: blog-3756home
