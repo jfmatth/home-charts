@@ -19,7 +19,7 @@ helm install `
 This gateway only routes HTTP port 80 traffic, no listeners defined.  It allows the clusterissuer to setup HTTPRoutes to it's solver.  This will reside in the cert-manager namespace.
 
 ```
-kubectl apply -f gateway-httponly.yaml
+kubectl apply -f gateway-certmanager.yaml
 ```
 
 ## Add Issuer

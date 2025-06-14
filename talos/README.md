@@ -29,12 +29,16 @@ You need to build the control plane nodes, then add Cilium since we've turned of
 ```
 bootcp.bat <IP>
 ```
+
+***Wait for a few pods to spin up***
+
 ### Install Cilium 
+Need to install v1.15.9 due to a [BUG](https://github.com/cilium/cilium/issues/34982) around gateway API
+
 ```
 helm install `
     cilium `
     cilium/cilium `
-    --version 1.17.4 `
     --namespace kube-system `
     --set=ipam.mode=kubernetes `
     --set=kubeProxyReplacement=true `
@@ -44,18 +48,22 @@ helm install `
     --set=cgroup.hostRoot=/sys/fs/cgroup `
     --set=k8sServiceHost=localhost `
     --set=k8sServicePort=7445 `
-    --set=kubeProxyReplacement=true `
     --set=gatewayAPI.enabled=true `
+    --set=gatewayAPI.enableAlpn=true `
+    --set=gatewayAPI.enableAppProtocol=true `
     --set l2announcements.enabled=true `
     --set externalIPs.enabled=true
 ```
 
 Watch for pods to spin up.  Since only one CP is alive, the other Cillium-operator won't start, that's OK.
 
+Metrics server won't start either since we don't have any worker nodes
+
 Restart Cilium since it was installed after Talos
 ```
 kubectl -n kube-system rollout restart deployment/cilium-operator
 kubectl -n kube-system rollout restart ds/cilium
+
 ```
 
 Cilium L2Announce

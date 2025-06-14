@@ -22,20 +22,21 @@ spec:
         kinds:
           - kind: HTTPRoute
 
-    - name: test-https
-      port: 443
-      protocol: HTTPS
-      hostname: test.3756home.org
-      allowedRoutes:
-        namespaces:
-          from: All
-        kinds:
-          - kind: HTTPRoute
-          
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: test-3756home
+    # - name: test-https
+    #   port: 443
+    #   protocol: HTTPS
+    #   hostname: test.3756home.org
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+    #     kinds:
+    #       - kind: HTTPRoute
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - name: test-3756home
+
+
 
     # - name: stocks
     #   hostname: stocks.3756home.org
