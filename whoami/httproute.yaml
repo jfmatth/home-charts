@@ -1,0 +1,22 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: whoami
+  namespace: whoami
+spec:
+  parentRefs:
+    - name: cert-manager-gateway
+      namespace: cert-manager
+      sectionName: http
+  hostnames:
+    - test.3756home.org
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: "/whoami"
+    - backendRefs:
+        - name: whoami
+          port: 80
+   
