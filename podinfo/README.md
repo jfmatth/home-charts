@@ -3,7 +3,13 @@
 From https://github.com/stefanprodan/podinfo/tree/master/charts/podinfo
 
 ```
-helm install podinfo podinfo/podinfo -f values.yaml -n podinfo
+helm install `
+    podinfo `
+    podinfo/podinfo `
+    -f values.yaml `
+    --namespace podinfo `
+    --create-namespace
+
 kubectl apply -f httproute.yaml -n podinfo
 ```
 

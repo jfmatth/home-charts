@@ -33,7 +33,7 @@ bootcp.bat <IP>
 ***Wait for a few pods to spin up***
 
 ### Install Cilium 
-Need to install v1.15.9 due to a [BUG](https://github.com/cilium/cilium/issues/34982) around gateway API
+Migh need to install v1.15.9 due to a [BUG](https://github.com/cilium/cilium/issues/34982) around gateway API
 
 ```
 helm install `

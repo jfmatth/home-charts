@@ -9,7 +9,6 @@ helm install `
   cert-manager jetstack/cert-manager `
   --namespace cert-manager `
   --create-namespace `
-  --version v1.17.2 `
   --set config.enableGatewayAPI=true `
   --set crds.enabled=true `
   --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
