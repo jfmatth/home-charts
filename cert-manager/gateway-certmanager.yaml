@@ -22,10 +22,10 @@ spec:
         kinds:
           - kind: HTTPRoute
 
-    # - name: test-https
+    # - name: podinfo-https
     #   port: 443
     #   protocol: HTTPS
-    #   hostname: test.3756home.org
+    #   hostname: podinfo.3756home.org
     #   allowedRoutes:
     #     namespaces:
     #       from: All
@@ -34,8 +34,7 @@ spec:
     #   tls:
     #     mode: Terminate
     #     certificateRefs:
-    #       - name: test-3756home
-
+    #       - name: podinfo-https
 
 
     # - name: stocks
