@@ -15,17 +15,17 @@ datadog:
       enabled: true
       processCollection: true
 
-  # confd:
-  #   cilium.yaml: |-
-  #     init_config:
-  #     instances:
-  #       - use_openmetrics: true
-  #         agent_endpoint: http://localhost:9090/metrics
+  confd:
+    # cilium.yaml: |-
+    #   init_config:
+    #   instances:
+    #     - use_openmetrics: true
+    #       agent_endpoint: http://localhost:9090/metrics
+    cilium.yaml: null
 
 agents:
   image:
-    tag: 7.67.0-rc.2
-
+    tag: 7.68.3
     env:
       - name: DD_TLS_VERIFY
         value: "false"
