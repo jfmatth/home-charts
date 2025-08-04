@@ -1,0 +1,32 @@
+providers:
+  kubernetesGateway:
+    enabled: true
+  kubernetesIngress:
+    enabled: false             # Disable legacy Ingress provider
+
+service:
+  type: ClusterIP              # Prevent LoadBalancer from being created
+
+publishedService:
+  enabled: false               # Disable publishing external LoadBalancer
+
+gateway:
+  enabled: true
+  name: traefik-gateway
+  namespace: traefik
+  listeners:
+    web:
+      port: 80
+      protocol: HTTP
+    # websecure:
+    #   port: 443
+    #   protocol: HTTPS
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - name: your-cert-secret
+    #         namespace: default
+
+gatewayClass:
+  enabled: true
+  name: traefik

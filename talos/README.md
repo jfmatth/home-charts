@@ -32,7 +32,6 @@ bootcp.bat <IP>
 ***Wait for a few pods to spin up***
 
 ### Install Cilium 
-Migh need to install v1.15.9 due to a [BUG](https://github.com/cilium/cilium/issues/34982) around gateway API
 
 ```
 helm install `
@@ -47,7 +46,7 @@ helm install `
     --set=cgroup.hostRoot=/sys/fs/cgroup `
     --set=k8sServiceHost=localhost `
     --set=k8sServicePort=7445 `
-    --set=gatewayAPI.enabled=true `
+    --set=gatewayAPI.enabled=false `
     --set=gatewayAPI.enableAlpn=true `
     --set=gatewayAPI.enableAppProtocol=true `
     --set l2announcements.enabled=true `
@@ -84,6 +83,49 @@ addrole.bat <ip> controlplane.yaml
 ```
 addrole.bat <ip> worker.yaml
 ```
+
+## Traefik Gateway API
+https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api
+```
+helm install traefik traefik/traefik `
+  --set providers.kubernetesGateway.enabled=true `
+  --set providers.kubernetesGateway.experimentalChannel=true `
+  --set providers.kubernetesIngress.enabled=false `
+  --set providers.kubernetesIngress.publishedService.enabled=false `
+  --set gateway.enabled=true `
+  --set gatewayClass.enabled=true `
+  --set service.type=ClusterIP `
+  --namespace traefik `
+  --create-namespace
+```
+OLD
+```
+  --namespace kube-system `
+  --install `
+  --set providers.kubernetesIngress.enabled=true `
+  --set gateway.enabled=true `
+  --set gateway.listeners.web.port=80 `
+  --set gateway.listeners.web.protocol=HTTP `
+  --set gatewayClass.enabled=true `
+  --set ingressClass.enabled=false
+
+```
+
+
+
+```
+helm install traefik traefik/traefik `
+  --set providers.kubernetesGateway.enabled=true `
+  --set providers.kubernetesGateway.experimentalChannel=true `
+  --set gateway.enabled=true `
+  --set gateway.listeners.web.port=80 `
+  --set gateway.listeners.web.protocol=HTTP `
+  --set gatewayClass.enabled=true `
+  --set ports.web.port=80 `
+  --namespace traefik `
+  --create-namespace
+```
+
 
 ## NFS Storage
 ```

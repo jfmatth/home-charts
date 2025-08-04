@@ -9,7 +9,7 @@ metadata:
     cert-manager.io/cluster-issuer: clusterissuer
 
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: traefik
 
   listeners:
     - name: http
