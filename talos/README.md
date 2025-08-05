@@ -9,12 +9,11 @@ Patch files
     - If running on Lenovo bare metal, this commented patch allows it to load onto NVME instead of SSD
 
 ## Preparation
-- Version 1.10.6 Proxmox QEMU
-
-https://factory.talos.dev/?arch=amd64&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=nocloud&target=cloud&version=1.10.6
+- Version 1.10.6 Proxmox QEMU  
+    https://factory.talos.dev/?arch=amd64&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=nocloud&target=cloud&version=1.10.6
 
 For images and upgrades
-    factory.talos.dev/nocloud-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.10.6
+    ```factory.talos.dev/nocloud-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.10.6```
 
 ## Build VM's
 - ControlPlane - 2x2 with guest agent (x3)
