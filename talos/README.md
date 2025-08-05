@@ -86,46 +86,16 @@ addrole.bat <ip> worker.yaml
 
 ## Traefik Gateway API
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api
-```
-helm install traefik traefik/traefik `
-  --set providers.kubernetesGateway.enabled=true `
-  --set providers.kubernetesGateway.experimentalChannel=true `
-  --set providers.kubernetesIngress.enabled=false `
-  --set providers.kubernetesIngress.publishedService.enabled=false `
-  --set gateway.enabled=true `
-  --set gatewayClass.enabled=true `
-  --set service.type=ClusterIP `
-  --namespace traefik `
-  --create-namespace
-```
-OLD
-```
-  --namespace kube-system `
-  --install `
-  --set providers.kubernetesIngress.enabled=true `
-  --set gateway.enabled=true `
-  --set gateway.listeners.web.port=80 `
-  --set gateway.listeners.web.protocol=HTTP `
-  --set gatewayClass.enabled=true `
-  --set ingressClass.enabled=false
-
-```
-
 
 
 ```
-helm install traefik traefik/traefik `
-  --set providers.kubernetesGateway.enabled=true `
-  --set providers.kubernetesGateway.experimentalChannel=true `
-  --set gateway.enabled=true `
-  --set gateway.listeners.web.port=80 `
-  --set gateway.listeners.web.protocol=HTTP `
-  --set gatewayClass.enabled=true `
-  --set ports.web.port=80 `
-  --namespace traefik `
-  --create-namespace
+kubectl apply -f traefik-namespace.yaml
+helm install traefik traefik/traefik -f .\traefik.yaml -n traefik
+kubectl apply -f traefik-gateway.yaml
 ```
+This will create a Traefik load balancer service which is where the gateway will connect
 
+https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 
 ## NFS Storage
 ```

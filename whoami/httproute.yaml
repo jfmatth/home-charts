@@ -6,9 +6,9 @@ metadata:
   namespace: whoami
 spec:
   parentRefs:
-    - name: cert-manager-gateway
-      namespace: cert-manager
-      sectionName: http
+    - name: traefik-gateway
+      namespace: traefik
+      sectionName: web
   hostnames:
     - test.3756home.org
   rules:

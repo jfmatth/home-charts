@@ -15,6 +15,6 @@ spec:
     - http01:
         gatewayHTTPRoute:
           parentRefs:
-            - name: cert-manager-gateway
-              namespace: cert-manager
+            - name: traefik-gateway
+              namespace: traefik
               kind: Gateway

@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: edge-certificate
+  namespace: traefik
+spec:
+  secretName: edge-certificate
+  issuerRef:
+    name: clusterissuer
+    kind: ClusterIssuer
+  commonName: edge.3756home.org
+  dnsNames:
+    - edge.3756home.org
