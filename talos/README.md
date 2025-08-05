@@ -58,18 +58,17 @@ helm install `
     --set externalIPs.enabled=true
 ``` -->
 
-Watch for pods to spin up.  Since only one CP is alive, the other Cillium-operator won't start, that's OK.
-
-Metrics server won't start either since we don't have any worker nodes
+**Notes**
+- Watch for pods to spin up.  Since only one CP is alive, the other Cillium-operator won't start, that's OK.
+- Metrics server won't start either since we don't have any worker nodes
 
 Restart Cilium since it was installed after Talos
 ```
 kubectl -n kube-system rollout restart deployment/cilium-operator
 kubectl -n kube-system rollout restart ds/cilium
-
 ```
 
-Cilium L2Announce
+Cilium L2Announce (ARP)
 ```
 kubectl apply -f cilium-announce.yaml
 ```
@@ -92,7 +91,7 @@ addrole.bat <ip> worker.yaml
 ## Traefik Gateway API
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api
 
-
+### Namespace + Traefik + Gateway 
 ```
 kubectl apply -f traefik-namespace.yaml
 helm install traefik traefik/traefik -f .\traefik.yaml -n traefik
@@ -101,6 +100,7 @@ kubectl apply -f traefik-gateway.yaml
 This will create a Traefik load balancer service which is where the gateway will connect
 
 https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
+
 
 ## NFS Storage
 ```
@@ -122,9 +122,7 @@ helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs
 
 
 ## Cert-manager
-
 See Cert-Manager folder for instructions
 
 ## Postgres Operator
-
 See postgres-zalando folder
