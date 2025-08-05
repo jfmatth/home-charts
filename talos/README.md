@@ -34,6 +34,11 @@ bootcp.bat <IP>
 ### Install Cilium 
 
 ```
+helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml
+```
+
+<!-- ORIG
+```
 helm install `
     cilium `
     cilium/cilium `
@@ -51,7 +56,7 @@ helm install `
     --set=gatewayAPI.enableAppProtocol=true `
     --set l2announcements.enabled=true `
     --set externalIPs.enabled=true
-```
+``` -->
 
 Watch for pods to spin up.  Since only one CP is alive, the other Cillium-operator won't start, that's OK.
 
@@ -99,6 +104,11 @@ https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 
 ## NFS Storage
 ```
+helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs.yaml
+```
+
+<!-- ORIG
+```
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner 
 
 helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner `
@@ -108,7 +118,7 @@ helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs
     --namespace kube-system `
     --set storageClass.defaultClass=true `
     --set storageClass.archiveOnDelete=false
-```
+``` -->
 
 
 ## Cert-manager

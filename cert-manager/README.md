@@ -5,6 +5,11 @@ https://cert-manager.io/docs/installation/helm/#installing-cert-manager
 - We already have the Kubernetes gateway api CRDs installed from Cilium
 
 ```
+helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace -f cert-manager.yaml
+```
+
+ORIG
+```
 helm install `
   cert-manager jetstack/cert-manager `
   --namespace cert-manager `
