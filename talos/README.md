@@ -2,7 +2,7 @@
 
 Patch files
 - cp-1-patch.yaml
-    - Virtual L2 Talos API endpoint (192.168.100.130)
+    - Virtual L2 Talos API endpoint (192.168.100.140)
     - Certificate rotation for metrics-server
     - Metrics server
 - nd-1-patch.yaml
