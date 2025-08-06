@@ -53,7 +53,7 @@ logs:
   general:
     level: INFO
 
-  accessLog:
+  access:
     enabled: true
     format: json  # or "common" for CLF format
     filters:
@@ -62,9 +62,10 @@ logs:
         - "400-404"
         - "500-503"
     fields:
-      defaultMode: keep
-      names:
-        ClientUsername: drop
+      general:
+        defaultMode: keep
+        names:
+          ClientUsername: drop
       headers:
         defaultMode: keep
         names:
