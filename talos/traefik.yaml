@@ -21,15 +21,15 @@ ports:
 
 gateway:
   enabled: false
-  name: traefik-gateway
-  namespace: traefik
-  listeners:
-    web:
-      port: 80
-      protocol: HTTP
+  # name: traefik-gateway
+  # namespace: traefik
+  # listeners:
+  #   web:
+  #     port: 80
+  #     protocol: HTTP
 
-      namespacePolicy:
-        from: "All"
+  #     namespacePolicy:
+  #       from: "All"
 
     # websecure:
     #   port: 443

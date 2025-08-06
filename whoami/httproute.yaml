@@ -8,9 +8,8 @@ spec:
   parentRefs:
     - name: traefik-gateway
       namespace: traefik
-      sectionName: web
   hostnames:
-    - test.3756home.org
+    - whoami.3756home.org
   rules:
     - matches:
         - path:

@@ -8,7 +8,7 @@ https://cert-manager.io/docs/installation/helm/#installing-cert-manager
 helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace -f cert-manager.yaml
 ```
 
-ORIG
+<!-- ORIG
 ```
 helm install `
   cert-manager jetstack/cert-manager `
@@ -17,7 +17,7 @@ helm install `
   --set config.enableGatewayAPI=true `
   --set crds.enabled=true `
   --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
-```
+``` -->
 
 <!-- ## Add the resolver gateway first
 This gateway only routes HTTP port 80 traffic, no listeners defined.  It allows the clusterissuer to setup HTTPRoutes to it's solver.  This will reside in the cert-manager namespace.
