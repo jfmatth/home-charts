@@ -8,8 +8,10 @@ spec:
   parentRefs:
     - name: traefik-gateway
       namespace: traefik
+
   hostnames:
     - whoami.3756home.org
+
   rules:
     - matches:
         - path:
@@ -18,4 +20,8 @@ spec:
     - backendRefs:
         - name: whoami
           port: 80
+
+
+
+
    

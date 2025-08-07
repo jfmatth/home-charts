@@ -15,6 +15,20 @@ spec:
         namespaces:
           from: All
 
+# Just a placeholder, all certs will come from the application
+    - name: edge-https
+      protocol: HTTPS
+      port: 443
+      hostname: edge.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: edge-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
     - name: whoami-https
       protocol: HTTPS
       port: 443
