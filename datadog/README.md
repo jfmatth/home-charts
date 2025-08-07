@@ -8,25 +8,31 @@ kubectl apply -f datadog-namespace.yaml
 - Use Helm Chart (not operator)
 - Pick API Key, have secret line created
 
+```
+helm repo add datadog https://helm.datadoghq.com
+helm install datadog-operator datadog/datadog-operator
+```
+
+Notes
+```
 helm repo add datadog https://helm.datadoghq.com
 helm install datadog-operator datadog/datadog-operator
 kubectl create secret generic datadog-secret --from-literal api-key=6eff8202c319b9b9ea14c21a4a64b9e8
-
+```
 
 
 ```
 helm install datadog-agent -f datadog-values.yaml datadog/datadog -n datadog
 ```
 ### Notes - Home
-
+```
 helm install dd datadog/datadog `
  --set datadog.apiKey=$DD_API_KEY `
  --set datadog.kubelet.tlsVerify=false `
  --set providers.talos.enabled=true `
  --set datadog.clusterName=talos-k8s `
  --set agents.image.tag=7.67.0-rc.2
-
-
+```
 
 # Commands to install Datadog Agent in a GKE Autopilot Cluster
 
@@ -166,3 +172,65 @@ metadata:
   version.scheme: semver
 
 From <https://play.instruqt.com/embed/datadog/tracks/monitoring-kubernetes/challenges/set-up-your-datadog-account/assignment#tab-0> 
+
+
+```
+datadog:
+  ignoreAutoConfig:
+    - redisdb
+    - istio
+    - cilium
+  site: "us5.datadoghq.com"
+  clusterName: "sndbx-autopilot-private-cluster"
+  apiKeyExistingSecret: "datadog-secret"
+  kubelet:
+    useApiServer: true
+  tags:
+    - "env:staging"
+  apm:
+    instrumentation:
+      enabled: true
+      targets:
+        - name: "default-target"
+          ddTraceVersions:
+            java: "1"
+            python: "3"
+            js: "5"
+            php: "1"
+            dotnet: "3"
+  logs:
+    enabled: true
+    containerCollectAll: true
+  # networkMonitoring:
+  #   enabled: true
+  processAgent:
+    processCollection: true
+agents:
+  containers:
+    agent:
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "256Mi"
+    traceAgent:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "200Mi"
+    processAgent:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "200Mi"
+    systemProbe:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "400Mi"
+  priorityClassCreate: true
+providers:
+  gke:
+    autopilot: true
+
+  #List of integration(s) to ignore auto_conf.yaml.
+```
