@@ -5,6 +5,8 @@ Patch files
     - Virtual L2 Talos API endpoint (192.168.100.140)
     - Certificate rotation for metrics-server
     - Metrics server
+    - Gateway API manifests
+    - Cilium preparation (kube-proxy off, no CNI)
 - nd-1-patch.yaml
     - If running on Lenovo bare metal, this commented patch allows it to load onto NVME instead of SSD
 
