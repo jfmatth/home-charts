@@ -6,11 +6,12 @@ metadata:
   namespace: whoami
 spec:
   parentRefs:
-    - name: cert-manager-gateway
-      namespace: cert-manager
-      sectionName: http
+    - name: traefik-gateway
+      namespace: traefik
+
   hostnames:
-    - test.3756home.org
+    - whoami.3756home.org
+
   rules:
     - matches:
         - path:
@@ -19,4 +20,8 @@ spec:
     - backendRefs:
         - name: whoami
           port: 80
+
+
+
+
    

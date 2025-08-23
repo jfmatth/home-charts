@@ -1,0 +1,8 @@
+nfs:
+  server: 192.168.100.50
+  path: /mnt/bcache0
+
+storageClass:
+  name: nfs
+  defaultClass: true
+  archiveOnDelete: false

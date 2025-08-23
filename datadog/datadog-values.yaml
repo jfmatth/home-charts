@@ -1,0 +1,37 @@
+datadog:
+  site: "us5.datadoghq.com"
+  apiKeyExistingSecret: "datadog-secret"
+  apm:
+    instrumentation:
+      enabled: true
+      targets:
+        - name: "default-target"
+          ddTraceVersions:
+            java: "1"
+            python: "3"
+            js: "5"
+            php: "1"
+            dotnet: "3"
+  logs:
+    enabled: true
+    containerCollectAll: true
+  processAgent:
+    processCollection: true
+
+  clusterName: talos-k8s
+
+  agents:
+    tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+    nodeSelector:
+      kubernetes.io/os: linux
+
+  kubelet:
+    tlsVerify: false
+
+
+providers:
+  talos:
+    enabled: true

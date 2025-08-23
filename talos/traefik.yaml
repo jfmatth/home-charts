@@ -1,0 +1,52 @@
+providers:
+  kubernetesGateway:
+    enabled: true
+  kubernetesIngress:
+    enabled: false             # Disable legacy Ingress provider
+  # kubernetesCRD:
+  #   enabled: false
+
+publishedService:
+  enabled: true               # Disable publishing external LoadBalancer
+
+ports:
+  web: 
+    port: 80
+  websecure:
+    port: 443
+
+
+gateway:
+  enabled: false
+
+gatewayClass:
+  enabled: true
+  name: traefik
+
+# Optional: Enable logs and metrics
+logs:
+  general:
+    level: INFO
+
+  access:
+    enabled: true
+    format: json  # or "common" for CLF format
+    # filters:
+    #   statusCodes:
+    #     - "200"
+    #     - "400-404"
+    #     - "500-503"
+    fields:
+      general:
+        defaultMode: keep
+        # names:
+        #   ClientUsername: drop
+      headers:
+        defaultMode: keep
+        names:
+          # User-Agent: redact
+          Content-Type: keep
+
+# metrics:
+#   prometheus:
+#     enabled: true

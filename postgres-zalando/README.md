@@ -12,16 +12,11 @@ helm repo add postgres-operator-charts https://opensource.zalando.com/postgres-o
 helm repo add postgres-operator-ui-charts https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui
 helm repo update
 
-helm install postgres-operator postgres-operator-charts/postgres-operator `
-    -n postgres `
-    --create-namespace `
-    --values operator-values.yaml 
+kubectl create -f postgres-namespace.yaml
 
-helm install postgres-operator-ui postgres-operator-ui-charts/postgres-operator-ui `
-    -n postgres `
-    -f postgresUI-values.yaml
-
+helm install postgres postgres-operator-charts/postgres-operator -n postgres --create-namespace --values operator-values.yaml 
 ```
+
 ## Upgrade the operator
 ```
 helm upgrade postgres-operator postgres-operator-charts/postgres-operator `
@@ -34,7 +29,6 @@ helm upgrade postgres-operator-ui postgres-operator-ui-charts/postgres-operator-
 ```
 
 ## Sample DB
-
 ```
 apiVersion: "acid.zalan.do/v1"
 kind: postgresql

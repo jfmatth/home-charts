@@ -1,0 +1,8 @@
+config:
+  enableGatewayAPI: true
+
+crds:
+  enabled: true
+
+extraArgs:
+  - --feature-gates=ExperimentalGatewayAPISupport=true
