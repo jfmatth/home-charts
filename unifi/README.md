@@ -1,14 +1,15 @@
 # Ubiquity Unifi controller for AP's in home
 
-this won't work under WSL as the AP's aren't discoverable, I guess.  Use Windows instead
+Run's the controller on your local machine.
 
-1. Install JRE for Java 
-2. Download Unifi controller for Windows v7.3.76
-   https://fw-download.ubnt.com/data/unifi-controller/36b8-windows-7.3.76-8ae08e5bfec646ca970db99f60e428ed.exe
+- Download and Run Unifi controller for Windows 9.4.19
+   https://dl.ui.com/unifi/9.4.19/UniFi-installer.exe
 
-3. Run controller
-4. open browser, jfmatth, P0
+- Manage with Browser - Might need to link to the Unifi account, that's OK.
+- Restore from backup in ```Documents\Home\Network\```
+- After restore, refresh and login
+   jfmatth
+   P0
 
-Backups are stored in Documents/Home/Network/
 
 
