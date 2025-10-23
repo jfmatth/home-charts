@@ -88,8 +88,6 @@ See Cert-Manager folder for Reference
 ```
 helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace -f cert-manager.yaml
 ```
-If you check the gateway, it will not show programmed until the whoami application is installed, this is due to gateway having a route to it.
-
 
 ### Add Issuer
 ```
