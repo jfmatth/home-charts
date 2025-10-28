@@ -38,27 +38,6 @@ bootcp.bat <IP>
 helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml
 ```
 
-<!-- ORIG
-```
-helm install `
-    cilium `
-    cilium/cilium `
-    --namespace kube-system `
-    --set=ipam.mode=kubernetes `
-    --set=kubeProxyReplacement=true `
-    --set=securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}" `
-    --set=securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" `
-    --set=cgroup.autoMount.enabled=false `
-    --set=cgroup.hostRoot=/sys/fs/cgroup `
-    --set=k8sServiceHost=localhost `
-    --set=k8sServicePort=7445 `
-    --set=gatewayAPI.enabled=false `
-    --set=gatewayAPI.enableAlpn=true `
-    --set=gatewayAPI.enableAppProtocol=true `
-    --set l2announcements.enabled=true `
-    --set externalIPs.enabled=true
-``` -->
-
 **Notes**
 - Watch for pods to spin up.  Since only one CP is alive, the other Cillium-operator won't start, that's OK.
 - Metrics server won't start either since we don't have any worker nodes
@@ -107,20 +86,6 @@ https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 ```
 helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs.yaml
 ```
-
-<!-- ORIG
-```
-helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner 
-
-helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner `
-    --set nfs.server=192.168.100.50 `
-    --set nfs.path=/mnt/bcache0 `
-    --set storageClass.name=nfs `
-    --namespace kube-system `
-    --set storageClass.defaultClass=true `
-    --set storageClass.archiveOnDelete=false
-``` -->
-
 
 ## Cert-manager
 See Cert-Manager folder for instructions
