@@ -12,10 +12,10 @@ metadata:
 spec:
   teamId: "acid"
   postgresql:
-    version: "15"
+    version: "17"
   numberOfInstances: 1
 
-  enableMasterLoadBalancer: true
+  enableMasterLoadBalancer: false
   volume:
     size: "20Gi"
 
