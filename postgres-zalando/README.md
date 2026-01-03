@@ -29,25 +29,5 @@ helm upgrade postgres-operator-ui postgres-operator-ui-charts/postgres-operator-
 ```
 
 ## Sample DB
-```
-apiVersion: "acid.zalan.do/v1"
-kind: postgresql
-metadata:
-  name: pg-minimal-cluster
-spec:
-  teamId: "acid"
-  volume:
-    size: 1Gi
-  numberOfInstances: 2
-  users:
-    zalando:  # database owner
-    - superuser
-    - createdb
-    foo_user: []  # role for application foo
-  databases:
-    foo: zalando  # dbname: owner
-  preparedDatabases:
-    bar: {}
-  postgresql:
-    version: "15"
-```
+Check database.yaml
+

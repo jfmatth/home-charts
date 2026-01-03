@@ -15,7 +15,7 @@ spec:
     version: "15"
   numberOfInstances: 1
 
-  enableMasterLoadBalancer: true
+  enableMasterLoadBalancer: false
   volume:
     size: "20Gi"
 
