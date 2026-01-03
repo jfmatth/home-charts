@@ -1,6 +1,6 @@
 nfs:
   server: 192.168.100.50
-  path: /mnt/pool1/k8s
+  path: /mnt/pool1/kubernetes
 
 storageClass:
   name: nfs
