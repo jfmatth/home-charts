@@ -1,6 +1,6 @@
 nfs:
   server: 192.168.100.50
-  path: /mnt/bcache0
+  path: /mnt/pool1/k8s
 
 storageClass:
   name: nfs

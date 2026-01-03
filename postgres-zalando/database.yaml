@@ -12,7 +12,7 @@ metadata:
 spec:
   teamId: "acid"
   postgresql:
-    version: "17"
+    version: "15"
   numberOfInstances: 1
 
   enableMasterLoadBalancer: false
