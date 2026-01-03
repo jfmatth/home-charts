@@ -19,11 +19,7 @@ helm install postgres postgres-operator-charts/postgres-operator -n postgres --c
 
 ## Upgrade the operator
 ```
-helm upgrade postgres-operator postgres-operator-charts/postgres-operator `
-    -n postgres `
-    --reuse-values
-
-helm upgrade postgres-operator-ui postgres-operator-ui-charts/postgres-operator-ui `
+helm upgrade postgres postgres-operator-charts/postgres-operator `
     -n postgres `
     --reuse-values
 ```
