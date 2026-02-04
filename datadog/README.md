@@ -1,33 +1,28 @@
 # Talos Datadog integration
 
+## Home installation
 - Make datadog namespace
 ```
 kubectl apply -f datadog-namespace.yaml
 ```
 - Goto Datadog integration page https://us5.datadoghq.com/account/settings/agent/latest?platform=kubernetes
-- Use Helm Chart (not operator)
-- Pick API Key, have secret line created
+- Helm Chart not Operator
+- Pick API Key, copy it to clipboard
 
+- Modify the default text below with the API key
 ```
 helm repo add datadog https://helm.datadoghq.com
-helm install datadog-operator datadog/datadog-operator
+helm repo update
+kubectl create secret generic datadog-secret --from-literal api-key=  --namespace=datadog
 ```
 
-Notes
+Install the helm chart for Talos, not the operator
 ```
-helm repo add datadog https://helm.datadoghq.com
-helm install datadog-operator datadog/datadog-operator
-kubectl create secret generic datadog-secret --from-literal api-key=6eff8202c319b9b9ea14c21a4a64b9e8
+helm install datadog datadog/datadog -f datadog-values.yaml -n datadog
 ```
-
-
-```
-helm install datadog-agent -f datadog-values.yaml datadog/datadog -n datadog
-```
-### Notes - Home
-```
-helm install dd datadog/datadog `
- --set datadog.apiKey=$DD_API_KEY `
+<!-- ```
+ --namespace datadog `
+ --set
  --set datadog.kubelet.tlsVerify=false `
  --set providers.talos.enabled=true `
  --set datadog.clusterName=talos-k8s `
@@ -45,7 +40,7 @@ helm install dd datadog/datadog `
 > helm repo update
 
 ## Deploy Agent with the datadog-values.yaml configuration file
-> helm install datadog-agent -f ps-gcp-gke-autopilot/sandbox/manifests/admin-datadog/datadog-values.yaml datadog/datadog --namespace=admin-datadog --version 3.118.0 
+> helm install datadog-agent -f ps-gcp-gke-autopilot/sandbox/manifests/admin-datadog/datadog-values.yaml datadog/datadog --namespace=admin-datadog --version 3.118.0  -->
 
 
 ### Refrence

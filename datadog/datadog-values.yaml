@@ -25,13 +25,32 @@ datadog:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
       effect: "NoSchedule"
-    nodeSelector:
-      kubernetes.io/os: linux
+
+    volumes:
+      - name: talos-k8s-secrets
+        hostPath:
+          path: /system/secrets/kubernetes
+          type: Directory
+    volumeMounts:
+      - name: talos-k8s-secrets
+        mountPath: /host/system/secrets/kubernetes
+        readOnly: true
+
+
+  operator:
+    enabled: false
 
   kubelet:
     tlsVerify: false
 
+  autodiscovery:
+    exclude:
+      - name: "cilium-agent"
+      - name: "cilium-envoy"
+      - name: "cilium-operator"
 
 providers:
   talos:
     enabled: true
+
+  
