@@ -1,4 +1,4 @@
-# Building Talos-k8s (v1.10.6)
+# Building Talos-k8s (v1.12.2)
 
 Patch files
 - cp-1-patch.yaml
@@ -11,18 +11,17 @@ Patch files
     - If running on Lenovo bare metal, this commented patch allows it to load onto NVME instead of SSD
 
 ## Preparation
-- Version 1.10.6 Proxmox QEMU  
-    https://factory.talos.dev/?arch=amd64&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=nocloud&target=cloud&version=1.10.6
+- Version 1.12.2 Proxmox QEMU  
+    https://factory.talos.dev/?arch=amd64&bootloader=auto&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=nocloud&target=cloud&version=1.12.2
 
 For images and upgrades
-    ```factory.talos.dev/nocloud-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.10.6```
+    ```factory.talos.dev/nocloud-installer/17bd088c71807ae797c16e85efb133b27814f1a333312bf597c3d4bc6f7c13d7:v1.12.2```
 
 ## Build VM's
 - ControlPlane - 2x2 with guest agent (x3)
 - Worker node - 4x16 with guest agent (x2)
 
 ## Install Control Plane
-
 You need to build the control plane nodes, then add Cilium since we've turned off kube-proxy from Talos
 
 ### First Controlplane node
@@ -34,8 +33,10 @@ bootcp.bat <IP>
 
 ### Install Cilium 
 
+(as of 2/3/26, v1.19.x didn't work, Talos docs use 1.18.x)
+
 ```
-helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml
+helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml --version 1.18.6
 ```
 
 **Notes**
@@ -81,6 +82,7 @@ This will create a Traefik load balancer service which is where the gateway will
 
 https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 
+https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values
 
 ## NFS Storage
 ```
