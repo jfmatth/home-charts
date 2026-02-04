@@ -15,7 +15,7 @@ spec:
         namespaces:
           from: All
 
-# Just a placeholder, all certs will come from the application
+# Just a placeholder, all certs will come from the gateway
     - name: edge-https
       protocol: HTTPS
       port: 443
@@ -29,15 +29,15 @@ spec:
         namespaces:
           from: All
 
-    - name: whoami-https
-      protocol: HTTPS
-      port: 443
-      hostname: whoami.3756home.org
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: whoami-https
-      allowedRoutes:
-        namespaces:
-          from: All
+    # - name: whoami-https
+    #   protocol: HTTPS
+    #   port: 443
+    #   hostname: whoami.3756home.org
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - kind: Secret
+    #         name: whoami-https
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
