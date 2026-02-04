@@ -5,8 +5,7 @@
     Echo Building Talos files (v1.10.6)
     talosctl gen config talos-k8s https://192.168.100.140:6443 ^
         --config-patch-control-plane @cp-1-patch.yaml ^
-        --config-patch-worker @nd-1-patch.yaml ^
-        --install-image factory.talos.dev/nocloud-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.10.6 ^
+        --install-image factory.talos.dev/nocloud-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.2 ^
         --force
 
     Echo Applying config to ControlPlane (step 1)

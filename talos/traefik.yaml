@@ -6,8 +6,6 @@ providers:
   # kubernetesCRD:
   #   enabled: false
 
-publishedService:
-  enabled: true               # Disable publishing external LoadBalancer
 
 ports:
   web: 
