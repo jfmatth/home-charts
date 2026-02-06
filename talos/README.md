@@ -47,9 +47,11 @@ Restart Cilium since it was installed after Talos
 ```
 kubectl -n kube-system rollout restart deployment/cilium-operator
 kubectl -n kube-system rollout restart ds/cilium
+kubectl apply -f cilium-announce.yaml
+kubectl apply -f cilium-ippool.yaml
 ```
 
-Cilium L2Announce (ARP)
+<!-- Cilium L2Announce (ARP)
 ```
 kubectl apply -f cilium-announce.yaml
 ```
@@ -57,20 +59,34 @@ kubectl apply -f cilium-announce.yaml
 Cilium ippool
 ```
 kubectl apply -f cilium-ippool.yaml
-```
+``` -->
 
 ### Additional ControlPlane nodes
 ```
 addrole.bat <ip> controlplane.yaml 
 ```
 
-## Worker nodes
+### Worker nodes
 ```
 addrole.bat <ip> worker.yaml
 ```
+ 
+## Metrics Server
+Moved metrics server install to helm chart due to TLS issues and the way our cluster is setup
+```
+helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+helm repo update
+```
+
+Special powershell install syntax?
+```
+helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f .\metrics-server.yaml
+```
+
+## Datadog
+See Datadog folder and follow ```README.md```
 
 ## Traefik Gateway API
-https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api
 
 ### Namespace + Traefik + Gateway 
 ```
@@ -80,9 +96,11 @@ kubectl apply -f traefik-gateway.yaml
 ```
 This will create a Traefik load balancer service which is where the gateway will connect
 
-https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
+### References
+https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md  
+https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values  
+https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
 
-https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values
 
 ## NFS Storage
 ```
