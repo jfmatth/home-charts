@@ -42,31 +42,27 @@ helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml --versi
 **Notes**
 - Watch for pods to spin up.  Since only one CP is alive, the other Cillium-operator won't start, that's OK.
 - Metrics server won't start either since we don't have any worker nodes
+- The CoreDNS pods have to start so we can resolve host name
 
-Restart Cilium since it was installed after Talos
 ```
-kubectl -n kube-system rollout restart deployment/cilium-operator
-kubectl -n kube-system rollout restart ds/cilium
 kubectl apply -f cilium-announce.yaml
 kubectl apply -f cilium-ippool.yaml
 ```
-
-<!-- Cilium L2Announce (ARP)
-```
-kubectl apply -f cilium-announce.yaml
-```
-
-Cilium ippool
-```
-kubectl apply -f cilium-ippool.yaml
-``` -->
 
 ### Additional ControlPlane nodes
 ```
 addrole.bat <ip> controlplane.yaml 
 ```
+After all ControlPlane nodes are up, there should be no pods that aren't running N/N.
 
-### Worker nodes
+### Restart Cilium
+```
+kubectl -n kube-system rollout restart deployment/cilium-operator
+kubectl -n kube-system rollout restart ds/cilium
+```
+**Wait until all Cilium pods have restarted**
+
+## Worker nodes
 ```
 addrole.bat <ip> worker.yaml
 ```
@@ -76,14 +72,10 @@ Moved metrics server install to helm chart due to TLS issues and the way our clu
 ```
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo update
-```
-
-Special powershell install syntax?
-```
 helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f .\metrics-server.yaml
 ```
 
-## Datadog
+### Datadog
 See Datadog folder and follow ```README.md```
 
 ## Traefik Gateway API
