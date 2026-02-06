@@ -28,6 +28,12 @@ datadog:
   ignoreAutoConfig:
     - cilium
 
+agents:
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
 providers:
   talos:
     enabled: true
