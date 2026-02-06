@@ -7,35 +7,17 @@ datadog:
       targets:
         - name: "default-target"
           ddTraceVersions:
-            java: "1"
             python: "3"
             js: "5"
-            php: "1"
-            dotnet: "3"
   logs:
     enabled: true
     containerCollectAll: true
+    containerCollectUsingFiles: true
+
   processAgent:
     processCollection: true
 
   clusterName: talos-k8s
-
-  agents:
-    tolerations:
-    - key: "node-role.kubernetes.io/control-plane"
-      operator: "Exists"
-      effect: "NoSchedule"
-
-    volumes:
-      - name: talos-k8s-secrets
-        hostPath:
-          path: /system/secrets/kubernetes
-          type: Directory
-    volumeMounts:
-      - name: talos-k8s-secrets
-        mountPath: /host/system/secrets/kubernetes
-        readOnly: true
-
 
   operator:
     enabled: false
@@ -43,11 +25,8 @@ datadog:
   kubelet:
     tlsVerify: false
 
-  autodiscovery:
-    exclude:
-      - name: "cilium-agent"
-      - name: "cilium-envoy"
-      - name: "cilium-operator"
+  ignoreAutoConfig:
+    - cilium
 
 providers:
   talos:
