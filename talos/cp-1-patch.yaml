@@ -8,9 +8,6 @@ machine:
         ip: 192.168.100.140    # # `interfaces` is used to define the network interface configuration.
 
   kubelet:
-    # 
-    #  Metrics Server
-    # 
     extraArgs:
       rotate-server-certificates: true
 
@@ -19,12 +16,11 @@ cluster:
     # 
     # Gateway APIs
     - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
-
     
-    # Metrics server
+    # Cert approver
     - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
-    # - https://github.com/jfmatth/metrics-server/releases/latest/download/components.yaml
- 
+    
+
   allowSchedulingOnControlPlanes: false
 
   # 
