@@ -34,6 +34,17 @@ agents:
       operator: "Exists"
       effect: "NoSchedule"
 
+# https://docs.datadoghq.com/containers/cluster_agent/admission_controller/?tab=helm#configuration
+clusterAgent:
+  admissionControll:
+    enabled: true
+    mutateUnlabelled: false
+
+  replicas: 2
+  pdb:
+    create: true
+
+
 providers:
   talos:
     enabled: true
