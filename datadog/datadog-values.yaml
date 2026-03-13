@@ -2,19 +2,22 @@ datadog:
   site: "us5.datadoghq.com"
   apiKeyExistingSecret: "datadog-secret"
   apm:
+    # portEnabled: true
     instrumentation:
       enabled: true
+      
       targets:
         - name: "default-target"
           ddTraceVersions:
             python: "3"
-            js: "5"
+
   logs:
     enabled: true
     containerCollectAll: true
     containerCollectUsingFiles: true
 
   processAgent:
+    enabled: true
     processCollection: true
 
   clusterName: talos-k8s
@@ -35,18 +38,16 @@ agents:
       effect: "NoSchedule"
 
 # https://docs.datadoghq.com/containers/cluster_agent/admission_controller/?tab=helm#configuration
-clusterAgent:
-  admissionControll:
-    enabled: true
-    mutateUnlabelled: false
-
-  replicas: 2
-  pdb:
-    create: true
+# clusterAgent:
+#   admissionController:
+#     enabled: true
+#     mutateUnlabelled: false
+  
+#   replicas: 2
+#   pdb:
+#     create: true
 
 
 providers:
   talos:
     enabled: true
-
-  
