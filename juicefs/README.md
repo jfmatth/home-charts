@@ -57,7 +57,7 @@ Makde two folders under /mnt/juicefs
 update ```/etc/exports```
 ```
 /mnt/juicefs/proxmox 192.168.100.0/24(rw,sync,no_subtree_check,fsid=1,no_root_squash)
-/mnt/juicefs/talos 192.168.100.0/24(rw,sync,no_subtree_check,fsid=1,no_root_squash)
+/mnt/juicefs/talos 192.168.100.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
 ```
 
 ## export NFS mounts
