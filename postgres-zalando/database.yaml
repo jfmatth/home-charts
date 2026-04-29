@@ -6,14 +6,11 @@ metadata:
   labels:
     team: acid
 
-  annotations:
-      kubectl.kubernetes.io/last-applied-configuration: ""
-
 spec:
   teamId: "acid"
   postgresql:
     version: "16"
-  numberOfInstances: 3
+  numberOfInstances: 1
 
   enableMasterLoadBalancer: false
   volume:
