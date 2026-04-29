@@ -15,7 +15,7 @@ cluster:
   extraManifests:
     # 
     # Gateway APIs
-    - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+    - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml
     
     # Cert approver
     - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml

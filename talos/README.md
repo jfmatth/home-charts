@@ -1,4 +1,4 @@
-# Building Talos-k8s (v1.12.2)
+# Building Talos-k8s (v1.13.0)
 
 Patch files
 - cp-1-patch.yaml
@@ -11,11 +11,10 @@ Patch files
     - If running on Lenovo bare metal, this commented patch allows it to load onto NVME instead of SSD
 
 ## Preparation
-- Version 1.12.2 Proxmox QEMU  
-    https://factory.talos.dev/?arch=amd64&bootloader=auto&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=nocloud&target=cloud&version=1.12.2
+- Version 1.13.0 with QEMU extension
+https://factory.talos.dev/?arch=amd64&bootloader=auto&cmdline-set=true&extensions=-&extensions=siderolabs%2Fqemu-guest-agent&platform=metal&target=metal&version=1.13.0
 
-For images and upgrades
-    ```factory.talos.dev/nocloud-installer/17bd088c71807ae797c16e85efb133b27814f1a333312bf597c3d4bc6f7c13d7:v1.12.2```
+- Download ISO and put URL into bootcp.bat
 
 ## Build VM's
 - ControlPlane - 2x2 with guest agent (x3)
@@ -88,10 +87,20 @@ kubectl apply -f traefik-gateway.yaml
 ```
 This will create a Traefik load balancer service which is where the gateway will connect
 
-### References
+#### References
 https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md  
 https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values  
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
+
+## Cert-manager
+See Cert-Manager folder for instructions
+
+After Certmanager is installed, the gateway should be programmed
+```
+kubectl get gateway -A
+NAMESPACE   NAME              CLASS     ADDRESS           PROGRAMMED   AGE
+traefik     traefik-gateway   traefik   192.168.100.140   True         6m28s
+```
 
 
 ## NFS Storage
@@ -99,8 +108,6 @@ https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kub
 helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs.yaml
 ```
 
-## Cert-manager
-See Cert-Manager folder for instructions
 
 ## Postgres Operator
 See postgres-zalando folder
