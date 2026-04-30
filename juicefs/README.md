@@ -23,8 +23,18 @@ sudo juicefs format \
     --secret-key <secret key here> \
     sqlite3://opt/juicefs/myjfs.db \
     juicefs
+
 ```
-## Create Mount
+
+## Create caching mount points
+
+This should be an NVME or better drive, not associated with the boot disk
+
+```
+sudo mkdir /mnt/juicefs-cache
+```
+
+## Create systemd.Mount
 Create ```/etc/systemd/system/mnt-juicefs.mount```
 
 ```
@@ -32,7 +42,7 @@ Create ```/etc/systemd/system/mnt-juicefs.mount```
 What=sqlite3://opt/juicefs/myjfs.db
 Where=/mnt/juicefs
 Type=juicefs
-Options=writeback_cache,verbose
+Options=writeback,verbose,cache-dir=/mnt/juicefs-cache
 
 [Install]
 WantedBy=remote-fs.target
