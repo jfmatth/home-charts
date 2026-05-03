@@ -27,7 +27,7 @@ You need to build the control plane nodes, then add Cilium since we've turned of
 talos-bootcp.bat <IP>
 ```
 
-***Wait for a few pods to spin up***
+**Wait for a few pods to spin up - After the RBAC has completed on the dashboard**
 
 ### Install Cilium 
 
@@ -42,6 +42,7 @@ helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml --versi
 - Metrics server won't start either since we don't have any worker nodes
 - The CoreDNS pods have to start so we can resolve host name
 
+**Wait until the cilium-operator is up, otherwise the below will fail.**
 ```
 kubectl apply -f cilium-announce.yaml
 kubectl apply -f cilium-ippool.yaml
@@ -53,7 +54,7 @@ talos-addrole.bat <ip> controlplane.yaml
 ```
 After all ControlPlane nodes are up, there should be no pods that aren't running N/N.
 
-### Restart Cilium
+### Restart Cilium (OPTIONAL)
 ```
 kubectl -n kube-system rollout restart deployment/cilium-operator
 kubectl -n kube-system rollout restart ds/cilium
@@ -72,9 +73,6 @@ helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo update
 helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f .\metrics-server.yaml
 ```
-
-### Datadog
-See Datadog folder and follow ```README.md```
 
 ## Traefik Gateway API
 
@@ -102,14 +100,8 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager  --crea
 
 ### Add Issuer
 ```
-kubectl apply -f clusterissuer.yaml
+kubectl apply -f cert-manager-clusterissuer.yaml
 ```
-
-### References
-
-https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver  
-https://cert-manager.io/docs/installation/helm/#installing-cert-manager  
-
 
 After Certmanager is installed, the gateway should be programmed
 ```
@@ -117,6 +109,10 @@ kubectl get gateway -A
 NAMESPACE   NAME              CLASS     ADDRESS           PROGRAMMED   AGE
 traefik     traefik-gateway   traefik   192.168.100.140   True         6m28s
 ```
+
+### References
+https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver  
+https://cert-manager.io/docs/installation/helm/#installing-cert-manager  
 
 
 ## NFS Storage
@@ -126,3 +122,7 @@ helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-pro
 
 ## Postgres Operator
 See postgres-zalando folder
+
+### Datadog
+See Datadog folder
+
