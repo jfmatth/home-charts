@@ -12,10 +12,10 @@
     talosctl apply-config --insecure -n %1 --file ControlPlane.yaml
 
     @ECHO.
-    @ECHO When bootstrapping is ready...(if IP is diff, call boot-cont.bat, otherwise)
+    @ECHO When bootstrapping is ready...(if IP is diff, call talos-bootcont.bat, otherwise)
     Pause
 
-    CALL boot-cont.bat %1
+    CALL talos-bootcont.bat %1
 
     GOTO end
 

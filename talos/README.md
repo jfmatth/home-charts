@@ -4,7 +4,6 @@ Patch files
 - cp-1-patch.yaml
     - Virtual L2 Talos API endpoint (192.168.100.140)
     - Certificate rotation for metrics-server
-    - Metrics server
     - Gateway API manifests
     - Cilium preparation (kube-proxy off, no CNI)
 - nd-1-patch.yaml
@@ -25,14 +24,14 @@ You need to build the control plane nodes, then add Cilium since we've turned of
 
 ### First Controlplane node
 ```
-bootcp.bat <IP>
+talos-bootcp.bat <IP>
 ```
 
 ***Wait for a few pods to spin up***
 
 ### Install Cilium 
 
-(as of 2/3/26, v1.19.x didn't work, Talos docs use 1.18.x)
+(as of 2/3/26, v1.19.x didn't work, Talos docs use 1.18.9)
 
 ```
 helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml --version 1.18.9
@@ -50,7 +49,7 @@ kubectl apply -f cilium-ippool.yaml
 
 ### Additional ControlPlane nodes
 ```
-addrole.bat <ip> controlplane.yaml 
+talos-addrole.bat <ip> controlplane.yaml 
 ```
 After all ControlPlane nodes are up, there should be no pods that aren't running N/N.
 
@@ -93,7 +92,24 @@ https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuratio
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
 
 ## Cert-manager
-See Cert-Manager folder for instructions
+
+We already have the Kubernetes gateway api CRDs installed from Cilium
+
+```
+kubectl apply -f cert-manager-namespace.yaml
+helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace -f cert-manager.yaml
+```
+
+### Add Issuer
+```
+kubectl apply -f clusterissuer.yaml
+```
+
+### References
+
+https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver  
+https://cert-manager.io/docs/installation/helm/#installing-cert-manager  
+
 
 After Certmanager is installed, the gateway should be programmed
 ```
@@ -107,7 +123,6 @@ traefik     traefik-gateway   traefik   192.168.100.140   True         6m28s
 ```
 helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs.yaml
 ```
-
 
 ## Postgres Operator
 See postgres-zalando folder
