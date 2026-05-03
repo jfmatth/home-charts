@@ -35,7 +35,7 @@ bootcp.bat <IP>
 (as of 2/3/26, v1.19.x didn't work, Talos docs use 1.18.x)
 
 ```
-helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml --version 1.18.6
+helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml --version 1.18.9
 ```
 
 **Notes**
