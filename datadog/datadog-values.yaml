@@ -1,23 +1,35 @@
 datadog:
   site: "us5.datadoghq.com"
   apiKeyExistingSecret: "datadog-secret"
-  apm:
-    instrumentation:
-      enabled: true
-      targets:
-        - name: "default-target"
-          ddTraceVersions:
-            python: "3"
-            js: "5"
+  # apm:
+  #   instrumentation:
+  #     enabled: true
+  #     targets:
+  #       - name: "default-target"
+  #         ddTraceVersions:
+  #           python: "3"
+  #           js: "5"
   logs:
     enabled: true
     containerCollectAll: true
     containerCollectUsingFiles: true
 
+  # processAgent:
+  #   processCollection: true
+  
   processAgent:
-    processCollection: true
+    enabled: false
+    processCollection: false
+    processDiscovery: false
 
-  clusterName: talos-k8s
+  systemProbe:
+    enabled: false
+
+  apm:
+    instrumentation:
+      enabled: false
+
+  clusterName: home-talos
 
   operator:
     enabled: false
@@ -28,11 +40,13 @@ datadog:
   ignoreAutoConfig:
     - cilium
 
-agents:
-  tolerations:
-    - key: "node-role.kubernetes.io/control-plane"
-      operator: "Exists"
-      effect: "NoSchedule"
+
+
+agents: {}
+  # tolerations:
+  #   - key: "node-role.kubernetes.io/control-plane"
+  #     operator: "Exists"
+  #     effect: "NoSchedule"
 
 providers:
   talos:
