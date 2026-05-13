@@ -1,0 +1,10 @@
+resources:
+- ../../base
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/instances
+      value: 1
+  target:
+    kind: Cluster
+    name: django-db
