@@ -26,7 +26,4 @@ https://cloudnative-pg.io/docs/1.29/quickstart
 ```
 kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.29/releases/cnpg-1.29.1.yaml
 ```
-<<<<<<< HEAD
 
-=======
->>>>>>> ec84fa97cf9fed9234a21fc5f409cf61fc475fd6
