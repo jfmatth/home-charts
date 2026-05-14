@@ -1,11 +1,8 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: cluster-example
+  name: django-db
 spec:
-  description: CloudNativePG Cluster
-
   instances: 1
-
   storage:
     size: 1Gi
