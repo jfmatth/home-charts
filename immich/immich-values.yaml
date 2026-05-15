@@ -4,6 +4,13 @@ controllers:
       main:
         image:
           tag: v2.7.5 # main Immich server container | This release marks the first stable version of Immich
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          # limits:
+          #   cpu: 2000m
+          #   memory: 2Gi
         env:
           # Add the env vars to connect to your database here. - These are created automatically by CNPG
           DB_HOSTNAME:

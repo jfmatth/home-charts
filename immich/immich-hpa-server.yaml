@@ -9,11 +9,11 @@ spec:
     kind: Deployment
     name: immich-server
   minReplicas: 1
-  maxReplicas: 12
+  maxReplicas: 6
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 30
+          averageUtilization: 60

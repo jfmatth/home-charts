@@ -38,6 +38,15 @@ kubectl apply -f immich-cluster.yaml
 ```
 helm install --create-namespace --namespace immich immich oci://ghcr.io/immich-app/immich-charts/immich -f immich-values.yaml
 ```
+### Gateway route
+(this assumes gateway is up and has the https route)
+
+```
+kubectl apply -f immich-httproute.yaml
+```
+
+## Optional for Minikube
+
 ### Ingress (for minikube testing like the video)
 ```
 minikube addons enable ingress
