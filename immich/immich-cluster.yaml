@@ -1,0 +1,24 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-database
+  namespace: immich
+spec:
+  instances: 1
+
+  storage:
+    size: 1Gi
+
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
+  #Immich uses advanced vector search for features like face recognition and semantic search.
+  #Because of that, it requires PostgreSQL extensions that are not included in the default Postgres image.
+
+  postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
+
+  bootstrap:
+    initdb:
+      postInitApplicationSQL:
+        - CREATE EXTENSION vchord CASCADE;
+        - CREATE EXTENSION earthdistance CASCADE;
