@@ -1,0 +1,23 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster-example
+spec:
+  description: CloudNativePG Cluster
+
+  instances: 1
+
+  postgresql:
+    parameters:
+      shared_buffers: "1024MB"
+
+  # resources:
+  #   requests:
+  #     memory: "1024Mi"
+  #     cpu: 1
+  #   limits:
+  #     memory: "4096Mi"
+
+
+  storage:
+    size: 1Gi

@@ -1,0 +1,3 @@
+resources:
+- db-cluster.yaml
+- django-deployment.yaml
