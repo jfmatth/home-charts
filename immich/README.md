@@ -43,3 +43,8 @@ helm install --create-namespace --namespace immich immich oci://ghcr.io/immich-a
 minikube addons enable ingress
 kubectl apply -f immich-ingress.yaml
 ```
+### Minikube dashboard (to see action)
+```
+minikube addons enable metrics-server
+minikube dashboard
+```
