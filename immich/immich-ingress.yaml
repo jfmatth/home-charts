@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # annotations:                                # Add an annotation indicating the certificate issuer to use.
+  #   cert-manager.io/cluster-issuer: ca-issuer # Cluster-wide ClusterIssuer
+  name: immichingress
+  namespace: immich
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: minikube.mshome.net
+    http:
+      paths:
+      - backend:
+          service:
+            name: immich-server              # Make sure to link to the correct service name
+            port:
+              number: 2283
+        path: /
+        pathType: Prefix
+  # tls:                                       # Placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  # - hosts:
+  #   - immich.192-168-0-37.nip.io
+  #   secretName: immich-cert       

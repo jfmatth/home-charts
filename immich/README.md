@@ -1,7 +1,6 @@
 # IMMICH photo Sharing
 https://docs.immich.app/install/docker-compose
 
-**Requires CloudnativePG installed**
 
 ## Docker Compose / Podman
 - Build VM (2x8)
@@ -21,13 +20,26 @@ apt install podman podman-compose
 ## Helm Chart
 Following video from this repo... https://github.com/oskariheino/raspberrypi/immich
 
+**Requires CloudnativePG installed**
+
 ### Create namespace
 ```
 kubectl apply -f immich-namespace.yaml
 ```
-
-
 ### PVC
 ```
 kubectl apply -f immich-pvc.yaml
+```
+### Cluster
+```
+kubectl apply -f immich-cluster.yaml
+```
+### Helm chart install
+```
+helm install --create-namespace --namespace immich immich oci://ghcr.io/immich-app/immich-charts/immich -f immich-values.yaml
+```
+### Ingress (for minikube testing like the video)
+```
+minikube addons enable ingress
+kubectl apply -f immich-ingress.yaml
 ```

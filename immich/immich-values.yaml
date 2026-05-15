@@ -1,0 +1,37 @@
+controllers:
+  main:
+    containers:
+      main:
+        image:
+          tag: v2.7.5 # main Immich server container | This release marks the first stable version of Immich
+        env:
+          # Add the env vars to connect to your database here. - These are created automatically by CNPG
+          DB_HOSTNAME:
+            valueFrom:
+              secretKeyRef:
+                name: immich-database-app
+                key: host
+          DB_USERNAME:
+            valueFrom:
+              secretKeyRef:
+                name: immich-database-app
+                key: user
+          DB_PASSWORD:
+            valueFrom:
+              secretKeyRef:
+                name: immich-database-app
+                key: password
+          DB_DATABASE_NAME:
+            valueFrom:
+              secretKeyRef:
+                name: immich-database-app
+                key: dbname
+immich:
+  persistence:
+    # This is where all photos & videos stored in Immich will LIVE
+    # This is the most important PVC in the whole setup
+    library:
+      existingClaim: immich-library-pvc
+
+valkey:
+  enabled: true # Background jobs, Caching & Queue processing - recommended to enable
