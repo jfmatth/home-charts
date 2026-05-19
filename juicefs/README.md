@@ -4,7 +4,6 @@ Currently installed on a VM in proxmox.
 
 IP = 192.168.100.50
 
-
 # Installation
 
 ## JuiceFS install
@@ -13,6 +12,10 @@ https://juicefs.com/docs/community/getting-started/standalone
 ```
 curl -sSL https://d.juicefs.com/install | sh -
 ```
+- Create /opt/juicefs
+- Create /mnt/juicefs
+
+
 
 ## Format S3 for storage
 ```
@@ -23,7 +26,6 @@ sudo juicefs format \
     --secret-key <secret key here> \
     sqlite3://opt/juicefs/myjfs.db \
     juicefs
-
 ```
 
 ## Create caching mount points
@@ -74,3 +76,37 @@ update ```/etc/exports```
 ```
 sudo exportfs -ra
 ```
+
+
+# Restoring
+https://juicefs.com/docs/community/metadata_dump_load
+
+## Install juicefs
+```
+curl -sSL https://d.juicefs.com/install | sh -
+```
+
+## Create folders for Juice on system
+```
+mkdir -p /opt/juicefs-cache
+```
+
+## Download latest meta-data dump file from S3
+We are using Sharktech for now
+- Login to browser (s3.sharktech.net) with S3 ID and Key
+- Navigate to Buckets > juicefs > juicefs > meta
+- Save file on new server to /tmp (i.e. restore-dump.json)
+
+## Restore from json dump file
+
+Assuming file is restore-dump.json
+```
+juicefs load sqlite3:///opt/juicefs/myjfs.db restore-dump.json
+```
+
+Secret Key is not restored, need to restore it
+```
+juicefs config --secret-key xxxx sqlite3:///opt/juicefs/myjfs.db
+```
+
+## Run JuiceFS and test the filesystem
