@@ -5,19 +5,16 @@ metadata:
 spec:
   description: CloudNativePG Cluster
 
-  instances: 1
+  instances: 2
 
   postgresql:
     parameters:
       shared_buffers: "1024MB"
 
-  # resources:
-  #   requests:
-  #     memory: "1024Mi"
-  #     cpu: 1
-  #   limits:
-  #     memory: "4096Mi"
-
+  resources:
+    requests:
+      memory: "1024Mi"
+      cpu: 1
 
   storage:
-    size: 1Gi
+    size: 2Gi
