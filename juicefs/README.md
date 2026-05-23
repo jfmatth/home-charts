@@ -6,6 +6,15 @@ IP = 192.168.100.50
 
 # Installation
 
+## LXC Requirements
+- un-check Unpriviledged container
+- Features: fuse, nfs, nesting
+- .conf file needs
+    - lxc.apparmor.profile: unconfined
+- 2x2048
+- 16gb disk
+- local
+
 ## VM Requirements
 - qemu-guest-agent installed
 - nfs-server installed
@@ -20,7 +29,6 @@ https://juicefs.com/docs/community/getting-started/standalone
 curl -sSL https://d.juicefs.com/install | sh -
 ```
 - Create /opt/juicefs
-- Create /mnt/juicefs
 
 ## Create caching mount points
 This should be an NVME or better drive, not associated with the boot disk
@@ -37,11 +45,45 @@ sudo juicefs format \
     --bucket https://juicefs.s3.lax.sharktech.net \
     --access-key <access-key here> \
     --secret-key <secret key here> \
-    sqlite3://opt/juicefs/myjfs.db \
+    sqlite3:///opt/juicefs/myjfs.db \
     juicefs
 ```
 
-## Create systemd.Mount
+## Create systemd.service
+```/etc/systemd/system/juicefs.service```
+
+```
+[Unit]
+Description=JuiceFS FUSE Mount
+Before=nfs-server.service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/juicefs mount sqlite3:///opt/juicefs/myjfs.db /mnt/juicefs \
+    --writeback \
+    --o writeback_cache \
+    --debug 
+ExecStop=/bin/fusermount -u /mnt/juicefs
+Restart=on-failure
+
+[Install]
+WantedBy=remote-fs.target
+WantedBy=multi-user.target
+```
+## Enable and Start the services
+```
+systemctl enable juicefs.service --now
+```
+
+<!-- 
+```
+/usr/local/bin/juicefs mount sqlite3:///opt/juicefs/myjfs.db /mnt/juicefs  --writeback -o writeback_cache --debug -d
+``` -->
+
+
+<!-- ## Create systemd.Mount
 Create ```/etc/systemd/system/mnt-juicefs.mount```
 
 ```
@@ -59,11 +101,14 @@ WantedBy=multi-user.target
 ## Start the mount
 ```
 sudo systemctl start mnt-juicefs.mount
-```
+``` -->
 
 If no errors, check ```/mnt/juicefs``` exists
 
-## Create NFS exports
+## NFS Server
+```apt install nfs-kernel-server```
+
+### Create NFS exports
 Make folders under /mnt/juicefs
 
 ```
@@ -77,7 +122,7 @@ update ```/etc/exports```
 /mnt/juicefs/talos 192.168.100.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
 ```
 
-## export NFS mounts
+### export NFS mounts
 ```
 sudo exportfs -ra
 ```
@@ -85,6 +130,10 @@ sudo exportfs -ra
 # Restoring
 https://juicefs.com/docs/community/metadata_dump_load
 
+## Dump existing juicefs db
+```
+juicefs dump <sqlite3:///opt/juicefs/myjfs.db>  backup.json
+```
 
 ## Download latest meta-data dump file from S3
 We are using Sharktech for now
