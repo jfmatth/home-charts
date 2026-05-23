@@ -33,8 +33,27 @@ If after the cluster is up, you want to do a little benchmarking, that's easy
     ```
 
 3. Export URI, Setup pgBench and run the benchmark
-    ```
-    export uri=
-    pgbench -i -s 50 $uri
-    pgbench ...
-    ```
+https://pgbench.com/tutorials/
+### Setup
+```
+export uri=
+pgbench -i -s 50 $uri
+```
+### R/O Benchmark
+These can use the SVC for r/o for better througput
+
+For this, change the uri portion from ```example-rw.default``` to ```example-rw.default```
+
+```
+pgbench --protocol=prepared --builtin=select -n -c 1 -j 1 -T 30 -P 5 $uri
+pgbench --protocol=prepared --builtin=select -n -c 4 -j 2 -T 60 -P 5 $uri
+pgbench --protocol=prepared --builtin=select -n -c 8 -j 4 -T 60 -P 5 $uri
+pgbench --protocol=prepared --builtin=select -n -c 16 -j 4 -T 60 -P 5 $uri
+```
+
+### R/W Benchmark
+Make sure the URI is -rw
+```
+pgbench --builtin=simple-update --protocol=prepared -c 8 -j 4 -T 60 -P 5 $uri
+pgbench --builtin=simple-update --protocol=prepared -c 16 -j 4 -T 60 -P 5 $uri
+```
