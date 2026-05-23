@@ -113,14 +113,13 @@ traefik     traefik-gateway   traefik   192.168.100.140   True         6m28s
 https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver  
 https://cert-manager.io/docs/installation/helm/#installing-cert-manager  
 
-
 ## NFS Storage
 ```
 helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs.yaml
 ```
 
 ## Postgres Operator
-See postgres-zalando folder
+See cloudnativepg folder for installation
 
 ### Datadog
 See Datadog folder
