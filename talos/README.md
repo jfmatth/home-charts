@@ -39,7 +39,6 @@ helm install cilium cilium/cilium --namespace kube-system -f cilium.yaml --versi
 
 **Notes**
 - Watch for pods to spin up.  Since only one CP is alive, the other Cillium-operator won't start, that's OK.
-- Metrics server won't start either since we don't have any worker nodes
 - The CoreDNS pods have to start so we can resolve host name
 
 **Wait until the cilium-operator is up, otherwise the below will fail.**
@@ -75,41 +74,41 @@ helm upgrade --install metrics-server metrics-server/metrics-server -n kube-syst
 ```
 
 ## Traefik Gateway API
-
-### Namespace + Traefik + Gateway 
+https://github.com/traefik/traefik-helm-chart/tree/master
+### Gateway CRD's
+As of Traefik, gateway CRD's need to be installed
+```
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml
+```
+**This will throw warnings, don't be alarmed**
+### Traefik install
 ```
 kubectl apply -f traefik-namespace.yaml
 helm install traefik traefik/traefik -f .\traefik.yaml -n traefik
 kubectl apply -f traefik-gateway.yaml
 ```
 This will create a Traefik load balancer service which is where the gateway will connect
-
 #### References
 https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md  
 https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values  
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
 
 ## Cert-manager
-
-We already have the Kubernetes gateway api CRDs installed from Cilium
-
 ```
 kubectl apply -f cert-manager-namespace.yaml
 helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace -f cert-manager.yaml
 ```
 
-### Add Issuer
+### Add ClusterIssuer
 ```
 kubectl apply -f cert-manager-clusterissuer.yaml
 ```
-
-After Certmanager is installed, the gateway should be programmed
+After Certmanager is installed, and everything working - the gateway should be programmed like below
 ```
 kubectl get gateway -A
 NAMESPACE   NAME              CLASS     ADDRESS           PROGRAMMED   AGE
 traefik     traefik-gateway   traefik   192.168.100.140   True         6m28s
 ```
-
 ### References
 https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver  
 https://cert-manager.io/docs/installation/helm/#installing-cert-manager  
