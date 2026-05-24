@@ -1,14 +1,13 @@
 providers:
   kubernetesGateway:
     enabled: true
+  
   kubernetesIngress:
-    enabled: false             # Disable legacy Ingress provider
-  # kubernetesCRD:
-  #   enabled: false
+    enabled: false           
 
 
-# Helm Values for Traefik - See README for referench.
-# Immich large uploads require timeouts to 0
+# https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
+# Immich large uploads require timeouts to 600s
 # ports.websecure.transport.respondingTimeouts.readTimeout
 # ports.websecure.transport.respondingTimeouts.writeTimeout
 ports:
@@ -18,8 +17,8 @@ ports:
     port: 443
     transport:
       respondingTimeouts:
-        writeTimeout: 0
-        readTimeout: 0
+        writeTimeout: 600s
+        readTimeout: 600s
 
 gateway:
   enabled: false
