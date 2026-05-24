@@ -42,7 +42,7 @@ pgbench -i -s 50 $uri
 ### R/O Benchmark
 These can use the SVC for r/o for better througput
 
-For this, change the uri portion from ```example-rw.default``` to ```example-rw.default```
+For this, change the uri portion from ```example-rw.default``` to ```example-r.default```
 
 ```
 pgbench --protocol=prepared --builtin=select -n -c 1 -j 1 -T 30 -P 5 $uri
