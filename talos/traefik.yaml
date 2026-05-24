@@ -7,12 +7,19 @@ providers:
   #   enabled: false
 
 
+# Helm Values for Traefik - See README for referench.
+# Immich large uploads require timeouts to 0
+# ports.websecure.transport.respondingTimeouts.readTimeout
+# ports.websecure.transport.respondingTimeouts.writeTimeout
 ports:
   web: 
     port: 80
   websecure:
     port: 443
-
+    transport:
+      respondingTimeouts:
+        writeTimeout: 0
+        readTimeout: 0
 
 gateway:
   enabled: false
@@ -48,3 +55,4 @@ logs:
 # metrics:
 #   prometheus:
 #     enabled: true
+
