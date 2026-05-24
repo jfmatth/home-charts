@@ -4,7 +4,6 @@ metadata:
   name: immich-library-pvc
   namespace: immich
 spec:
-  # storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   resources:

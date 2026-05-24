@@ -2,20 +2,6 @@
 https://docs.immich.app/install/docker-compose
 
 
-## Docker Compose / Podman
-- Build VM (2x8)
-
-### Podman + Compose
-```
-apt install podman podman-compose
-```
-
-### Install into /opt/immich
-
-### Connect NFS shares
-- Connect /opt/immich/library to an NFS share on JuiceFS  
-- Connect /opt/immich/postgres to NFS share on JuiceFS  
-
 
 ## Helm Chart
 Following video from this repo... https://github.com/oskariheino/raspberrypi/immich
@@ -38,6 +24,10 @@ kubectl apply -f immich-cluster.yaml
 ```
 helm install --create-namespace --namespace immich immich oci://ghcr.io/immich-app/immich-charts/immich -f immich-values.yaml
 ```
+### HPA
+```
+kubectl apply -f immich-hpa-server.yaml
+```
 ### Gateway route
 (this assumes gateway is up and has the https route)
 
@@ -45,15 +35,3 @@ helm install --create-namespace --namespace immich immich oci://ghcr.io/immich-a
 kubectl apply -f immich-httproute.yaml
 ```
 
-## Optional for Minikube
-
-### Ingress (for minikube testing like the video)
-```
-minikube addons enable ingress
-kubectl apply -f immich-ingress.yaml
-```
-### Minikube dashboard (to see action)
-```
-minikube addons enable metrics-server
-minikube dashboard
-```

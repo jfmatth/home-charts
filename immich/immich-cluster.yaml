@@ -7,7 +7,7 @@ spec:
   instances: 1
 
   storage:
-    size: 1Gi
+    size: 5Gi
 
   imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
   #Immich uses advanced vector search for features like face recognition and semantic search.
