@@ -15,10 +15,29 @@ IP = 192.168.100.50
 - 16gb disk
 - local
 
+The .conf file on Proxmox looks like this
+```
+root@prox-nfs:~# cat /etc/pve/lxc/501.conf 
+arch: amd64
+cores: 2
+features: fuse=1,mount=nfs,nesting=1
+hostname: cJuice
+memory: 2048
+net0: name=eth0,bridge=vmbr0,firewall=1,gw=192.168.100.254,hwaddr=BC:24:11:03:F6:D7,ip=192.168.100.50/24,type=veth
+onboot: 1
+ostype: ubuntu
+rootfs: local:501/vm-501-disk-0.raw,mountoptions=discard,size=16G
+swap: 512
+tags: talos
+unprivileged: 0
+lxc.apparmor.profile: unconfined
+lxc.cgroup.relative: 0
+root@prox-nfs:~# 
+```
+
 ## VM Requirements
 - qemu-guest-agent installed
 - nfs-server installed
-- /mnt/juicefs-cache is local NVME drive
 - no swap partitions
 - 2x4 minimum
 
@@ -27,13 +46,6 @@ https://juicefs.com/docs/community/getting-started/standalone
 
 ```
 curl -sSL https://d.juicefs.com/install | sh -
-```
-- Create /opt/juicefs
-
-## Create caching mount points
-This should be an NVME or better drive, not associated with the boot disk
-```
-sudo mkdir /mnt/juicefs-cache
 ```
 
 **RESTORING** - Follow Restoring section below and skip to Create systemd.Mount
