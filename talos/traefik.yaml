@@ -17,8 +17,8 @@ ports:
     port: 443
     transport:
       respondingTimeouts:
-        writeTimeout: 600s
-        readTimeout: 600s
+        writeTimeout: 1200s
+        readTimeout: 1200s
 
 gateway:
   enabled: false
