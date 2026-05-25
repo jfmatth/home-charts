@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: immich
+  name: immich-hpa-server
   namespace: immich
 spec:
   scaleTargetRef:
@@ -9,7 +9,7 @@ spec:
     kind: Deployment
     name: immich-server
   minReplicas: 2
-  maxReplicas: 4
+  maxReplicas: 6
   metrics:
     - type: Resource
       resource:

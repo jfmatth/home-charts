@@ -7,10 +7,10 @@ controllers:
         resources:
           requests:
             cpu: 500m
-            memory: 1Gi
+            memory: 512Mi
           limits:
-            cpu: 2000m
-            memory: 2Gi
+            cpu: "2"
+            memory: 4Gi
         env:
           # Add the env vars to connect to your database here. - These are created automatically by CNPG
           DB_HOSTNAME:
