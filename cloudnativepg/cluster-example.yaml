@@ -5,7 +5,7 @@ metadata:
 spec:
   description: CloudNativePG Cluster
 
-  instances: 2
+  instances: 1
 
   postgresql:
     parameters:

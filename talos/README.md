@@ -89,7 +89,7 @@ kubectl apply -f traefik-gateway.yaml
 ```
 This will create a Traefik load balancer service which is where the gateway will connect
 #### References
-https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md  
+https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values  
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
 
