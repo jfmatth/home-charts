@@ -17,13 +17,4 @@ minikube config set container-runtime containerd
 minikube start
 ```
 
-It should update your kubectl config to add a new context  
-
-## CloudNativePG - CNCF Postgres operator
-https://cloudnative-pg.io/docs/1.29/quickstart  
-
-### Install
-```
-kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.29/releases/cnpg-1.29.1.yaml
-```
-
+It should update your kubectl config to add a new context
