@@ -1,10 +1,12 @@
 providers:
   kubernetesGateway:
     enabled: true
+    experimentalChannel: true
   
   kubernetesIngress:
     enabled: false           
 
+  
 
 # https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 # Immich large uploads require timeouts to 600s
@@ -50,8 +52,4 @@ logs:
         names:
           # User-Agent: redact
           Content-Type: keep
-
-# metrics:
-#   prometheus:
-#     enabled: true
 
