@@ -10,7 +10,7 @@ controllers:
             memory: 512Mi
           limits:
             cpu: "2"
-            memory: 4Gi
+            memory: 2Gi
         env:
           # Add the env vars to connect to your database here. - These are created automatically by CNPG
           DB_HOSTNAME:
