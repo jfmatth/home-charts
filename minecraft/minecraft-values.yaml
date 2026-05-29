@@ -470,7 +470,7 @@ deploymentAnnotations: {}
 deploymentLabels: {}
 
 serviceAnnotations:
-  mc-router.itzg.me/externalServerName: "minecraft.127.0.0.1.nip.io"
+  mc-router.itzg.me/externalServerName: "minecraft.192.168.100.140.nip.io"
 
 serviceLabels: {}
 
