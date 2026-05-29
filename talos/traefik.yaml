@@ -4,8 +4,7 @@ providers:
     experimentalChannel: true
   
   kubernetesIngress:
-    enabled: false           
-
+    enabled: false
 
 
 # https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
@@ -13,7 +12,7 @@ providers:
 # ports.websecure.transport.respondingTimeouts.readTimeout
 # ports.websecure.transport.respondingTimeouts.writeTimeout
 ports:
-  web: 
+  web:
     port: 80
   websecure:
     port: 443
@@ -21,9 +20,14 @@ ports:
       respondingTimeouts:
         writeTimeout: 1200s
         readTimeout: 1200s
+
+  # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#deploy-multiple-gateways-with-a-single-traefik-deploymentdaemonset
   minecraft:
     port: 25565
     protocol: TCP
+    exposedPort: 25565
+    expose:
+      external: true
 
 gateway:
   enabled: false
