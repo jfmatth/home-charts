@@ -42,6 +42,13 @@ spec:
         namespaces:
           from: All
 
+    # - name: mcrouter
+    #   protocol: TCP
+    #   port: 25565
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
+
     # - name: whoami-https
     #   protocol: HTTPS
     #   port: 443
