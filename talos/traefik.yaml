@@ -1,3 +1,5 @@
+# https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
+
 providers:
   kubernetesGateway:
     enabled: true
@@ -6,17 +8,17 @@ providers:
   kubernetesIngress:
     enabled: false
 
-
-# https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
-# Immich large uploads require timeouts to 600s
-# ports.websecure.transport.respondingTimeouts.readTimeout
-# ports.websecure.transport.respondingTimeouts.writeTimeout
+#
+# So ports: maps to entrypoints on the regular Traefik configuration. The exposedPort and expose.external settings are required to make the Minecraft port work with the Traefik IngressRouteTCP configuration. 
+#
+# https://doc.traefik.io/traefik/reference/install-configuration/entrypoints/
 ports:
   web:
     port: 80
   websecure:
     port: 443
     transport:
+      # Immich large uploads require timeouts to 600s
       respondingTimeouts:
         writeTimeout: 1200s
         readTimeout: 1200s
@@ -24,13 +26,17 @@ ports:
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#deploy-multiple-gateways-with-a-single-traefik-deploymentdaemonset
   minecraft:
     port: 25565
-    protocol: TCP
     exposedPort: 25565
+    protocol: TCP
     expose:
       external: true
 
+#
+# If KubernetesGateway is enabled, you need to match the ports in ports: to what u need here.
+# (since we had 80 and 443 mapped, they came through w/o much effort)
 gateway:
-  enabled: false
+  enabled: true
+
 
 gatewayClass:
   enabled: true
@@ -60,3 +66,49 @@ logs:
           # User-Agent: redact
           Content-Type: keep
 
+
+
+Gemini said this:
+# # Disable standard Ingress to focus fully on the Gateway API
+# providers:
+#   kubernetesIngress:
+#     enabled: false
+#   kubernetesGateway:
+#     enabled: true
+
+# # Define the entrypoints on the Traefik pods
+# ports:
+#   web:
+#     port: 8000
+#     exposedPort: 80
+#     expose:
+#       default: true
+#     protocol: TCP
+#   websecure:
+#     port: 8443
+#     exposedPort: 443
+#     expose:
+#       default: true
+#     protocol: TCP
+#   minecraft:
+#     port: 25565
+#     exposedPort: 25565
+#     expose:
+#       default: true
+#     protocol: TCP
+
+# # Automatically provision a Gateway object matching these entrypoints
+# gateway:
+#   enabled: true
+#   # Expose routes from all namespaces
+#   namespacePolicy: All
+#   listeners:
+#     web:
+#       port: 80
+#       protocol: HTTP
+#     websecure:
+#       port: 443
+#       protocol: HTTPS
+#     minecraft:
+#       port: 25565
+#       protocol: TCP
