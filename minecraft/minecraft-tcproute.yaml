@@ -9,7 +9,7 @@ spec:
   parentRefs:
     - name: traefik-gateway
       namespace: traefik
-      sectionName: mcrouter
+      sectionName: mc-router
 
   rules:
      - backendRefs:

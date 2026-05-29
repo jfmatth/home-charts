@@ -6,7 +6,7 @@ providers:
   kubernetesIngress:
     enabled: false           
 
-  
+
 
 # https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 # Immich large uploads require timeouts to 600s
@@ -21,6 +21,9 @@ ports:
       respondingTimeouts:
         writeTimeout: 1200s
         readTimeout: 1200s
+  minecraft:
+    port: 25565
+    protocol: TCP
 
 gateway:
   enabled: false
