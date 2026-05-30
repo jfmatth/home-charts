@@ -21,7 +21,7 @@ resources:
     memory: 1Gi
     cpu: 500m
   limits:
-    memory: 4Gi
+    memory: 8Gi
     cpu: 4
 
 lifecycle:
@@ -457,7 +457,7 @@ persistence:
   dataDir:
     # Set this to false if you don't care to persist state between restarts.
     enabled: true
-    Size: 1Gi
+    Size: 5Gi
     accessModes:
       - ReadWriteOnce
     # existingClaim: nil
@@ -473,7 +473,7 @@ deploymentAnnotations: {}
 deploymentLabels: {}
 
 serviceAnnotations:
-  mc-router.itzg.me/externalServerName: "minecraft.192.168.100.140.nip.io"
+  mc-router.itzg.me/externalServerName: "minecraft.3756home.org"
 
 serviceLabels: {}
 
