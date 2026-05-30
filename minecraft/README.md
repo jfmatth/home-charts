@@ -24,17 +24,17 @@ helm repo add itzg https://itzg.github.io/minecraft-server-charts/
 kubectl apply -f minecraft-namespace.yaml
 ```
 
-## Install mc-router
+### Install mc-router
 ```
 helm install mc-router itzg/mc-router -f mcrouter-values.yaml
 ```
 
-## Add TCPRoute for mc-router
+### Add TCPRoute for mc-router
 ```
 k apply -f minecraft-tcproute.yaml
 ```
 
-## Minecraft server #1
+### Minecraft server #1
 ```
 helm install minecraft `
   --set minecraftServer.eula=true `
@@ -42,6 +42,20 @@ helm install minecraft `
   itzg/minecraft
 ```
 
-## References
+
+## Unifi port / hairpin changes
+
+### DNS record (Amazon S3)
+```
+minecraft.3756home.org -> edge.3756home.org
+```
+
+
+
+
+
+# References
 
 https://deepwiki.com/itzg/mc-router/8.2-kubernetes-deployment#debug-logging
+
+https://help.uisp.com/hc/en-us/articles/22591184776983-EdgeRouter-Hairpin-NAT
