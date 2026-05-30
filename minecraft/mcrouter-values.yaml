@@ -149,14 +149,14 @@ minecraftRouter:
     up:
       # "Wake up" any stopped Minecraft servers.
       # This requires Minecraft servers to be kind: StatefulSet
-      enabled: false
+      enabled: true
     down:
       # Shut down any running Minecraft servers after there are no more connections.
       # This requires Minecraft servers to be kind: StatefulSet
-      enabled: false
+      enabled: true
       # Shut down waiting period after there are no more connections.
       # It is recommended that this value is high enough so momentary disconnections do not result in a server shutdown
-      after: ""
+      after: "120m"
     # Type of Kubernetes object to store autoscale allow/deny list config in.
     # Valid options: Secret,ConfigMap
     configObject: Secret
@@ -177,7 +177,7 @@ minecraftRouter:
       #     - uuid: some-player-uuid
 
   # Max number of connections to allow per second
-  connectionRateLimit: 1
+  connectionRateLimit: 5
 
   # Write CPU profiling to given path
   cpuProfilePath: ""

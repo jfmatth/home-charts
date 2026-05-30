@@ -20,6 +20,9 @@ resources:
   requests:
     memory: 1Gi
     cpu: 500m
+  limits:
+    memory: 4Gi
+    cpu: 4
 
 lifecycle:
   postStart: []
@@ -30,12 +33,12 @@ lifecycle:
 # All configuration options for the Deployment (e.g. annotations) are used for the StatefulSet.
 # Regarding persistence: When an existing PVC is provided it will be shared between all Pods.
 # Otherwise the PVC configuration is used as a template to create PVCs for each replica.
-workloadAsStatefulSet: false
+workloadAsStatefulSet: true
 
 # upgrade strategy type, depending on workload type:
 # - for Deployment sets strategy: Recreate or RollingUpdate
 # - for StatefulSet sets updateStrategy: OnDelete or RollingUpdate
-strategyType: Recreate
+strategyType: RollingUpdate
 
 nodeSelector: {}
 
