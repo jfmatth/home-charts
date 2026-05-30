@@ -24,9 +24,14 @@ helm repo add itzg https://itzg.github.io/minecraft-server-charts/
 kubectl apply -f minecraft-namespace.yaml
 ```
 
-## mc-router
+## Install mc-router
 ```
 helm install mc-router itzg/mc-router -f mcrouter-values.yaml
+```
+
+## Add TCPRoute for mc-router
+```
+k apply -f minecraft-tcproute.yaml
 ```
 
 ## Minecraft server #1
@@ -37,39 +42,6 @@ helm install minecraft `
   itzg/minecraft
 ```
 
+## References
 
-
-
-
-
-
-
-
-
-
-
-
-## POC in Minikube
-```
-minikube start
-```
-
-### Helm chart from ITZG
-https://github.com/itzg/minecraft-server-charts/tree/master
-
-```
-kubectl create namespace minecraft
-kubectl config set-context minecraft --namespace=minecraft --user=minikube --cluster=minikube
-kubectl config use-context minecraft
-```
-
-```
-helm repo add itzg https://itzg.github.io/minecraft-server-charts/
-```
-
-```
-helm install minecraft `
-  --set minecraftServer.eula=true `
-  -f minecraft-values.yaml `
-  itzg/minecraft
-```
+https://deepwiki.com/itzg/mc-router/8.2-kubernetes-deployment#debug-logging
