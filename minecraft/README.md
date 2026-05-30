@@ -2,6 +2,7 @@
 
 https://github.com/itzg/minecraft-server-charts
 
+
 ## Talos configs
 
 ### Setup in Traefik in Talos
