@@ -1,10 +1,9 @@
-# JuiceFS
 
-## Caching NFS to S3 file server for non-backups
+# Caching NFS to S3 file server for non-backups
 
 IP = 192.168.100.50
 
-### LXC Requirements
+## LXC Requirements
 - un-check Unpriviledged container **Mandatory before power-on**
 - Features: fuse, nfs, nesting
 - .conf file needs
@@ -31,7 +30,7 @@ lxc.apparmor.profile: unconfined
 lxc.cgroup.relative: 0
 ```
 
-### JuiceFS install
+## JuiceFS install
 Install CURL into the LXC
 ```
 apt install curl -y
@@ -45,7 +44,7 @@ curl -sSL https://d.juicefs.com/install | sh -
 
 **RESTORING** - Follow Restoring section below and skip to Create systemd.service
 
-### Format S3 for storage
+## Format S3 for storage
 Create a bucket in SharkTech called ```juicefs```
 
 This ties to the URL below
@@ -60,7 +59,7 @@ sudo juicefs format \
     juicefs
 ```
 
-### Create systemd.service
+## Create systemd.service
 ```/etc/systemd/system/juicefs.service```
 
 ```
@@ -83,17 +82,17 @@ Restart=on-failure
 WantedBy=remote-fs.target
 WantedBy=multi-user.target
 ```
-### Enable and Start the services
+## Enable and Start the services
 ```
 systemctl enable juicefs.service --now
 ```
 
 If no errors, check ```/mnt/juicefs``` exists
 
-### NFS Server
+## NFS Server
 ```apt install nfs-kernel-server```
 
-#### Create NFS exports
+### Create NFS exports
 Make folders under /mnt/juicefs
 
 ```
@@ -105,7 +104,7 @@ update ```/etc/exports```
 /mnt/juicefs/talos 192.168.100.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
 ```
 
-#### export NFS mounts
+### export NFS mounts
 ```
 sudo exportfs -ra
 ```
@@ -144,18 +143,16 @@ If no errors, proceed
 
 
 
+# Backup LXC
 
-
-## Backup LXC
-
-### LXC Requirements
+## LXC Requirements
 - un-check Unpriviledged container **Before power-on**
 - Features: fuse, nfs, nesting
 - .conf file needs
     - lxc.apparmor.profile: unconfined
-- 2x2048
+- 2x1024
 - 16gb disk
-- local
+- SSD(zfs)
 
 The .conf file on Proxmox looks like this
 ```
@@ -174,7 +171,7 @@ lxc.apparmor.profile: unconfined
 lxc.cgroup.relative: 0
 ```
 
-### JuiceFS install
+## JuiceFS install
 Install CURL first
 
 https://juicefs.com/docs/community/getting-started/standalone
@@ -183,12 +180,11 @@ https://juicefs.com/docs/community/getting-started/standalone
 curl -sSL https://d.juicefs.com/install | sh -
 ```
 
-### Create / Format S3 for storage
+## Create / Format S3 for storage
 - Create a bucket in SharkTech called ```juicefs-prox```  
     - This ties to the URL below
 - Create /opt/juicefs directory
     - ```mkdir -p /opt/juicefs```
-
 
 ```
 juicefs format \
@@ -200,7 +196,7 @@ juicefs format \
     juicefs
 ```
 
-### Create systemd.service
+## Create systemd.service
 ```/etc/systemd/system/juicefs.service```
 
 ```
@@ -214,6 +210,7 @@ Wants=network-online.target
 Type=simple
 ExecStart=/usr/local/bin/juicefs mount sqlite3:///opt/juicefs/myjfs.db /mnt/juicefs \
     --writeback \
+    -o writeback_cache \
     --debug 
 ExecStop=/bin/fusermount -u /mnt/juicefs
 Restart=on-failure
@@ -222,17 +219,17 @@ Restart=on-failure
 WantedBy=remote-fs.target
 WantedBy=multi-user.target
 ```
-### Enable and Start the services
+## Enable and Start the services
 ```
 systemctl enable juicefs.service --now
 ```
 
 If no errors, check ```/mnt/juicefs``` exists
 
-### NFS Server
+## NFS Server
 ```apt install nfs-kernel-server```
 
-#### Create NFS exports
+### Create NFS exports
 Make folders under /mnt/juicefs
 
 ```
@@ -244,7 +241,7 @@ update ```/etc/exports```
 /mnt/juicefs/proxmox 192.168.100.0/24(rw,sync,no_subtree_check,fsid=1,no_root_squash)
 ```
 
-#### export NFS mounts
+### export NFS mounts
 ```
 exportfs -ra
 ```
