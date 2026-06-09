@@ -1,0 +1,4 @@
+cluster:
+  apiServer:
+    extraArgs:
+      service-node-port-range: "20000-40000"

@@ -33,6 +33,11 @@ If after the cluster is up, you want to do a little benchmarking, that's easy
     ```
 
 3. Export URI, Setup pgBench and run the benchmark
+    ```
+    export uri=
+    pgbench -i -s 50 $uri
+    pgbench ...
+    ```
 https://pgbench.com/tutorials/
 ### Setup
 ```

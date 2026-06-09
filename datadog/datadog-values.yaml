@@ -13,6 +13,7 @@ datadog:
     enabled: true
     containerCollectAll: true
     containerCollectUsingFiles: true
+    autoMultiLineDetection: true
 
   # processAgent:
   #   processCollection: true
@@ -39,7 +40,6 @@ datadog:
 
   ignoreAutoConfig:
     - cilium
-
 
 
 agents: {}

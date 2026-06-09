@@ -77,9 +77,17 @@ helm upgrade --install metrics-server metrics-server/metrics-server -n kube-syst
 https://github.com/traefik/traefik-helm-chart/tree/master
 ### Gateway CRD's
 As of Traefik, gateway CRD's need to be installed
+
+Standard
 ```
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml
 ```
+Experimental (needed for Minecraft TCPRoute)  
+```
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml
+```
+
+
 **This will throw warnings, don't be alarmed**
 ### Traefik install
 ```
@@ -89,7 +97,7 @@ kubectl apply -f traefik-gateway.yaml
 ```
 This will create a Traefik load balancer service which is where the gateway will connect
 #### References
-https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md  
+https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values  
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
 

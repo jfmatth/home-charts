@@ -29,6 +29,26 @@ spec:
         namespaces:
           from: All
 
+    - name: immich-https
+      protocol: HTTPS
+      port: 443
+      hostname: photos.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: immich-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: mc-router
+      protocol: TCP
+      port: 25565
+      allowedRoutes:
+        namespaces:
+          from: All
+
     # - name: whoami-https
     #   protocol: HTTPS
     #   port: 443
