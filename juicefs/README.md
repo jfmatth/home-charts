@@ -210,8 +210,6 @@ Type=simple
 ExecStart=/usr/local/bin/juicefs mount sqlite3:///opt/juicefs/myjfs.db /mnt/juicefs \
     --writeback \
     -o writeback_cache
-    -o writeback_cache \
-    --debug 
 ExecStop=/bin/fusermount -u /mnt/juicefs
 Restart=on-failure
 
