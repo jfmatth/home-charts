@@ -29,6 +29,19 @@ spec:
         namespaces:
           from: All
 
+    - name: matthewmechanical-https
+      protocol: HTTPS
+      port: 443
+      hostname: matthewmechanical.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: matthewmechanical-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
     - name: immich-https
       protocol: HTTPS
       port: 443
