@@ -74,3 +74,16 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+
+    - name: images-https
+      protocol: HTTPS
+      port: 443
+      hostname: images.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: images-https
+      allowedRoutes:
+        namespaces:
+          from: All
