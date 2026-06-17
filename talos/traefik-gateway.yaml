@@ -87,3 +87,16 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+
+    - name: stocksonthebeach-https
+      protocol: HTTPS
+      port: 443
+      hostname: stocksonthebeach.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: stocksonthebeach-https
+      allowedRoutes:
+        namespaces:
+          from: All
