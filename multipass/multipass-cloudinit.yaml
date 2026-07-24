@@ -1,0 +1,20 @@
+users:
+  - default
+  - name: jfmatth
+    sudo:  ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDvZqoI5QcOz5AHwXzad5pUSLyo/XlndVFCqiGcflNUE8bytryiE2JB9g+wz685iC2VeLFX3yqAJFz1CkT+FvpunpAJ8wIswKM+iUnLRYKeC8mAs3FCkS+Q4csHMG5GdMsTYduM31EIRXJ4vgwXOc3tYsnIBqzqWJTZN9MPFsWX4SY+mrU1kHNWGM1zaxnOPlDM6XVjiFRps61QU6uf8eibSVQyU7JokuFftB5saA8PPMAhHeOdUJirWNMpaNg6/7oQ0ihhfpC47YUCNKi8nMO5W9eBWK6dAbi3LX6wQHxcIJgHgJw5k8d2SovBFpjbRgKibk669I5c/iQWoFTRtMcv jfmatth@hpenvy-jfmatth
+    shell: /bin/bash
+
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+packages:
+  - linux-azure
+  
+runcmd:
+  - systemctl disable ModemManager --now
+  - systemctl disable multipathd.socket --now
+  - systemctl disable multipathd.service --now
+  - systemctl disable multipathd.socket --now
+  - systemctl disable multipathd.service --now 
