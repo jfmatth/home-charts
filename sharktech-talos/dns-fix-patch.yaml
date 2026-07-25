@@ -1,0 +1,5 @@
+machine:
+  features:
+    hostDNS:
+      enabled: true
+      forwardKubeDNSToHost: false # Tells CoreDNS to bypass the broken 169.254 proxy

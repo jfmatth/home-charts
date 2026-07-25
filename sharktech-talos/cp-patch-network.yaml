@@ -1,0 +1,32 @@
+# machine:
+#   network:
+#     interfaces:
+#     - deviceSelector:
+#         physical: true
+#       addresses:
+#         - 192.168.50.10/24
+#       routes:
+#           gateway: 192.168.50.1
+
+machine:
+  network:
+    interfaces:
+      - interface: ens18
+        addresses:
+          - 192.168.50.10/24
+        routes:
+          - gateway: 192.168.50.1
+    nameservers:
+    - 170.178.191.66
+    - 170.178.191.67
+    - 1.1.1.1
+
+cluster:
+  # 
+  # Cilium
+  # 
+  network:
+    cni:
+      name: none
+  # proxy:
+  #   disabled: true
