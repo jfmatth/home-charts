@@ -1,0 +1,5 @@
+cluster:
+  apiServer:
+    certSANs:
+      - k8s.3756home.org
+      - 208.98.56.209

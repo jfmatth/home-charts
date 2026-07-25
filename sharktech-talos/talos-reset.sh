@@ -1,0 +1,1 @@
+talosctl reset --system-labels-to-wipe EPHEMERAL,STATE --reboot --graceful=false  -n $1
