@@ -49,15 +49,54 @@ spec:
         namespaces:
           from: All
 
-    # - name: whoami-https
-    #   protocol: HTTPS
-    #   port: 443
-    #   hostname: whoami.3756home.org
-    #   tls:
-    #     mode: Terminate
-    #     certificateRefs:
-    #       - kind: Secret
-    #         name: whoami-https
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
+    - name: matthewmechanical-https
+      protocol: HTTPS
+      port: 443
+      hostname: matthewmechanical.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: matthewmechanical-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: justneverlift-https
+      protocol: HTTPS
+      port: 443
+      hostname: justneverlift.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: justneverlift-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: images-https
+      protocol: HTTPS
+      port: 443
+      hostname: images.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: images-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: stocksonthebeach-https
+      protocol: HTTPS
+      port: 443
+      hostname: stocksonthebeach.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: stocksonthebeach-https
+      allowedRoutes:
+        namespaces:
+          from: All

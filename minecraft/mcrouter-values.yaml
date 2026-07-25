@@ -75,13 +75,13 @@ services:
   # Can include any fields from https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/#ServiceSpec
   extraServiceSpec: {}
 
-resources: {}
-  # limits:
-  #   cpu: 250m
-  #   memory: 100Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 50Mi
+resources:
+  limits:
+    cpu: 500m
+    memory: 250Mi
+  requests:
+    cpu: 100m
+    memory: 150Mi
 
 autoscaling:
   enabled: false
