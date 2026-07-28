@@ -1,58 +1,37 @@
 # Talos on SharkTech
 
+## Bastion host
 **Architecture**
 Sharktech 1x2, Ubuntu 25.10
 
 ``eth0`` = Public IP  
 ``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
 
-## Prerequisits
-Talos
+### Talos / Helm / Cilium / Kubectl
 ```
 curl -sL https://talos.dev/install | sh
-```
-
-Helm
-```
 wget https://get.helm.sh/helm-v4.2.3-linux-amd64.tar.gz && \
-tar xvfz helm-v4.2.3-linux-amd64.tar.gz && \
-sudo install linux-amd64/helm /usr/local/bin/
-```
-
-Cilium
-```
+    tar xvfz helm-v4.2.3-linux-amd64.tar.gz && \
+    sudo install linux-amd64/helm /usr/local/bin/
 helm repo add cilium https://helm.cilium.io/
 helm repo update
-```
-
-Kubectl
-```
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-sudo install kubectl /usr/local/bin && \
-rm kubectl 
+    sudo install kubectl /usr/local/bin && \
+    rm kubectl 
 ```
 
-## IP Forwarding for DNAT to cluster
+### UFW Changes: Fowarding, DNAT and masquerading
 ```
-sudo nano /etc/sysctl.d/99-bastion.conf
-```
-
-```
-net.ipv4.ip_forward=1
-```
-
-Apply
-```
+sudo printf "%s\n" "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-bastion.conf
 sudo sysctl --system
 ```
 
-NAT and UFW
+Change forward policy default
 ```
-sudo nano /etc/default/ufw
+sudo sed -i 's/^DEFAULT_FORWARD_POLICY=".*"/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
 ```
-Change ``DEFAULT_FORWARD_POLICY="ACCEPT"``
 
-Add the following to the top of ``/etc/ufw/before.rules``
+Add the following to the top of ``/etc/ufw/before.rules`` before the ``*filter`` section
 ```
 # NAT table rules
 *nat
@@ -74,7 +53,7 @@ Add the following to the top of ``/etc/ufw/before.rules``
 COMMIT
 ```
 
-UFW Rule changes
+UFW Inbound
 ```
 sudo ufw route allow proto tcp to 192.168.50.10 port 80
 sudo ufw reload
@@ -83,15 +62,15 @@ sudo ufw reload
 ## Talos
 
 ### Control Plane
-Provision a Talos Control Planeon the vNetLAS network
+Provision a Talos Control Plane on the vNetLAS network
 
 - 2X4 vm
 - Talos 1.13.5 template
 - Admin name / password don't matter
 - No public IP
-- Private network, 192.168.50.10
+- Private network, 192.168.50.10/24, G/W 192.168.50.1
 
-From the public VM...  
+From the bastion host VM...  
 
 Following the instructions here - https://docs.siderolabs.com/talos/v1.13/getting-started/getting-started#step-3-store-your-node-ip-addresses-in-a-variable
 
@@ -123,13 +102,11 @@ talosctl config contexts
 talosctl kubeconfig -f ~/.kube/config
 ```
 
-
 Endpoints / bootstrap / dashboard / healthcheck
 ```
 talosctl --talosconfig=./talosconfig config endpoints $CONTROL_PLANE_IP
 talosctl bootstrap --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 talosctl dashboard --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
-talosctl --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig health
 ```
 
 **Dashboard will show everything ready, except the cluster, you need to get Cilium installed**
@@ -139,44 +116,50 @@ Set Hostname
 talosctl patch machineconfig --talosconfig=./talosconfig --nodes $CONTROL_PLANE_IP -p @cp-patch-hostname.yaml
 ```
 
-<!-- Fix DNS - Use host DNS instead of ???
-```
-talosctl patch machineconfig -n 192.168.50.10 --patch @dns-fix-patch.yaml
-``` -->
-
-Cillium
+**Cillium**
 ```
 helm install cilium cilium/cilium --namespace kube-system -f cilium-values.yaml --version 1.18.9
 kubectl apply -f cilium-announce.yaml
 
 ```
 
-### Traefik
+Test cluster health
+```
+talosctl --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig health
+```
+
+
+**Traefik**  
 https://docs.siderolabs.com/kubernetes-guides/advanced-guides/deploy-traefik#deploy-traefik-as-a-gateway-api
 
 ```
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
 
-```
-
-```
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml
 kubectl apply -f traefik-namespace.yaml
 helm install traefik traefik/traefik -f traefik-values.yaml -n traefik
 kubectl apply -f traefik-gateway.yaml
 ```
 
-Metrics Server
+**Metrics Server**
 ```
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo update
 helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
 ```
 
-### Nodes
+### Node
+Provision a Talos Node on the vNetLAS network
 
-Node 1
+- 1x2 vm
+- Talos 1.13.5 template
+- Admin name / password don't matter
+- No public IP
+- Private network, 192.168.50.11/24, G/W 192.168.50.1
+
+From the bastion host VM...  
+
 ```
 talosctl apply-config --insecure --nodes 192.168.50.11 --file worker.yaml
 talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-network.yaml
