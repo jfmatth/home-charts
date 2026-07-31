@@ -15,5 +15,4 @@ $env:NAME="TalosTesting"
 ### Testing Cilium versions
 https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium#method-2-helm
 
-**without kube-proxy**
 
