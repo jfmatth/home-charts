@@ -18,6 +18,3 @@ spec:
             - name: traefik-gateway
               namespace: traefik
               kind: Gateway
-    
-      waitInsteadOfSelfCheck: 30s
-
