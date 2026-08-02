@@ -40,6 +40,7 @@ Add the following to the top of ``/etc/ufw/before.rules`` before the ``*filter``
 
 # 1. DNAT rule: Forward port 80 to the private VM
 -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 192.168.50.10:80
+-A PREROUTING -i eth0 -p tcp --dport 443 -j DNAT --to-destination 192.168.50.10:443
 -A PREROUTING -i eth0 -p tcp --dport 6443 -j DNAT --to-destination 192.168.50.10:6443
 
 # 2. Your existing Masquerade rule (keep this)
@@ -47,6 +48,7 @@ Add the following to the top of ``/etc/ufw/before.rules`` before the ``*filter``
 
 # Force return traffic by masquerading inbound DNAT traffic
 -A POSTROUTING -d 192.168.50.10 -p tcp --dport 80 -j MASQUERADE
+-A POSTROUTING -d 192.168.50.10 -p tcp --dport 443 -j MASQUERADE
 -A POSTROUTING -d 192.168.50.10 -p tcp --dport 6443 -j MASQUERADE
 
 # Commit the changes
@@ -56,6 +58,14 @@ COMMIT
 UFW Inbound
 ```
 sudo ufw route allow proto tcp to 192.168.50.10 port 80
+sudo ufw route allow proto tcp to 192.168.50.10 port 443
+sudo ufw route allow proto tcp to 192.168.50.10 port 6443
+
+sudo ufw route allow proto tcp from 192.168.50.10 port 80
+sudo ufw route allow proto tcp from 192.168.50.10 port 443
+sudo ufw route allow proto tcp from 192.168.50.10 port 6443
+
+
 sudo ufw reload
 ```
 
@@ -67,7 +77,7 @@ sudo ufw reload
 ### Provision
 Provision a Talos Control Plane on the vNetLAS network
 
-- 2X4 vm
+- Max vm
 - Talos 1.13.5 template
 - Admin name / password don't matter
 - No public IP
@@ -113,12 +123,7 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 
 **Dashboard will show everything ready, except the cluster, you need to get Cilium installed**
 
-<!-- Set Hostname
-```
-talosctl patch machineconfig --talosconfig=./talosconfig --nodes $CONTROL_PLANE_IP -p @cp-patch-hostname.yaml
-``` -->
-
-**Cillium**
+### Cillium
 ```
 helm install cilium cilium/cilium --namespace kube-system -f cilium-values.yaml --version 1.18.9
 sleep 5
@@ -132,7 +137,7 @@ talosctl --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig health
 ```
 
 
-**Traefik**  
+### Traefik
 https://docs.siderolabs.com/kubernetes-guides/advanced-guides/deploy-traefik#deploy-traefik-as-a-gateway-api
 
 ```
@@ -145,29 +150,52 @@ helm install traefik traefik/traefik -f traefik-values.yaml -n traefik
 kubectl apply -f traefik-gateway.yaml
 ```
 
-**Metrics Server**
+### Metrics Server
 ```
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo update
 helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
 ```
 
-<!-- ### Node
-Provision a Talos Node on the vNetLAS network
-
-- 1x2 vm
-- Talos 1.13.5 template
-- Admin name / password don't matter
-- No public IP
-- Private network, 192.168.50.11/24, G/W 192.168.50.1
-
-From the bastion host VM...  
-
+### Cert-Manager **(Broken right now)**
 ```
-talosctl apply-config --insecure --nodes 192.168.50.11 --file worker.yaml
-talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-network.yaml
-talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-hostname.yaml
-``` -->
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+kubectl apply -f cert-manager-namespace.yaml
+helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace -f cert-manager.yaml
+```
+
+ClusterIssuer
+```
+kubectl apply -f cert-manager-clusterissuer.yaml
+```
+After Certmanager is installed, and everything working - the gateway should be programmed like below
+```
+kubectl get gateway -A
+NAMESPACE   NAME              CLASS     ADDRESS           PROGRAMMED   AGE
+traefik     traefik-gateway   traefik   192.168.100.140   True         6m28s
+```
+
+### DataDog
+- Goto Datadog integration page https://us5.datadoghq.com/account/settings/agent/latest?platform=kubernetes
+- Helm Chart not Operator
+- Pick API Key, copy it to clipboard
+
+
+Modify the default text below with the API key
+```
+helm repo add datadog https://helm.datadoghq.com
+helm repo update
+kubectl apply -f datadog-namespace.yaml
+kubectl create secret generic datadog-secret --namespace=datadog --from-literal api-key=
+```
+
+Install the helm chart for Talos, not the operator
+```
+helm install datadog datadog/datadog -f datadog-values.yaml -n datadog
+```
+
+
 
 ## Talos Upgrades
 Current Sharktech template is v1.13.5
