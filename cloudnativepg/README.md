@@ -4,7 +4,7 @@ https://cloudnative-pg.io/docs/1.29/quickstart
 
 ## Install via CRD
 ```
-kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.29/releases/cnpg-1.29.1.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.30/releases/cnpg-1.30.0.yaml
 ```
 
 This installs the operator and waits for clusters.
