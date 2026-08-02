@@ -15,16 +15,16 @@ spec:
         namespaces:
           from: All
 
-# default HTTPS route for cert-manager
-    # - name: k8s-https
-    #   protocol: HTTPS
-    #   port: 443
-    #   hostname: k8s.3756home.org
-    #   tls:
-    #     mode: Terminate
-    #     certificateRefs:
-    #       - kind: Secret
-    #         name: k8s-https
-    #   allowedRoutes:
-    #     namespaces:
-    #       from: All
+
+    - name: whoami-https
+      protocol: HTTPS
+      port: 443
+      hostname: whoami.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: whoami-https
+      allowedRoutes:
+        namespaces:
+          from: All
