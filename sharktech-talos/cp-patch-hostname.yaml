@@ -1,6 +1,6 @@
 apiVersion: v1alpha1
 kind: HostnameConfig
-hostname: control-1
+hostname: talosLAS
 auto: off
 ---
 

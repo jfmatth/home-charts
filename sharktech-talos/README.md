@@ -59,9 +59,12 @@ sudo ufw route allow proto tcp to 192.168.50.10 port 80
 sudo ufw reload
 ```
 
-## Talos
+## TalosLAS
 
-### Control Plane
+8/2/26 - [Combine](https://docs.siderolabs.com/talos/v1.13/deploy-and-manage-workloads/workloads-on-controlplane#enable-workloads-on-your-control-plane-nodes) control + woker on single node, simpler and more cost effective
+
+
+### Provision
 Provision a Talos Control Plane on the vNetLAS network
 
 - 2X4 vm
@@ -72,7 +75,7 @@ Provision a Talos Control Plane on the vNetLAS network
 
 From the bastion host VM...  
 
-Following the instructions here - https://docs.siderolabs.com/talos/v1.13/getting-started/getting-started#step-3-store-your-node-ip-addresses-in-a-variable
+Following the instructions [here](https://docs.siderolabs.com/talos/v1.13/getting-started/getting-started#step-3-store-your-node-ip-addresses-in-a-variable)
 
 ```
 export CONTROL_PLANE_IP=192.168.50.10
@@ -80,8 +83,7 @@ export CLUSTER_NAME=talos-sharktech
 export DISK_NAME=sda
 talosctl gen config $CLUSTER_NAME https://$CONTROL_PLANE_IP:6443 \
     --install-disk /dev/$DISK_NAME \
-    --config-patch-control-plane @cp-patch-network.yaml \
-    --config-patch @cp-patch-sans.yaml \
+    --config-patch-control-plane @cp-patch-all.yaml \
     --force
 ```
 
@@ -111,14 +113,15 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 
 **Dashboard will show everything ready, except the cluster, you need to get Cilium installed**
 
-Set Hostname
+<!-- Set Hostname
 ```
 talosctl patch machineconfig --talosconfig=./talosconfig --nodes $CONTROL_PLANE_IP -p @cp-patch-hostname.yaml
-```
+``` -->
 
 **Cillium**
 ```
 helm install cilium cilium/cilium --namespace kube-system -f cilium-values.yaml --version 1.18.9
+sleep 5
 kubectl apply -f cilium-announce.yaml
 
 ```
@@ -149,7 +152,7 @@ helm repo update
 helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
 ```
 
-### Node
+<!-- ### Node
 Provision a Talos Node on the vNetLAS network
 
 - 1x2 vm
@@ -164,7 +167,7 @@ From the bastion host VM...
 talosctl apply-config --insecure --nodes 192.168.50.11 --file worker.yaml
 talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-network.yaml
 talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-hostname.yaml
-```
+``` -->
 
 ## Talos Upgrades
 Current Sharktech template is v1.13.5
