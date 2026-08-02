@@ -2,8 +2,7 @@
 
 # --- CONFIG ---
 $CiliumVersion = "1.16.3"   # Example version
-$ValuesFile    = ".\cilium-values.yaml"
-$PatchOut      = ".\controlplane-cilium-patch.yaml"
+$PatchOut      = ".\cp-patch.yaml"
 
 # --- RENDER CILIUM MANIFEST ---
 $Rendered = helm template cilium cilium/cilium `
