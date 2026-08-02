@@ -143,7 +143,7 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 Set Hostname
 ```
 talosctl patch machineconfig --talosconfig=./talosconfig --nodes $CONTROL_PLANE_IP -p @cp-patch-hostname.yaml
-```
+``` -->
 
 **Cillium**
 ```
@@ -244,7 +244,7 @@ From the bastion host VM...
 talosctl apply-config --insecure --nodes 192.168.50.11 --file worker.yaml
 talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-network.yaml
 talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-hostname.yaml
-```
+``` -->
 
 ## Talos Upgrades
 Current Sharktech template is v1.13.5
