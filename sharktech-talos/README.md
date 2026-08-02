@@ -195,6 +195,10 @@ Install the helm chart for Talos, not the operator
 helm install datadog datadog/datadog -f datadog-values.yaml -n datadog
 ```
 
+## whoami pulse site
+Might be worth having a pulse site to reference, whoami does that
+
+Follow README in whoami folder
 
 
 ## Talos Upgrades
