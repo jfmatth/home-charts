@@ -40,33 +40,13 @@ gatewayClass:
   name: traefik
 
 # Optional: Enable logs and metrics
-# logs:
-#   general:
-#     level: INFO
+log:
+  level: INFO
 
-#   access:
-#     enabled: true
-#     format: json  # or "common" for CLF format
-#     # filters:
-#     #   statusCodes:
-#     #     - "200"
-#     #     - "400-404"
-#     #     - "500-503"
-#     fields:
-#       general:
-#         defaultMode: keep
-#         # names:
-#         #   ClientUsername: drop
-#       headers:
-#         defaultMode: keep
-#         names:
-#           # User-Agent: redact
-#           Content-Type: keep
-
-tolerations:
-  - key: "node-role.kubernetes.io/control-plane"
-    operator: "Exists"
-    effect: "NoSchedule"
-  - key: "node-role.kubernetes.io/master"
-    operator: "Exists"
-    effect: "NoSchedule"
+accessLog:
+  enabled: true
+  format: json
+  fields:
+    defaultMode: keep
+    headers:
+      defaultMode: keep
