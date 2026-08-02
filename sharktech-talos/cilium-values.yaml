@@ -41,3 +41,7 @@ l2announcements:
 
 externalIPs:
   enabled: true
+
+operator:
+  enabled: true
+  replicas: 1
