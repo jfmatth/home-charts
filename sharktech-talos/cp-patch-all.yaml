@@ -1,13 +1,3 @@
-# machine:
-#   network:
-#     interfaces:
-#     - deviceSelector:
-#         physical: true
-#       addresses:
-#         - 192.168.50.10/24
-#       routes:
-#           gateway: 192.168.50.1
-
 machine:
   network:
     interfaces:
@@ -30,3 +20,10 @@ cluster:
       name: none
   # proxy:
   #   disabled: true
+
+  apiServer:
+    certSANs:
+      - k8s.3756home.org
+      - 208.98.56.209
+
+  allowSchedulingOnControlPlanes: true
