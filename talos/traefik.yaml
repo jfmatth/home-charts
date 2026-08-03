@@ -20,8 +20,8 @@ ports:
     transport:
       # Immich large uploads require timeouts to 600s
       respondingTimeouts:
-        writeTimeout: 1200s
-        readTimeout: 1200s
+        writeTimeout: 50000s
+        readTimeout: 50000s
 
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#deploy-multiple-gateways-with-a-single-traefik-deploymentdaemonset
   minecraft:
@@ -40,25 +40,25 @@ gatewayClass:
   name: traefik
 
 # Optional: Enable logs and metrics
-logs:
-  general:
-    level: INFO
+# logs:
+#   general:
+#     level: INFO
 
-  access:
-    enabled: true
-    format: json  # or "common" for CLF format
-    # filters:
-    #   statusCodes:
-    #     - "200"
-    #     - "400-404"
-    #     - "500-503"
-    fields:
-      general:
-        defaultMode: keep
-        # names:
-        #   ClientUsername: drop
-      headers:
-        defaultMode: keep
-        names:
-          # User-Agent: redact
-          Content-Type: keep
+#   access:
+#     enabled: true
+#     format: json  # or "common" for CLF format
+#     # filters:
+#     #   statusCodes:
+#     #     - "200"
+#     #     - "400-404"
+#     #     - "500-503"
+#     fields:
+#       general:
+#         defaultMode: keep
+#         # names:
+#         #   ClientUsername: drop
+#       headers:
+#         defaultMode: keep
+#         names:
+#           # User-Agent: redact
+#           Content-Type: keep
