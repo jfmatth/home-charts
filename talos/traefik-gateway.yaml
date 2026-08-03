@@ -62,18 +62,18 @@ spec:
         namespaces:
           from: All
 
-    - name: justneverlift-https
-      protocol: HTTPS
-      port: 443
-      hostname: justneverlift.com
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: justneverlift-https
-      allowedRoutes:
-        namespaces:
-          from: All
+    # - name: justneverlift-https
+    #   protocol: HTTPS
+    #   port: 443
+    #   hostname: justneverlift.com
+    #   tls:
+    #     mode: Terminate
+    #     certificateRefs:
+    #       - kind: Secret
+    #         name: justneverlift-https
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
 
     - name: images-https
       protocol: HTTPS
