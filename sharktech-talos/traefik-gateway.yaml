@@ -40,3 +40,16 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+
+    - name: drmblog-test-https
+      protocol: HTTPS
+      port: 443
+      hostname: test.drmatthew.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: drmblog-test-https
+      allowedRoutes:
+        namespaces:
+          from: All
