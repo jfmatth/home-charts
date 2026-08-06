@@ -31,7 +31,7 @@ The goal is to have a lab with the following:
 - Create VM from the Template
 - Make sure you connect to the new LabSwitch network
 - Boot
-- Rename to DC01
+- Rename to DC01, reboot
 - Assign IP and DNS
     ```
     New-NetIPAddress `
@@ -54,13 +54,13 @@ The goal is to have a lab with the following:
         -SafeModeAdministratorPassword (ConvertTo-SecureString "W1nd0ws" -AsPlainText -Force) `
         -InstallDNS `
         -Force
+
     ```
-- VM will restart
+- click OK, VM will restart
 - Login with your original administrator password
 - Install DHCP and setup
     ```
-    Install-WindowsFeature DHCP `
-    -IncludeManagementTools
+    Install-WindowsFeature DHCP -IncludeManagementTools
     
     Add-DhcpServerv4Scope `
     -Name "Lab Scope" `
@@ -68,6 +68,8 @@ The goal is to have a lab with the following:
     -EndRange 10.10.10.200 `
     -SubnetMask 255.255.255.0    
     
+    Add-DhcpServerInDC -DnsName "dc01.local.lab" -IpAddress 10.10.10.10
+
     Set-DhcpServerv4OptionValue `
     -DnsServer 10.10.10.10 `
     -Router 10.10.10.1 `
@@ -78,49 +80,62 @@ The goal is to have a lab with the following:
     -ReplicationScope Forest
     ```
 
-- You need to change the DNS forwarder address, the one that's found may not work due to the way Hyper-V sets IP's
+    - By-Hand - Authorize the scope on the 
+
+<!-- - You need to change the DNS forwarder address, the one that's found may not work due to the way Hyper-V sets IP's -->
 
 ## DFS Server and Files path
 - Install DFS and create a fileshare
     ```
-    # Variables
-    $FolderPath = "C:\Files"
-    $ShareName = "Files"
+    $FolderPath = "C:\DFSFolder"
+    $ShareName = "IISSites"
+    $DfsFolderName = "WebRoot"
     $DomainName = (Get-ADDomain).DNSRoot
     $ServerName = $env:COMPUTERNAME
 
-    # Install DFS Namespace role and management tools
     Install-WindowsFeature FS-DFS-Namespace -IncludeManagementTools
-
-    # Create folder
     New-Item -Path $FolderPath -ItemType Directory -Force
-
-    # Create SMB share
     New-SmbShare `
         -Name $ShareName `
         -Path $FolderPath `
         -FullAccess "Domain Admins" `
         -ChangeAccess "Domain Users"
-
-    # Create DFS Namespace
     New-DfsnRoot `
         -TargetPath "\\$ServerName\$ShareName" `
         -Path "\\$DomainName\$ShareName" `
         -Type DomainV2
-
-    # Add DFS Folder
     New-DfsnFolder `
-        -Path "\\$DomainName\$ShareName\$ShareName" `
+        -Path "\\$DomainName\$ShareName\$DfsFolderName" `
         -TargetPath "\\$ServerName\$ShareName"
-
-    # Verify
     Get-DfsnRoot
     Get-DfsnFolder -Path "\\$DomainName\$ShareName\*"
     Get-SmbShare -Name $ShareName
     ```
-## IIS Server
+
+## IIS Server 01 and 02
 - Create VM from the Template
 - Boot
-- Rename to IIS01
+- Rename to IIS01 or IIS02
 - Join Domain
     ```
+    $domain = "lab.local"
+    $user = "lab\Administrator"
+    $pass = Read-Host "Enter domain password" -AsSecureString
+    $cred = New-Object System.Management.Automation.PSCredential($user,$pass)
+    Add-Computer -DomainName $domain -Credential $cred -Force
+    Restart-Computer
+
+    ```  
+- Install IIS
+    ```
+    Install-WindowsFeature -Name Web-Server -IncludeManagementTools
+    ```
+- Add DFS path for drive **Broken right now** (rename DFS folder above)
+    ```
+    $dfsPath = "\\dc01.lab.local\IISSites"
+    New-PSDrive -Name "F" -PSProvider FileSystem -Root $dfsPath -Persist
+
+    New-PSDrive -Name F -PSProvider FileSystem -Root "\\dc01.lab.local\IISSites" -Persist
+
+    ```
+- Rinse and repeat for IIS02
