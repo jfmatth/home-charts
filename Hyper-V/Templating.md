@@ -12,15 +12,15 @@ Use Hyper-V on laptops or servers to build VM labs
     - CPU / Memory / Default Switch
     - New Hard disk
     - Attach Windows Server ISO to VM
+    - Disable Checkpoints
 
 - Install Windows 2025 and sysprep
     - Desktop (not Core, yet)
     - Fully Patch the box
-    - Turn-off, Checkpoint for pre-sysprep
-    - Turn-on, sysprep  
+    - Reboot
+    - Sysprep  
         ``C:\Windows\System32\Sysprep\sysprep.exe /oobe /generalize /shutdown``
     - Close the Window for the VM, VM should shutdown after ~10m
-    - After shutdown, delete all checkpoints (otherwise below steps won't work)
 
 ## New VM from differenced VHDX
 - Clone disk and create new machine
