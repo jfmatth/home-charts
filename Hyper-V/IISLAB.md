@@ -9,6 +9,9 @@ The goal is to have a lab with the following:
 
 ## Setup Switch, NAT and Network on Hyper-V host
 **some items require Admin terminal**
+
+This creates a new network on the host that allows the private 
+
 - Create switch
     ```
     New-VMSwitch -Name LabSwitch -SwitchType Internal
@@ -28,12 +31,13 @@ The goal is to have a lab with the following:
     ```
 
 ## Build Domain Controller for Forest / Domain
-- Create VM from the Template
+- Create VM from the Template (see Templating.md)
 - Make sure you connect to the new LabSwitch network
 - Boot
 - Rename to DC01, reboot
 - Assign IP and DNS
     ```
+    Disable-NetAdapterBinding -Name "Ethernet" -ComponentID ms_tcpip6
     New-NetIPAddress `
     -InterfaceAlias Ethernet `
     -IPAddress 10.10.10.10 `
@@ -67,8 +71,6 @@ The goal is to have a lab with the following:
     -StartRange 10.10.10.100 `
     -EndRange 10.10.10.200 `
     -SubnetMask 255.255.255.0    
-    
-    Add-DhcpServerInDC -DnsName "dc01.local.lab" -IpAddress 10.10.10.10
 
     Set-DhcpServerv4OptionValue `
     -DnsServer 10.10.10.10 `
@@ -78,42 +80,45 @@ The goal is to have a lab with the following:
     Add-DnsServerPrimaryZone `
     -NetworkId "10.10.10.0/24" `
     -ReplicationScope Forest
+
+    Add-DhcpServerInDC -DnsName "dc01.local.lab" -IpAddress 10.10.10.10
+
+
     ```
 
     - By-Hand - Authorize the scope on the 
 
 <!-- - You need to change the DNS forwarder address, the one that's found may not work due to the way Hyper-V sets IP's -->
 
-## DFS Server and Files path
-- Install DFS and create a fileshare
-    ```
-    $FolderPath = "C:\DFSFolder"
-    $ShareName = "IISSites"
-    $DfsFolderName = "WebRoot"
-    $DomainName = (Get-ADDomain).DNSRoot
-    $ServerName = $env:COMPUTERNAME
+## File Server Share for sites
+```
+$Root = 'C:\sites'
 
-    Install-WindowsFeature FS-DFS-Namespace -IncludeManagementTools
-    New-Item -Path $FolderPath -ItemType Directory -Force
-    New-SmbShare `
-        -Name $ShareName `
-        -Path $FolderPath `
-        -FullAccess "Domain Admins" `
-        -ChangeAccess "Domain Users"
-    New-DfsnRoot `
-        -TargetPath "\\$ServerName\$ShareName" `
-        -Path "\\$DomainName\$ShareName" `
-        -Type DomainV2
-    New-DfsnFolder `
-        -Path "\\$DomainName\$ShareName\$DfsFolderName" `
-        -TargetPath "\\$ServerName\$ShareName"
-    Get-DfsnRoot
-    Get-DfsnFolder -Path "\\$DomainName\$ShareName\*"
-    Get-SmbShare -Name $ShareName
-    ```
+$Folders = @(
+    'site1',
+    'site2',
+    'site3',
+    'shared'
+)
+
+New-Item -Path $Root -ItemType Directory -Force | Out-Null
+
+foreach ($Folder in $Folders) {
+    New-Item -Path (Join-Path $Root $Folder) -ItemType Directory -Force | Out-Null
+}
+
+icacls $Root /grant "Domain Users:(OI)(CI)M" /T
+
+New-SmbShare `
+    -Name "sites" `
+    -Path $Root `
+    -FullAccess "Domain Admins" `
+    -ChangeAccess "Domain Users"
+```
+
 
 ## IIS Server 01 and 02
-- Create VM from the Template
+- Create VM from the Template on LabSwitch network
 - Boot
 - Rename to IIS01 or IIS02
 - Join Domain
@@ -130,12 +135,44 @@ The goal is to have a lab with the following:
     ```
     Install-WindowsFeature -Name Web-Server -IncludeManagementTools
     ```
-- Add DFS path for drive **Broken right now** (rename DFS folder above)
-    ```
-    $dfsPath = "\\dc01.lab.local\IISSites"
-    New-PSDrive -Name "F" -PSProvider FileSystem -Root $dfsPath -Persist
+- Add websites for every share we have
 
-    New-PSDrive -Name F -PSProvider FileSystem -Root "\\dc01.lab.local\IISSites" -Persist
+```
+Import-Module WebAdministration
 
-    ```
+$Sites = @(
+    @{
+        Name = "site1"
+        HostHeader = "site1.lab.local"
+        Path = "\\dc01\sites\site1"
+        Port = 80
+    },
+    @{
+        Name = "site2"
+        HostHeader = "site2.lab.local"
+        Path = "\\dc01\sites\site2"
+        Port = 80
+    },
+    @{
+        Name = "site3"
+        HostHeader = "site3.lab.local"
+        Path = "\\dc01\sites\site3"
+        Port = 80
+    }
+)
+
+foreach ($Site in $Sites) {
+
+    if (-not (Get-Website -Name $Site.Name -ErrorAction SilentlyContinue)) {
+
+        New-Website `
+            -Name $Site.Name `
+            -PhysicalPath $Site.Path `
+            -Port $Site.Port `
+            -HostHeader $Site.HostHeader
+    }
+}
+
+
+```
 - Rinse and repeat for IIS02
