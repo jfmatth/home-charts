@@ -60,7 +60,7 @@ This creates a new network on the host that allows the private
         -Force
 
     ```
-- click OK, VM will restart
+- click Close, VM will restart
 - Login with your original administrator password
 - Install DHCP and setup
     ```
@@ -83,12 +83,9 @@ This creates a new network on the host that allows the private
 
     Add-DhcpServerInDC -DnsName "dc01.local.lab" -IpAddress 10.10.10.10
 
-
     ```
 
-    - By-Hand - Authorize the scope on the 
-
-<!-- - You need to change the DNS forwarder address, the one that's found may not work due to the way Hyper-V sets IP's -->
+    - By-Hand - Authorize the scope on the ?
 
 ## File Server Share for sites
 ```
