@@ -18,6 +18,10 @@ Use Hyper-V on laptops or servers to build VM labs
     - Desktop (not Core, yet)
     - Fully Patch the box
     - Reboot
+    - Possible fixing of APPx packages
+        - Get-AppxPackage Microsoft.DesktopAppInstaller
+        - Get-AppxProvisionedPackage -Online  
+        Might have to work with AI to figure this all out
     - Sysprep  
         ``C:\Windows\System32\Sysprep\sysprep.exe /oobe /generalize /shutdown``
     - Close the Window for the VM, VM should shutdown after ~10m
