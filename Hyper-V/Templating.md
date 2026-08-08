@@ -12,16 +12,14 @@ Use Hyper-V on laptops or servers to build VM labs
     - CPU / Memory / Default Switch
     - New Hard disk
     - Attach Windows Server ISO to VM
-    - Disable Checkpoints
+    - **Disable Checkpoints**
 
 - Install Windows 2025 and sysprep
     - Desktop (not Core, yet)
+    - Install Powershell 7 ONLY via install .EXE, winget will break it  
+        [Releases](https://github.com/PowerShell/PowerShell/releases)
     - Fully Patch the box
     - Reboot
-    - Possible fixing of APPx packages
-        - Get-AppxPackage Microsoft.DesktopAppInstaller
-        - Get-AppxProvisionedPackage -Online  
-        Might have to work with AI to figure this all out
     - Sysprep  
         ``C:\Windows\System32\Sysprep\sysprep.exe /oobe /generalize /shutdown``
     - Close the Window for the VM, VM should shutdown after ~10m
@@ -34,3 +32,12 @@ Use Hyper-V on laptops or servers to build VM labs
     - New Virtual Machine
         - Use the HD from above as the disk, do you do new
     - Boot new VM, should come up in sysprep'd mode, i.e. new server
+
+
+## Issues with NIC names
+If you change the switch the VM is connected to for the new VM, it may create a new NIC name i.e. ethernet 2 vs ethernet
+
+- Fix the NIC name so other scripts work
+```
+Get-NetAdapter | Where-Object {$_.Status -eq "Up"} | Rename-NetAdapter -NewName "Ethernet"
+```
