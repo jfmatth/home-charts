@@ -35,7 +35,7 @@ This creates a new network on the host that allows the private
 - Make sure you connect to the new LabSwitch network
 - Boot
 - Rename to DC01, reboot
-- Assign IP and DNS
+- Disable IPv6 / Assign IP and DNS
     ```
     Disable-NetAdapterBinding -Name "Ethernet" -ComponentID ms_tcpip6
     New-NetIPAddress `
@@ -43,10 +43,10 @@ This creates a new network on the host that allows the private
     -IPAddress 10.10.10.10 `
     -PrefixLength 24 `
     -DefaultGateway 10.10.10.1
-
     Set-DnsClientServerAddress `
     -InterfaceAlias Ethernet `
     -ServerAddresses 10.10.10.10
+
     ```
 
 - Install Forest with script
@@ -85,7 +85,7 @@ This creates a new network on the host that allows the private
 
     ```
 
-    - By-Hand - Authorize the scope on the ?
+    You might get an error on the last one but it works.
 
 ## File Server Share for sites
 ```
