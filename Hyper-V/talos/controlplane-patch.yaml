@@ -1,12 +1,23 @@
 machine:
+  # network:
+  #   interfaces:
+  #   - deviceSelector:
+  #       physical: true
+  #     dhcp: true
+  #     vip:
+  #       ip: 192.168.100.201    # # `interfaces` is used to define the network interface configuration.
+
   network:
     interfaces:
-    - deviceSelector:
-        physical: true
-      dhcp: true
-      vip:
-        ip: 192.168.100.201    # # `interfaces` is used to define the network interface configuration.
+      - interface: enx00155d01d559
+        addresses:
+          - 10.10.10.201/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 10.10.10.1
+        mtu: 1500
 
+        
   kubelet:
     extraArgs:
       rotate-server-certificates: true
@@ -31,8 +42,8 @@ cluster:
   # 
   # Cilium
   # 
-  network:
-    cni:
-      name: none
-  proxy:
-    disabled: true
+  # network:
+  #   cni:
+  #     name: none
+  # proxy:
+  #   disabled: true
