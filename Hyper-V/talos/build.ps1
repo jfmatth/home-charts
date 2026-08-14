@@ -32,6 +32,7 @@ $TalosConfig = [ordered]@{
         ConfigDir   = ".\cluster-configs"
         PatchFile   = "controlplane-patch.yaml"   # used as-is
         Kubeconfig  = "kubeconfig"
+        talosconfig = $TalosConfig.Paths.ConfigDir + "\" + "talosconfig"
     }
 
     Steps = @{
@@ -52,6 +53,9 @@ $TalosConfig = [ordered]@{
         VerifyCluster = $true
     }
 }
+
+Write-Host $TalosConfig.Paths.ConfigDir
+Write-Host $TalosConfig.Paths.talosconfig
 
 # Build full HTTPS endpoint
 $ApiEndpoint = "https://$($TalosConfig.Cluster.K8sEndpoint):6443"
@@ -88,10 +92,10 @@ if ($TalosConfig.Steps.GenerateConfigs) {
     Wait-ForKeypress
 
     Invoke-Expression $genStr
-}
 
-# ⭐ Pause after generating configs
-Wait-ForKeypress
+    Wait-ForKeypress
+
+}
 
 # -----------------------------
 # CONTROL PLANE CONFIG APPLY
@@ -100,10 +104,10 @@ if ($TalosConfig.Steps.ControlPlane.ApplyConfigs) {
     Write-Host "Applying controlplane config..."
     talosctl apply-config --insecure -n $ControlPlaneDHCP `
         --file "$($TalosConfig.Paths.ConfigDir)/controlplane.yaml"
+
+    Wait-ForKeypress
 }
 
-# ⭐ Pause after applying controlplane config
-Wait-ForKeypress
 
 # -----------------------------
 # CONTROL PLANE ENDPOINTS
@@ -112,6 +116,10 @@ if ($TalosConfig.Steps.ControlPlane.SetEndpoints) {
     Write-Host "Setting talosctl endpoints..."
     talosctl config endpoint $ApiEndpoint
     talosctl config node $ApiEndpoint
+    talosctl config new "$($TalosConfig.$ApiEndpoint.Cluster.Name)"
+    talosctl config context "$($TalosConfig.$ApiEndpoint.Cluster.Name)"
+
+    Wait-ForKeypress
 }
 
 # -----------------------------
@@ -120,6 +128,8 @@ if ($TalosConfig.Steps.ControlPlane.SetEndpoints) {
 if ($TalosConfig.Steps.ControlPlane.BootstrapEtcd) {
     Write-Host "Bootstrapping etcd..."
     talosctl bootstrap -n $ApiEndpoint -e $ApiEndpoint --talosconfig $TalosConfigPath
+
+    Wait-ForKeypress
 }
 
 # -----------------------------
