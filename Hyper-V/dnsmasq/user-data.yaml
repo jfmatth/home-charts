@@ -1,39 +1,66 @@
 #cloud-config
 package_update: true
+package_upgrade: true
+package_reboot_if_required: false
 packages:
   - dnsmasq
+  - linux-azure
+
+users:
+  - default
+  - name: jfmatth
+    sudo:  ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDvZqoI5QcOz5AHwXzad5pUSLyo/XlndVFCqiGcflNUE8bytryiE2JB9g+wz685iC2VeLFX3yqAJFz1CkT+FvpunpAJ8wIswKM+iUnLRYKeC8mAs3FCkS+Q4csHMG5GdMsTYduM31EIRXJ4vgwXOc3tYsnIBqzqWJTZN9MPFsWX4SY+mrU1kHNWGM1zaxnOPlDM6XVjiFRps61QU6uf8eibSVQyU7JokuFftB5saA8PPMAhHeOdUJirWNMpaNg6/7oQ0ihhfpC47YUCNKi8nMO5W9eBWK6dAbi3LX6wQHxcIJgHgJw5k8d2SovBFpjbRgKibk669I5c/iQWoFTRtMcv jfmatth@hpenvy-jfmatth
+    shell: /bin/bash
 
 write_files:
-  - path: /etc/netplan/01-static.yaml
-    permissions: '0644'
+  - path: /etc/netplan/99-labswitch.yaml
+    permissions: '0600'
     content: |
       network:
         version: 2
         ethernets:
-          enp0s1:
+          eth0:
+            dhcp4: true
+
+          eth1:
             dhcp4: false
             addresses:
               - 10.10.10.2/24
-            gateway4: 10.10.10.1
+            routes:
+              - to: 0.0.0.0/0
+                via: 10.10.10.1
             nameservers:
               addresses:
-                - 10.10.10.1
-                - 1.1.1.1
+                - 127.0.0.53
 
-  - path: /etc/dnsmasq.d/lab.conf
+  - path: /etc/dnsmasq.d/labswitch.conf
     permissions: '0644'
     content: |
-      interface=enp0s1
-      domain-needed
-      bogus-priv
-      no-resolv
-      server=1.1.1.1
-      server=8.8.8.8
+      interface=eth1
+      bind-interfaces
+
       dhcp-range=10.10.10.50,10.10.10.150,12h
       dhcp-option=3,10.10.10.1
       dhcp-option=6,10.10.10.2
 
+      server=127.0.0.53
+
 runcmd:
   - netplan apply
+  - systemctl restart systemd-resolved
   - systemctl enable dnsmasq
   - systemctl restart dnsmasq
+  - systemctl disable ModemManager
+  - systemctl stop ModemManager
+  - systemctl disable multipathd.socket
+  - systemctl disable multipathd.service
+  - systemctl stop multipathd.socket
+  - systemctl stop multipathd.service
+  - systemctl disable snapd.service
+  - systemctl disable snapd.socket
+  - systemctl stop snapd.service
+  - systemctl stop snapd.socket
+  - systemctl disable unattended-upgrades.service
+  - systemctl stop unattended-upgrades.service
