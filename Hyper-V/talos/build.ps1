@@ -1,58 +1,47 @@
 param(
     [Parameter(Mandatory = $true)]
-    [string]$ControlPlaneDHCP
+    [string]$ControlPlaneDHCP,
+
+    [Parameter(Mandatory = $true)]
+    [string]$ClusterName
+
 )
 
-function Wait-ForKeypress {
-    Read-Host "Press Enter to continue"
-}
 
-<#
-.SYNOPSIS
-    Talos v1.13 Setup Script
-    DHCP runtime parameter + patch applied during gen config
-    Patch file is NOT modified
-#>
+# Load config
+. .\config.ps1
+. .\functions.ps1
 
-# -----------------------------
-# Config Structure
-# -----------------------------
-$TalosConfig = [ordered]@{
-    Cluster = @{
-        Name        = "talos-hyperv"
-        K8sEndpoint = "10.10.10.201"   # static endpoint
-    }
+# talos-bootcp.bat
+# :main
+#     @echo off
+#     if "%1"=="" GOTO error
+#     if "%2"=="" GOTO error
 
-    Nodes = @{
-        ControlPlane = @($ControlPlaneDHCP)
-        Workers      = @("192.168.50.11", "192.168.50.12")
-    }
+#     Echo Building Talos files
+#     talosctl gen config %2 https://%1:6443 ^
+#         --config-patch-control-plane @talos-cp-patch.yaml ^
+#         --force
 
-    Paths = @{
-        ConfigDir   = ".\cluster-configs"
-        PatchFile   = "controlplane-patch.yaml"   # used as-is
-        Kubeconfig  = "kubeconfig"
-        talosconfig = $TalosConfig.Paths.ConfigDir + "\" + "talosconfig"
-    }
+#     Echo Applying config to ControlPlane (step 1)
+#     talosctl apply-config --insecure -n %1 --file ControlPlane.yaml
 
-    Steps = @{
-        ShowNodeIPs     = $true
-        GenerateConfigs = $true
+#     @ECHO.    
+#     @ECHO When bootstrapping is ready...(if IP is diff, call talos-bootcont.bat, otherwise)
+#     Pause
 
-        ControlPlane = @{
-            ApplyConfigs    = $true
-            SetEndpoints    = $true
-            BootstrapEtcd   = $true
-            FetchKubeconfig = $true
-        }
+#     CALL talos-bootcont.bat %1 
 
-        Workers = @{
-            ApplyConfigs = $true
-        }
+Write-Output "talosctl gen config $ClusterName https://$($ControlPlaneDHCP):6443 --config-patch-control-plane `@$($TalosConfig.Paths.PatchFile) --force"
 
-        VerifyCluster = $true
-    }
-}
+Wait-ForKeypress
+
+talosctl gen config $ClusterName "https://$($ControlPlaneDHCP):6443" `
+--config-patch-control-plane "@"+ $TalosConfig.Paths.PatchFile" `
+--force
+
+Wait-ForKeypress
+
 
 Write-Host $TalosConfig.Paths.ConfigDir
 Write-Host $TalosConfig.Paths.talosconfig
@@ -61,16 +50,16 @@ Write-Host $TalosConfig.Paths.talosconfig
 $ApiEndpoint = "https://$($TalosConfig.Cluster.K8sEndpoint):6443"
 $TalosConfigPath = Join-Path $TalosConfig.Paths.ConfigDir "talosconfig"
 
-# -----------------------------
-# Step 1: Display Node IPs
-# -----------------------------
-if ($TalosConfig.Steps.ShowNodeIPs) {
-    Write-Host "Control Plane DHCP Boot IP:"
-    Write-Host " - $ControlPlaneDHCP"
+# # -----------------------------
+# # Step 1: Display Node IPs
+# # -----------------------------
+# if ($TalosConfig.Steps.ShowNodeIPs) {
+#     Write-Host "Control Plane DHCP Boot IP:"
+#     Write-Host " - $ControlPlaneDHCP"
 
-    Write-Host "Worker Nodes:"
-    $TalosConfig.Nodes.Workers | ForEach-Object { Write-Host " - $_" }
-}
+#     Write-Host "Worker Nodes:"
+#     $TalosConfig.Nodes.Workers | ForEach-Object { Write-Host " - $_" }
+# }
 
 # -----------------------------
 # Step 2: Generate Configs (Patch applied as-is)
