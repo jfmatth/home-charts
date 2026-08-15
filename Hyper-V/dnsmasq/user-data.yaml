@@ -65,6 +65,12 @@ runcmd:
   - systemctl disable snapd.socket
   - systemctl stop snapd.service
   - systemctl stop snapd.socket
+  # - systemctl disable snapd.service
+  # - systemctl disable snapd.socket
+  # - systemctl stop snapd.service
+  # - systemctl stop snapd.socket
+  # - systemctl disable unattended-upgrades.service
+  # - systemctl stop unattended-upgrades.service
 
 apt:
   preserve_sources_list: false
@@ -121,3 +127,4 @@ ca-certs:
       -----END CERTIFICATE-----
   - systemctl disable unattended-upgrades.service
   - systemctl stop unattended-upgrades.service
+    - "${distro_id}:${distro_codename}-backports"
