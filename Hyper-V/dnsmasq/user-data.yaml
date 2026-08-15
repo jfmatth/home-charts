@@ -58,12 +58,10 @@ runcmd:
   - systemctl disable multipathd.service
   - systemctl stop multipathd.socket
   - systemctl stop multipathd.service
-  # - systemctl disable snapd.service
-  # - systemctl disable snapd.socket
-  # - systemctl stop snapd.service
-  # - systemctl stop snapd.socket
-  # - systemctl disable unattended-upgrades.service
-  # - systemctl stop unattended-upgrades.service
+  - systemctl disable snapd.service
+  - systemctl disable snapd.socket
+  - systemctl stop snapd.service
+  - systemctl stop snapd.socket
 
 apt:
   preserve_sources_list: false
