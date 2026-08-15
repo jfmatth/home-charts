@@ -1,7 +1,7 @@
 #cloud-config
-package_update: true
-package_upgrade: true
-package_reboot_if_required: false
+package_update: false
+package_upgrade: false
+package_reboot_if_required: true
 packages:
   - dnsmasq
   - linux-azure
@@ -58,9 +58,30 @@ runcmd:
   - systemctl disable multipathd.service
   - systemctl stop multipathd.socket
   - systemctl stop multipathd.service
-  - systemctl disable snapd.service
-  - systemctl disable snapd.socket
-  - systemctl stop snapd.service
-  - systemctl stop snapd.socket
-  - systemctl disable unattended-upgrades.service
-  - systemctl stop unattended-upgrades.service
+  # - systemctl disable snapd.service
+  # - systemctl disable snapd.socket
+  # - systemctl stop snapd.service
+  # - systemctl stop snapd.socket
+  # - systemctl disable unattended-upgrades.service
+  # - systemctl stop unattended-upgrades.service
+
+apt:
+  preserve_sources_list: false
+  primary:
+    - arches: [default]
+      uri: http://archive.ubuntu.com/ubuntu
+  security:
+    - arches: [default]
+      uri: http://security.ubuntu.com/ubuntu
+
+unattended-upgrades:
+  enabled: true
+  install_on_boot: true
+  reboot: true
+  reboot_time: "now"
+  update_package_lists: true
+  allowed_origins:
+    - "${distro_id}:${distro_codename}"
+    - "${distro_id}:${distro_codename}-security"
+    - "${distro_id}:${distro_codename}-updates"
+    - "${distro_id}:${distro_codename}-backports"
