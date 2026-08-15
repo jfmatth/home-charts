@@ -4,3 +4,6 @@ talos/worker.yaml
 Hyper-V/talos/cluster-configs/controlplane.yaml
 Hyper-V/talos/cluster-configs/talosconfig
 Hyper-V/talos/cluster-configs/worker.yaml
+Hyper-V/talos/controlplane.yaml
+Hyper-V/talos/talosconfig
+Hyper-V/talos/worker.yaml
