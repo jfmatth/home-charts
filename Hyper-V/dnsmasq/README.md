@@ -5,9 +5,6 @@
 - Hyper-V switch called ``LabSwitch``
 
 ## Install
-```
-.\build-cloudinit.ps1
-```
 
 ```
 multipass launch `
