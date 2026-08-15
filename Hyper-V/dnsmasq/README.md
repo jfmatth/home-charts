@@ -13,5 +13,8 @@ multipass launch `
   --cloud-init .\user-data.yaml `
   --memory 512M `
   --disk 5G `
+  --cpus 1 `
   24.04
 ```
+
+**Notes: 26.04 is available but times out?**
