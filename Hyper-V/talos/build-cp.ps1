@@ -68,8 +68,8 @@ $env:TALOSCONFIG=$($talosConfig)
 if ($debug) {Wait-ForKeypress}
 
 Write-Host "Fetching kubeconfig.."
-talosctl kubeconfig $($kubeconfig) 
-$env:KUBECONFIG=$($talosConfig)
+talosctl kubeconfig $($kubeconfig)  --force
+$env:KUBECONFIG=$($kubeconfig)
 
 if ($debug) {Wait-ForKeypress}
 write-host "Done"
