@@ -71,6 +71,8 @@ if ($debug) {Wait-ForKeypress}
 
 Write-Host "Fetching kubeconfig.."
 talosctl kubeconfig $($TalosConfig.Paths.kubeconfig)
+talosctl kubeconfig $($kubeconfig)  --force
+$env:KUBECONFIG=$($kubeconfig)
 
 if ($debug) {Wait-ForKeypress}
 
