@@ -6,19 +6,21 @@ param(
 $debug = $true
 if ($debug) {Set-StrictMode -Version 3.0} else {Set-StrictMode -off }
 
-$Config = $null
-$Config = [pscustomobject]@{
-    Cluster = @{
-        Name        = "talos-hyperv"
-        K8sEndpoint = "10.10.10.201"
-    }
+. .\config.ps1
 
-    Paths = @{
-        ConfigDir   = ".\cluster-configs"
-        PatchFile   = "cp-patch.yaml"
-    }
+# $Config = $null
+# $Config = [pscustomobject]@{
+#     Cluster = @{
+#         Name        = "talos-hyperv"
+#         K8sEndpoint = "10.10.10.201"
+#     }
 
-}
+#     Paths = @{
+#         ConfigDir   = ".\cluster-configs"
+#         PatchFile   = "cp-patch.yaml"
+#     }
+
+# }
 
 $talosConfig = Join-Path $Config.Paths.ConfigDir "talosconfig"
 $kubeconfig  = Join-Path $Config.Paths.ConfigDir "kubeconfig"
@@ -58,19 +60,7 @@ talosctl health `
     -e $($Config.Cluster.K8sEndpoint) `
     --talosconfig $talosConfig
 
-if ($debug) {Wait-ForKeypress}
+.\setup-config.ps1
 
-Write-Host "Configuring talosconfig.."
-talosctl --talosconfig $talosConfig config endpoint $($Config.Cluster.K8sEndpoint)
-talosctl --talosconfig $talosConfig config node $($Config.Cluster.K8sEndpoint)
-$env:TALOSCONFIG=$($talosConfig)
-
-if ($debug) {Wait-ForKeypress}
-
-Write-Host "Fetching kubeconfig.."
-talosctl kubeconfig $($kubeconfig)  --force
-$env:KUBECONFIG=$($kubeconfig)
-
-if ($debug) {Wait-ForKeypress}
 write-host "Done"
 
