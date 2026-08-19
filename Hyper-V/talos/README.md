@@ -15,6 +15,6 @@
 - ISO for Talos
 
 ```
-boot-cp.bat <ip> <name>
+boot-cp.ps1 <ip>
 ```
 
