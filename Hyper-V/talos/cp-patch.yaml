@@ -9,7 +9,13 @@ machine:
 
   network:
     interfaces:
-      - interface: enx00155d01d559
+      # - deviceSelector:
+      #     driver: hv_netvsc
+      #   dhcp: false
+      #   addresses:
+      #     - 10.10.10.201/24
+
+      - interface: net0
         addresses:
           - 10.10.10.201/24
         routes:
@@ -47,3 +53,10 @@ cluster:
   #     name: none
   # proxy:
   #   disabled: true
+---
+# https://docs.siderolabs.com/talos/v1.13/networking/configuration/aliases
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: net0
+selector:
+    match: true # as there is a single link only, we can match it this way
