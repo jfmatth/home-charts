@@ -44,21 +44,11 @@ cluster:
       service-node-port-range: "20000-40000"
 
   allowSchedulingOnControlPlanes: false
-
-  # 
-  # Cilium
-  # 
-  # network:
-  #   cni:
-  #     name: none
-  # proxy:
-  #   disabled: true
-
----
-# https://docs.siderolabs.com/talos/v1.13/networking/configuration/aliases
-apiVersion: v1alpha1
-kind: LinkAliasConfig
-name: net0
-selector:
-    match: true # as there is a single link only, we can match it this way
+# ---
+# # https://docs.siderolabs.com/talos/v1.13/networking/configuration/aliases
+# apiVersion: v1alpha1
+# kind: LinkAliasConfig
+# name: net0
+# selector:
+#     match: true # as there is a single link only, we can match it this way
 
