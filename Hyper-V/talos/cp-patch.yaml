@@ -43,7 +43,7 @@ cluster:
     extraArgs:
       service-node-port-range: "20000-40000"
 
-  allowSchedulingOnControlPlanes: true
+  allowSchedulingOnControlPlanes: false
 
   # 
   # Cilium

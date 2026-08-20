@@ -1,21 +1,40 @@
 # Talos under Hyper-V lab
 
-**might need to run this from a VM on the LabSwitch** just to be safe
-
 ## Requirements
 - LabSwitch from this guide
-- DC01 with
-    - DHCP (assumes 100-200 range, 200+ is static)
-    - NAT'ing traffic to Internet
-    - DNS
+- DNS / DHCP Server on Labswitch (See DNSMASQ folder above)
 
-## Talos Control Plane
+## VM's
+
+### Control Plane
 - VM 2x2
 - LabSwitch network
 - ISO for Talos
+- Settings
+    - Set Boot order to Disk->ISO
+    - Remove Secure Boot
+    - Set CPU to 2
+
+### Worker(s)
+- VM 1x2+
+- LabSwitch network
+- ISO for Talos
+- Settings
+    - Set Boot order to Disk->ISO
+    - Remove Secure Boot
+    - Set CPU to 2
+
+
+## Install Control Plane
 
 ```
-boot-cp.ps1 <ip>
+.\build-cp.ps1 [IP of Control Plane]
+```
+- Debug requires Enter on various Steps
+
+## Install Workers
+```
+talosctl apply-config --insecure [IP of Worker] --file .\cluster-configs\worker.yaml
 ```
 
 ## Cilium
