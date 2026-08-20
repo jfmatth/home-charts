@@ -7,9 +7,8 @@ $Config = [pscustomobject]@{
 
     Paths = @{
         ConfigDir   = ".\cluster-configs"
-        # PatchFile   = "cp-patch.yaml"
-        # PatchFile   = "cp-patch-cilium-nokubeproxy.yaml"
-        PatchFile   = "cp-patch-cilium-kubeproxy.yaml"
+        PatchFolder = ".\controlplane-patches"
+        PatchFile   = ".\controlplane-patches\cilium-kubeproxy.yaml"
         
     }
 
