@@ -23,6 +23,11 @@ boot-cp.ps1 <ip>
 - Add to ``cp-patch.yaml`` as ``InlineManifests:``  
 (see https://docs.siderolabs.com/kubernetes-guides/advanced-guides/inlinemanifests)
 
+Versions Tested:
+- 1.18.0
+- 1.18.13
+- 1.19.x - Fails to get cert :()
+
 ### Generate inline manifests **with Kube-proxy**  
 
 ```
