@@ -14,7 +14,7 @@ function Get-ControlPlanePatchArgs {
         return ""
     }
 
-    $patches = Get-ChildItem -Path $PatchFolder -File |
+    $patches = Get-ChildItem -Path $PatchFolder -File -Filter '*.yaml' |
         Sort-Object Name
 
     if (-not $patches) {

@@ -37,6 +37,12 @@
 talosctl apply-config --insecure [IP of Worker] --file .\cluster-configs\worker.yaml
 ```
 
+## Design of folders and scripts
+Learned a lot about Powershell, how bad it is really, but none-the-less it's what is used since I'm a Windows guy :)
+
+- control-plane-patches - these are added as individual --patch-control-plane during ``talosctl gen config`` section, so they must not overlap
+
+
 ## Cilium
 - Generate the .yaml files
 - Add to ``cp-patch.yaml`` as ``InlineManifests:``  
@@ -45,7 +51,8 @@ talosctl apply-config --insecure [IP of Worker] --file .\cluster-configs\worker.
 Versions Tested:
 - 1.18.0
 - 1.18.13
-- 1.19.x - Fails to get cert :()
+- 1.19.7 - with KubeProxy
+- 1.20.1
 
 ### Generate inline manifests **with Kube-proxy**  
 
@@ -60,7 +67,7 @@ helm template `
     --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}" `
     --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" `
     --set cgroup.autoMount.enabled=false `
-    --set cgroup.hostRoot=/sys/fs/cgroup > cilium-kubeproxy.yaml
+    --set cgroup.hostRoot=/sys/fs/cgroup > hold\cilium-kubeproxy.yaml
 ```
 
 ### Generate inline manifests **without Kube-proxy**  
@@ -78,5 +85,5 @@ helm template `
     --set cgroup.autoMount.enabled=false `
     --set cgroup.hostRoot=/sys/fs/cgroup `
     --set k8sServiceHost=localhost `
-    --set k8sServicePort=7445 > cilium-nokubeproxy.yaml
+    --set k8sServicePort=7445 > hold\cilium-nokubeproxy.yaml
 ```
