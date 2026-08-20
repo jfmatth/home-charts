@@ -2,40 +2,47 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$ControlPlaneDHCP
 )
+. .\config.ps1
+. .\functions.ps1
+
+function Get-ControlPlanePatchArgs {
+    param(
+        [string]$PatchFolder
+    )
+
+    if (-not (Test-Path $PatchFolder)) {
+        return ""
+    }
+
+    $patches = Get-ChildItem -Path $PatchFolder -File |
+        Sort-Object Name
+
+    if (-not $patches) {
+        return ""
+    }
+
+    return $patches | ForEach-Object {
+        "--config-patch-control-plane=@$($_.FullName)"
+    }
+}
 
 $debug = $true
 if ($debug) {Set-StrictMode -Version 3.0} else {Set-StrictMode -off }
 
-. .\config.ps1
-
-# $Config = $null
-# $Config = [pscustomobject]@{
-#     Cluster = @{
-#         Name        = "talos-hyperv"
-#         K8sEndpoint = "10.10.10.201"
-#     }
-
-#     Paths = @{
-#         ConfigDir   = ".\cluster-configs"
-#         PatchFile   = "cp-patch.yaml"
-#     }
-
-# }
-
 $talosConfig = Join-Path $Config.Paths.ConfigDir "talosconfig"
 $kubeconfig  = Join-Path $Config.Paths.ConfigDir "kubeconfig"
 
-# # Load config
-# . .\config.ps1
-. .\functions.ps1
 
 Write-Host "Generating Talos files ..."
 # $PatchFile = "@" + $Config.Paths.PatchFile
 # $ApiEndpoint = "https://$($Config.Cluster.K8sEndpoint):6443"
-talosctl gen config $($Config.Cluster.Name) "https://$($Config.Cluster.K8sEndpoint):6443" `
---config-patch-control-plane `@$($Config.Paths.PatchFile) `
---force `
---output $Config.Paths.ConfigDir
+
+$PatchArgs = Get-ControlPlanePatchArgs -PatchFolder $Config.Paths.PatchFolder
+talosctl gen config `
+    $($Config.Cluster.Name) "https://$($Config.Cluster.K8sEndpoint):6443" `
+    --force `
+    --output $Config.Paths.ConfigDir `
+    $PatchArgs
 
 if ($debug) {Wait-ForKeypress}
 
@@ -61,6 +68,7 @@ talosctl health `
     --talosconfig $talosConfig
 
 .\setup-config.ps1
+
 
 write-host "Done"
 

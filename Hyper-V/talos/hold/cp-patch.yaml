@@ -48,9 +48,9 @@ cluster:
   # 
   # Cilium
   # 
-  # network:
-  #   cni:
-  #     name: none
+  network:
+    cni:
+      name: none
   # proxy:
   #   disabled: true
 

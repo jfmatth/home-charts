@@ -1,0 +1,21 @@
+machine:
+  network:
+    interfaces:
+      # - deviceSelector:
+      #     driver: hv_netvsc
+      #   dhcp: false
+      #   addresses:
+      #     - 10.10.10.201/24
+
+      - interface: net0
+        addresses:
+          - 10.10.10.201/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 10.10.10.1
+        mtu: 1500
+        
+  kubelet:
+    extraArgs:
+      rotate-server-certificates: true
+
