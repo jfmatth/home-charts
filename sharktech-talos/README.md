@@ -125,7 +125,7 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 
 ### Cillium
 ```
-helm install cilium cilium/cilium --namespace kube-system -f cilium-values.yaml --version 1.18.9
+helm install cilium cilium/cilium --namespace kube-system -f cilium-values.yaml --version 1.18.13
 sleep 5
 kubectl apply -f cilium-announce.yaml
 
@@ -157,7 +157,7 @@ helm repo update
 helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
 ```
 
-### Cert-Manager **(Broken right now)**
+### Cert-Manager
 ```
 helm repo add jetstack https://charts.jetstack.io
 helm repo update

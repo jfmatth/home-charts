@@ -33,7 +33,7 @@ datadog:
     instrumentation:
       enabled: false
 
-  clusterName: k8s-talos
+  clusterName: talos-sharktech
 
   operator:
     enabled: false
@@ -44,6 +44,7 @@ datadog:
   ignoreAutoConfig:
     - cilium
     - kube_controller_manager
+    - kube_scheduler
 
 
 agents: {}
@@ -55,5 +56,3 @@ agents: {}
 providers:
   talos:
     enabled: true
-
-  
