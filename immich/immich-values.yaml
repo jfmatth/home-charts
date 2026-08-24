@@ -3,16 +3,8 @@ controllers:
     containers:
       main:
         image:
-          tag: v3.1.0 # main Immich server container | This release marks the first stable version of Immich
-        resources:
-          requests:
-            cpu: 500m
-            memory: 512Mi
-          limits:
-            cpu: "2"
-            memory: 2Gi
+          tag: v3.0.0
         env:
-          # Add the env vars to connect to your database here. - These are created automatically by CNPG
           DB_HOSTNAME:
             valueFrom:
               secretKeyRef:
@@ -34,11 +26,137 @@ controllers:
                 name: immich-database-app
                 key: dbname
 immich:
+  metrics:
+    # Enabling this will create the service monitors needed to monitor immich with the prometheus operator
+    enabled: false
   persistence:
-    # This is where all photos & videos stored in Immich will LIVE
-    # This is the most important PVC in the whole setup
+    # Main data store for all photos shared between different components.
     library:
+      # Automatically creating the library volume is not supported by this chart
+      # You have to specify an existing PVC to use
       existingClaim: immich-library-pvc
 
+  # configuration is immich-config.json converted to yaml. Ignored if existingConfiguration is set.
+  # ref: https://immich.app/docs/install/config-file/
+  #
+  configuration: {}
+    # trash:
+    #   enabled: false
+    #   days: 30
+    # storageTemplate:
+    #   enabled: true
+    #   template: "{{y}}/{{y}}-{{MM}}-{{dd}}/{{filename}}"
+  # Sets the resource Kind to store configuration in. Must be either ConfigMap or Secret.
+  configurationKind: ConfigMap
+
+  # Specify existing configuration resource name here to skip creation of a new one
+  # existingConfiguration:
+
+# Dependencies
+
 valkey:
-  enabled: true # Background jobs, Caching & Queue processing - recommended to enable
+  enabled: true
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: docker.io/valkey/valkey
+            tag: 9.1-alpine@sha256:a35428eba9043cc0b79dbe54100f0c92784f2de00ad09b01182bfb1c5c83d1bd
+            pullPolicy: IfNotPresent
+  persistence:
+    data:
+      enabled: true
+      type: persistentVolumeClaim
+      size: 1Gi
+      accessMode: ReadWriteOnce
+
+# Immich components
+
+server:
+  enabled: true
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: ghcr.io/immich-app/immich-server
+            pullPolicy: IfNotPresent
+  ingress:
+    main:
+      enabled: false
+      annotations:
+        # proxy-body-size is set to 0 to remove the body limit on file uploads
+        nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      hosts:
+        - host: immich.local
+          paths:
+            - path: "/"
+              service:
+                identifier: main
+      tls: []
+
+machine-learning:
+  enabled: true
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: ghcr.io/immich-app/immich-machine-learning
+            pullPolicy: IfNotPresent
+          env:
+            TRANSFORMERS_CACHE: /cache
+            HF_XET_CACHE: /cache/huggingface-xet
+            MPLCONFIGDIR: /cache/matplotlib-config
+  persistence:
+    cache:
+      enabled: true
+      type: persistentVolumeClaim
+      size: 10Gi
+      accessMode: ReadWriteMany
+
+# controllers:
+#   main:
+#     containers:
+#       main:
+#         image:
+#           tag: v3.1.0 # main Immich server container | This release marks the first stable version of Immich
+#         resources:
+#           requests:
+#             cpu: 500m
+#             memory: 512Mi
+#           limits:
+#             cpu: "2"
+#             memory: 2Gi
+#         env:
+#           # Add the env vars to connect to your database here. - These are created automatically by CNPG
+#           DB_HOSTNAME:
+#             valueFrom:
+#               secretKeyRef:
+#                 name: immich-database-app
+#                 key: host
+#           DB_USERNAME:
+#             valueFrom:
+#               secretKeyRef:
+#                 name: immich-database-app
+#                 key: user
+#           DB_PASSWORD:
+#             valueFrom:
+#               secretKeyRef:
+#                 name: immich-database-app
+#                 key: password
+#           DB_DATABASE_NAME:
+#             valueFrom:
+#               secretKeyRef:
+#                 name: immich-database-app
+#                 key: dbname
+# immich:
+#   persistence:
+#     # This is where all photos & videos stored in Immich will LIVE
+#     # This is the most important PVC in the whole setup
+#     library:
+#       existingClaim: immich-library-pvc
+
+# valkey:
+#   enabled: true # Background jobs, Caching & Queue processing - recommended to enable
