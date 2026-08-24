@@ -20,8 +20,8 @@ ports:
     transport:
       # Immich large uploads require timeouts to 600s
       respondingTimeouts:
-        writeTimeout: 1200s
-        readTimeout: 1200s
+        writeTimeout: 5200s
+        readTimeout: 5200s
 
   # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#deploy-multiple-gateways-with-a-single-traefik-deploymentdaemonset
   minecraft:

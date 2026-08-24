@@ -56,6 +56,7 @@ immich:
 
 valkey:
   enabled: true
+
   controllers:
     main:
       containers:
@@ -75,6 +76,7 @@ valkey:
 
 server:
   enabled: true
+
   controllers:
     main:
       containers:
@@ -82,6 +84,7 @@ server:
           image:
             repository: ghcr.io/immich-app/immich-server
             pullPolicy: IfNotPresent
+
   ingress:
     main:
       enabled: false
@@ -98,6 +101,7 @@ server:
 
 machine-learning:
   enabled: true
+
   controllers:
     main:
       containers:
@@ -109,6 +113,7 @@ machine-learning:
             TRANSFORMERS_CACHE: /cache
             HF_XET_CACHE: /cache/huggingface-xet
             MPLCONFIGDIR: /cache/matplotlib-config
+
   persistence:
     cache:
       enabled: true
@@ -116,47 +121,3 @@ machine-learning:
       size: 10Gi
       accessMode: ReadWriteMany
 
-# controllers:
-#   main:
-#     containers:
-#       main:
-#         image:
-#           tag: v3.1.0 # main Immich server container | This release marks the first stable version of Immich
-#         resources:
-#           requests:
-#             cpu: 500m
-#             memory: 512Mi
-#           limits:
-#             cpu: "2"
-#             memory: 2Gi
-#         env:
-#           # Add the env vars to connect to your database here. - These are created automatically by CNPG
-#           DB_HOSTNAME:
-#             valueFrom:
-#               secretKeyRef:
-#                 name: immich-database-app
-#                 key: host
-#           DB_USERNAME:
-#             valueFrom:
-#               secretKeyRef:
-#                 name: immich-database-app
-#                 key: user
-#           DB_PASSWORD:
-#             valueFrom:
-#               secretKeyRef:
-#                 name: immich-database-app
-#                 key: password
-#           DB_DATABASE_NAME:
-#             valueFrom:
-#               secretKeyRef:
-#                 name: immich-database-app
-#                 key: dbname
-# immich:
-#   persistence:
-#     # This is where all photos & videos stored in Immich will LIVE
-#     # This is the most important PVC in the whole setup
-#     library:
-#       existingClaim: immich-library-pvc
-
-# valkey:
-#   enabled: true # Background jobs, Caching & Queue processing - recommended to enable
