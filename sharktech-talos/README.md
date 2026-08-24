@@ -200,6 +200,85 @@ Might be worth having a pulse site to reference, whoami does that
 
 Follow README in whoami folder
 
+## JuiceFS
+We will setup Juice on the bastion box
+
+Bucketname on Sharktech = ``juicefs-sharktech``
+
+### Install v1.4x
+```
+curl -sSL https://d.juicefs.com/install | sh -
+
+sudo mkdir -p /opt/juicefs
+sudo juicefs format \
+    --storage s3 \
+    --bucket https://juicefs-sharktech.s3.lax.sharktech.net \
+    --access-key <access-key here> \
+    --secret-key <secret key here> \
+    sqlite3:///opt/juicefs/myjfs.db \
+    juicefs
+```
+Should see **``Volume is formated as ...``**
+
+### Create systemd.service
+```
+sudo nano /etc/systemd/system/juicefs.service
+```
+```
+[Unit]
+Description=JuiceFS FUSE Mount
+Before=nfs-server.service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/juicefs mount sqlite3:///opt/juicefs/myjfs.db /mnt/juicefs \
+    --writeback \
+    --o writeback_cache 
+ExecStop=/bin/fusermount -u /mnt/juicefs
+Restart=on-failure
+
+[Install]
+WantedBy=remote-fs.target
+WantedBy=multi-user.target
+```
+## Enable and Start the services
+```
+systemctl enable juicefs.service --now
+```
+
+If no errors, check ```/mnt/juicefs``` exists
+
+## NFS Server
+```apt install nfs-kernel-server```
+
+### Create NFS exports
+Make folders under /mnt/juicefs
+
+```
+/mnt/juicefs/talos
+```
+
+update ```/etc/exports```
+```
+/mnt/juicefs/talos 192.168.50.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
+```
+
+### export NFS mounts
+```
+sudo exportfs -ra
+```
+
+## NFS Storage
+https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner#with-helm
+
+```
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+helm repo update
+helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs-juice.yaml
+```
+
 
 ## Talos Upgrades
 Current Sharktech template is v1.13.5

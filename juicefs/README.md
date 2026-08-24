@@ -81,26 +81,28 @@ Restart=on-failure
 WantedBy=remote-fs.target
 WantedBy=multi-user.target
 ```
-## Enable and Start the services
+## Start service, check for mount and Enable
 ```
-systemctl enable juicefs.service --now
+sudo systemctl start juicefs.service
+sudo systemctl enable juicefs.service
 ```
-
-If no errors, check ```/mnt/juicefs``` exists
+check ```/mnt/juicefs``` exists
 
 ## NFS Server
-```apt install nfs-kernel-server```
+```
+sudo apt install nfs-kernel-server
+```
 
 ### Create NFS exports
 Make folders under /mnt/juicefs
 
 ```
-/mnt/juicefs/talos
+sudo mkdir -p /mnt/juicefs/talos-sharktech
 ```
 
 update ```/etc/exports```
 ```
-/mnt/juicefs/talos 192.168.100.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
+/mnt/juicefs/talos 192.168.50.10/32(rw,sync,no_subtree_check,fsid=2,no_root_squash)
 ```
 
 ### export NFS mounts

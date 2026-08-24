@@ -1,0 +1,8 @@
+nfs:
+  server: 192.168.50.1
+  path: /mnt/juicefs/talos-sharktech
+
+storageClass:
+  name: nfs
+  defaultClass: true
+  archiveOnDelete: false
