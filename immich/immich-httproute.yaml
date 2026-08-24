@@ -9,7 +9,7 @@ spec:
       namespace: traefik
       sectionName: http
   hostnames:
-    - photos.3756home.org
+    - pics.3756home.org
   rules:
     - filters:
         - type: RequestRedirect
@@ -30,7 +30,7 @@ spec:
     namespace: traefik
     sectionName: immich-https
   hostnames:
-  - photos.3756home.org
+  - pics.3756home.org
   rules:
   - matches:
     - path:

@@ -35,3 +35,12 @@ kubectl apply -f immich-hpa-server.yaml
 kubectl apply -f immich-httproute.yaml
 ```
 
+# Migration to pics.3756home.org
+
+use Immich-go.exe v0.32.0 because of V3 of Immich
+
+```
+.\immich-go upload from-immich `
+  --from-server=https://photos.3756home.org --from-api-key=old-key `
+  --server=https://pics.3756home.org --api-key=new-key
+```

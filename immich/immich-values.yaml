@@ -3,7 +3,7 @@ controllers:
     containers:
       main:
         image:
-          tag: v2.7.5 # main Immich server container | This release marks the first stable version of Immich
+          tag: v3.1.0 # main Immich server container | This release marks the first stable version of Immich
         resources:
           requests:
             cpu: 500m

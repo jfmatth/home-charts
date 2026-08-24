@@ -53,3 +53,16 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+
+    - name: immich-https
+      protocol: HTTPS
+      port: 443
+      hostname: pics.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: immich-https
+      allowedRoutes:
+        namespaces:
+          from: All
