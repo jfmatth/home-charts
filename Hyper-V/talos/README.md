@@ -44,6 +44,9 @@ Learned a lot about Powershell, how bad it is really, but none-the-less it's wha
 
 
 ## Cilium
+https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium#machine-configuration-prerequisites
+
+
 - Generate the .yaml files
 - Add to ``cp-patch.yaml`` as ``InlineManifests:``  
 (see https://docs.siderolabs.com/kubernetes-guides/advanced-guides/inlinemanifests)

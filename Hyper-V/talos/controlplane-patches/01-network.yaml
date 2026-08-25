@@ -15,7 +15,7 @@ machine:
             gateway: 10.10.10.1
         mtu: 1500
         
-  kubelet:
-    extraArgs:
-      rotate-server-certificates: true
+  # kubelet:
+  #   extraArgs:
+  #     rotate-server-certificates: true
 
