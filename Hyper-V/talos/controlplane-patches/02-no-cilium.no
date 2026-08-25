@@ -2,3 +2,8 @@ cluster:
 
   allowSchedulingOnControlPlanes: true
   
+  inlineManifests:
+    - name: cilium-operator-extra
+      contents: |
+        ---
+        {}
