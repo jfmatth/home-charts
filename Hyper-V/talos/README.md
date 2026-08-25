@@ -32,16 +32,14 @@
 ```
 - Debug requires Enter on various Steps
 
-### Metrics Server
+### Cilium IPPOOL
 ```
-helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
-helm repo update
-helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
+kubectl apply -f cilium-ippool.yaml
 ```
 
 ## Install Workers
 ```
-talosctl apply-config --insecure [IP of Worker] --file .\cluster-configs\worker.yaml
+talosctl apply-config --insecure --node [IP of Worker] --file .\cluster-configs\worker.yaml
 ```
 
 ## Design of folders and scripts
@@ -49,6 +47,14 @@ Learned a lot about Powershell, how bad it is really, but none-the-less it's wha
 
 - control-plane-patches - these are added as individual --patch-control-plane during ``talosctl gen config`` section, so they must not overlap
 
+## Traefik (from Talos docs - https://docs.siderolabs.com/kubernetes-guides/advanced-guides/deploy-traefik#deploy-traefik-as-a-gateway-api)
+```
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+helm upgrade --install traefik traefik/traefik `
+  -n traefik --create-namespace `
+  -f traefik-basic.yaml
+```
 
 ## Cilium
 https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium#machine-configuration-prerequisites
@@ -84,7 +90,6 @@ helm template `
 helm template `
     cilium `
     cilium/cilium `
-    --version 1.18.0 `
     --namespace kube-system `
     --set ipam.mode=kubernetes `
     --set kubeProxyReplacement=true `

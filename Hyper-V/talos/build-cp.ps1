@@ -29,9 +29,8 @@ function Get-ControlPlanePatchArgs {
 $debug = $true
 if ($debug) {Set-StrictMode -Version 3.0} else {Set-StrictMode -off }
 
-$talosConfig = Join-Path $Config.Paths.ConfigDir "talosconfig"
-$kubeconfig  = Join-Path $Config.Paths.ConfigDir "kubeconfig"
-
+$talosConfig = Resolve-Path (join-path $Config.Paths.ConfigDir "talosconfig")
+$kubeconfig  = Resolve-Path (join-path $Config.Paths.ConfigDir "kubeconfig")
 
 Write-Host "Generating Talos files ..."
 # $PatchFile = "@" + $Config.Paths.PatchFile

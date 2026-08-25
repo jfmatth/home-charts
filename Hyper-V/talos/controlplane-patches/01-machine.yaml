@@ -16,7 +16,7 @@ machine:
         mtu: 1500
 
   # this is for Metrics server to work properly, otherwise it will fail with "x509: certificate signed by unknown authority"
-  kubelet:
-    extraArgs:
-      rotate-server-certificates: true
+  # kubelet:
+  #   extraArgs:
+  #     rotate-server-certificates: true
 
