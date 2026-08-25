@@ -4,6 +4,7 @@ controllers:
       main:
         image:
           tag: v3.1.0
+          # tag: v2.7.4
 
         env:
           DB_HOSTNAME:
@@ -100,7 +101,7 @@ server:
               memory: 125Mi
             limits:
               cpu: "2"
-              memory: 2Gi
+              memory: 1Gi
 
   ingress:
     main:
@@ -130,13 +131,13 @@ machine-learning:
             TRANSFORMERS_CACHE: /cache
             HF_XET_CACHE: /cache/huggingface-xet
             MPLCONFIGDIR: /cache/matplotlib-config
-          resources:
-            requests:
-              cpu: 500m
-              memory: 125Mi
-            limits:
-              cpu: "1"
-              memory: 1Gi
+          # resources:
+          #   requests:
+          #     cpu: 500m
+          #     memory: 125Mi
+          #   limits:
+          #     cpu: "1"
+          #     memory: 1Gi
 
   persistence:
     cache:

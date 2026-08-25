@@ -4,14 +4,14 @@ metadata:
   name: immich-database
   namespace: immich
 spec:
-  resources:
-    requests:
-      cpu: "125m"
-      memory: "512Mi"
+  # resources:
+  #   requests:
+  #     cpu: "125m"
+  #     memory: "512Mi"
 
-    limits:
-      cpu: "2"
-      memory: "2Gi"
+  #   limits:
+  #     cpu: "2"
+  #     memory: "2Gi"
 
   instances: 1
 
@@ -26,11 +26,11 @@ spec:
     shared_preload_libraries:
       - "vchord.so"
 
-    parameters:
-      shared_buffers: "512MB"
-      work_mem: "64MB"
-      maintenance_work_mem: "128MB"
-      effective_cache_size: "1GB"
+    # parameters:
+    #   shared_buffers: "512MB"
+    #   work_mem: "64MB"
+    #   maintenance_work_mem: "128MB"
+    #   effective_cache_size: "1GB"
 
   bootstrap:
     initdb:
