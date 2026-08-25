@@ -39,7 +39,6 @@ helm repo update
 helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
 ```
 
-
 ## Install Workers
 ```
 talosctl apply-config --insecure [IP of Worker] --file .\cluster-configs\worker.yaml
@@ -66,7 +65,6 @@ Versions Tested:
 - 1.20.1
 
 ### Generate inline manifests **with Kube-proxy**  
-
 ```
 helm template `
     cilium `
@@ -82,7 +80,6 @@ helm template `
 ```
 
 ### Generate inline manifests **without Kube-proxy**  
-
 ```
 helm template `
     cilium `
@@ -97,4 +94,23 @@ helm template `
     --set cgroup.hostRoot=/sys/fs/cgroup `
     --set k8sServiceHost=localhost `
     --set k8sServicePort=7445 > hold\cilium-nokubeproxy.yaml
+```
+
+### Generate inline manifests **without Kube-proxy and with GatewayAPI**  
+https://docs.cilium.io/en/stable/network/servicemesh/gateway-api/gateway-api/#cilium-gateway-api-support
+
+```
+helm template `
+    cilium `
+    cilium/cilium `
+    --namespace kube-system `
+    --set ipam.mode=kubernetes `
+    --set kubeProxyReplacement=true `
+    --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}" `
+    --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" `
+    --set cgroup.autoMount.enabled=false `
+    --set cgroup.hostRoot=/sys/fs/cgroup `
+    --set k8sServiceHost=localhost `
+    --set gatewayAPI.enabled=true `
+    --set k8sServicePort=7445 > hold\cilium-nokubeproxy-gateway.yaml
 ```
