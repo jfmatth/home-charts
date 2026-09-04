@@ -1,4 +1,5 @@
-# Talos under Hyper-V lab
+# Talos under Hyper-V lab **WIP**
+
 
 ## Requirements
 - LabSwitch from this guide
@@ -32,7 +33,12 @@
 ```
 - Debug requires Enter on various Steps
 
-### Cilium IPPOOL
+After healthcheck passes, two pods will not start, core-dns due to no network yet.
+
+### Cilium 
+- Install Cilium via HELM (see Talos folder)
+
+
 ```
 kubectl apply -f cilium-ippool.yaml
 ```

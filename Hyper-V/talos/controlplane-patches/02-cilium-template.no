@@ -1,0 +1,16 @@
+## Testing Cilium 
+
+cluster:
+  # 
+  # Cilium
+  # 
+  network:
+    cni:
+      name: none
+
+  allowSchedulingOnControlPlanes: true
+  
+  # https://docs.siderolabs.com/kubernetes-guides/cni/deploying-cilium#method-2-helm
+  inlineManifests:
+    - name: Cilium
+      contents: |

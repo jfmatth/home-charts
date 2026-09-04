@@ -80,7 +80,7 @@ As of Traefik, gateway CRD's need to be installed
 
 Standard
 ```
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/standard-install.yaml
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/standard-install.yaml
 ```
 Experimental (needed for Minecraft TCPRoute)  
 ```

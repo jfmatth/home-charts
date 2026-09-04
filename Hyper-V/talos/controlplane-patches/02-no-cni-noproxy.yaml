@@ -1,0 +1,15 @@
+cluster:
+  # Cilium
+  # 
+  network:
+    cni:
+      name: none
+  proxy:
+    disabled: true
+
+  allowSchedulingOnControlPlanes: true
+
+  extraManifests:
+  # 
+  # Gateway APIs
+  - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/standard-install.yaml
