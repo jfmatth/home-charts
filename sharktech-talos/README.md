@@ -7,7 +7,27 @@ Sharktech 1x2, Ubuntu 25.10
 ``eth0`` = Public IP  
 ``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
 
-### Talos / Helm / Cilium / Kubectl
+### UFW
+```
+sudo ufw enable
+sudo ufw allow ssh
+sudo ufw logging low
+```
+### SSH
+
+Lockdown  
+```
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+```
+``sudo systemctl reload sshd``
+
+Check Journalctl ``journalctl -f``
+
+### Install software
+
+Talos / Kubectl / helm / cilium
 ```
 curl -sL https://talos.dev/install | sh
 wget https://get.helm.sh/helm-v4.2.3-linux-amd64.tar.gz && \
@@ -64,7 +84,6 @@ sudo ufw route allow proto tcp to 192.168.50.10 port 6443
 sudo ufw route allow proto tcp from 192.168.50.10 port 80
 sudo ufw route allow proto tcp from 192.168.50.10 port 443
 sudo ufw route allow proto tcp from 192.168.50.10 port 6443
-
 
 sudo ufw reload
 ```
