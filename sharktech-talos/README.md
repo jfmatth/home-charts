@@ -41,8 +41,11 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 ```
 
 ### UFW Changes: Fowarding, DNAT and masquerading
+
+IPv4 Forwarding
 ```
-sudo printf "%s\n" "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-bastion.conf
+sudo nano /etc/sysctl.d/99-bastion.conf
+net.ipv4.ip_forward=1
 sudo sysctl --system
 ```
 
