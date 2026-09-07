@@ -2,7 +2,7 @@
 
 ## Bastion host
 **Architecture**
-Sharktech 1x2, Ubuntu 25.10
+Sharktech 1x2, Ubuntu 25.10 (you should do a release upgrade to 26.10 ``do-release-upgrade``)
 
 ``eth0`` = Public IP  
 ``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
@@ -15,15 +15,19 @@ sudo ufw logging low
 ```
 ### SSH
 
-Lockdown  
+**Remove** all pre-generated sshd config files in ``/etc/ssh/sshd_config.d/``.  
+
+Create a file ``/etc/ssh/sshd_config.d/00-lockdown.conf
 ```
 PermitRootLogin no
 PasswordAuthentication no
 PubkeyAuthentication yes
+
+AllowUsers john jfmatth
 ```
 ``sudo systemctl reload sshd``
 
-Check Journalctl ``journalctl -f``
+Check Journalctl ``journalctl -f``.  You should see a lot of denied logings with [preauth]
 
 ### Install software
 
@@ -38,6 +42,12 @@ helm repo update
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     sudo install kubectl /usr/local/bin && \
     rm kubectl 
+```
+
+Modify ``~\.bash_aliases`` for convenience
+```
+alias t=talosctl
+alias k=kubectl
 ```
 
 ### UFW Changes: Fowarding, DNAT and masquerading
