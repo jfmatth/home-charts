@@ -2,10 +2,12 @@
 
 ## Bastion host
 **Architecture**
-Sharktech 1x2, Ubuntu 25.10 (you should do a release upgrade to 26.10 ``do-release-upgrade``)
-
+Sharktech 1x2, Ubuntu 25.10  
 ``eth0`` = Public IP  
 ``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
+
+- you should do a release upgrade to 26.10 ``do-release-upgrade``
+    - need to remove default g/w on vnet - see ``/etc/netplan/50*.conf``
 
 ### UFW
 ```
@@ -18,6 +20,11 @@ sudo ufw logging low
 **Remove** all pre-generated sshd config files in ``/etc/ssh/sshd_config.d/``.  
 
 Create a file ``/etc/ssh/sshd_config.d/00-lockdown.conf
+```
+sudo rm /etc/ssh/sshd_config.d/*
+sudo nano /etc/ssh/sshd_config.d/00-lockdown.conf
+```
+
 ```
 PermitRootLogin no
 PasswordAuthentication no
@@ -66,6 +73,12 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 
 ```
 sudo sysctl --system
+```
+
+Copy existing UFW rules
+```
+sudo cp /etc/default/ufw /etc/default/ufw.orig
+sudo cp /etc/ufw/before.rules /etc/ufw/before.rules.orig
 ```
 
 Change forward policy default
