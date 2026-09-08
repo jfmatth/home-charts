@@ -36,6 +36,15 @@ AllowUsers john jfmatth
 
 Check Journalctl ``journalctl -f``.  You should see a lot of denied logings with [preauth]
 
+### Remove un-needed services
+```
+sudo systemctl disable multipathd.service --now
+sudo systemctl disable ModemManager.service --now
+```
+
+### Un-attended updates (Security only)
+
+
 ### Install software
 
 Talos / Kubectl / helm / cilium
