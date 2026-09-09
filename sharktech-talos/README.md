@@ -1,4 +1,8 @@
 # Talos on SharkTech
+**Talos 1.13.10 ONLY**
+
+Might want to add the QEMU installer on the initial install so we get the features via the control panel?
+
 
 ## Bastion host
 **Architecture**
@@ -47,9 +51,12 @@ sudo systemctl disable ModemManager.service --now
 
 ### Install software
 
+**Need to update for Talos 1.13.x**
+
+
 Talos / Kubectl / helm / cilium
 ```
-curl -sL https://talos.dev/install | sh
+curl -sL https://talos.dev/install
 wget https://get.helm.sh/helm-v4.2.3-linux-amd64.tar.gz && \
     tar xvfz helm-v4.2.3-linux-amd64.tar.gz && \
     sudo install linux-amd64/helm /usr/local/bin/
@@ -189,14 +196,14 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 ### Cillium
 ```
 helm install cilium cilium/cilium --namespace kube-system -f cilium-values.yaml --version 1.18.13
-sleep 5
+sleep 15
 kubectl apply -f cilium-announce.yaml
 
 ```
 
 Test cluster health
 ```
-talosctl --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig health
+talosctl health
 ```
 
 
@@ -268,6 +275,8 @@ We will setup Juice on the bastion box
 
 Bucketname on Sharktech = ``juicefs-sharktech``
 
+**Need Secret Keys**
+
 ### Install v1.4x
 ```
 curl -sSL https://d.juicefs.com/install | sh -
@@ -308,29 +317,35 @@ WantedBy=multi-user.target
 ```
 ## Enable and Start the services
 ```
-systemctl enable juicefs.service --now
+sudo systemctl enable juicefs.service --now
 ```
 
 If no errors, check ```/mnt/juicefs``` exists
 
 ## NFS Server
-```apt install nfs-kernel-server```
+```sudo apt install nfs-kernel-server```
 
 ### Create NFS exports
 Make folders under /mnt/juicefs
 
 ```
-/mnt/juicefs/talos
+sudo mkdir -p /mnt/juicefs/talos-sharktech
 ```
 
 update ```/etc/exports```
 ```
-/mnt/juicefs/talos 192.168.50.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
+/mnt/juicefs/talos-sharktech 192.168.50.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
 ```
 
 ### export NFS mounts
 ```
 sudo exportfs -ra
+```
+
+### Firewall rules (NFS v4)
+```
+sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto tcp
+sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto udp
 ```
 
 ## NFS Storage
@@ -346,7 +361,7 @@ helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-pro
 ## Talos Upgrades
 Current Sharktech template is v1.13.5
 
-Upgrade to 1.13.6 via https://docs.siderolabs.com/talos/v1.13/configure-your-talos-cluster/lifecycle-management/upgrading-talos#upgrade-api-changes-in-talos-v1-13
+Upgrade to 1.13.* via https://docs.siderolabs.com/talos/v1.13/configure-your-talos-cluster/lifecycle-management/upgrading-talos#upgrade-api-changes-in-talos-v1-13
 
 ```
 talosctl upgrade --nodes 192.168.50.10 --reboot-mode force
