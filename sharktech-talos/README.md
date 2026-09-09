@@ -359,12 +359,12 @@ helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-pro
 
 
 ## Talos Upgrades
-Current Sharktech template is v1.13.5
 
-Upgrade to 1.13.* via https://docs.siderolabs.com/talos/v1.13/configure-your-talos-cluster/lifecycle-management/upgrading-talos#upgrade-api-changes-in-talos-v1-13
+[Upgrade to v1.13.10](https://factory.talos.dev/?arch=amd64&platform=nocloud&schematic-id=3cbe47354d9e61120789577b809fd5738aa607b0afbab74abb10216a4da57903&target=cloud&version=1.13.10)
 
 ```
-talosctl upgrade --nodes 192.168.50.10 --reboot-mode force
+talosctl upgrade \
+  --image factory.talos.dev/nocloud-installer/3cbe47354d9e61120789577b809fd5738aa607b0afbab74abb10216a4da57903:v1.13.10 
 ```
 
 ## Talos resets on ST
