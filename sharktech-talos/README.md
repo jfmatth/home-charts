@@ -13,6 +13,9 @@ Sharktech 1x2, Ubuntu 25.10
 - you should do a release upgrade to 26.10 ``do-release-upgrade``
     - need to remove default g/w on vnet - see ``/etc/netplan/50*.conf``
 
+(See Hyper-V/SharkTech-Dev to build the dev environment on laptop)
+
+
 ### UFW
 ```
 sudo ufw enable
