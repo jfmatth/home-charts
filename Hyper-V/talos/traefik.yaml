@@ -3,7 +3,7 @@
 providers:
   kubernetesGateway:
     enabled: true
-    experimentalChannel: false
+    experimentalChannel: true
   
   kubernetesIngress:
     enabled: false
@@ -23,6 +23,7 @@ ports:
         writeTimeout: 50000s
         readTimeout: 50000s
 
+<<<<<<< HEAD
   # # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#deploy-multiple-gateways-with-a-single-traefik-deploymentdaemonset
   # minecraft:
   #   port: 25565
@@ -30,6 +31,15 @@ ports:
   #   expose:
   #     default: true
   #   protocol: TCP
+=======
+  # https://github.com/traefik/traefik-helm-chart/blob/master/EXAMPLES.md#deploy-multiple-gateways-with-a-single-traefik-deploymentdaemonset
+  minecraft:
+    port: 25565
+    exposedPort: 25565
+    expose:
+      default: true
+    protocol: TCP
+>>>>>>> 93c2a80 (misc.)
 
 # if we wanted Traefik to maintain the gateway.yaml file, we could do it here.
 gateway:

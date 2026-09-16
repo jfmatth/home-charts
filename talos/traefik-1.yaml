@@ -1,0 +1,28 @@
+providers:
+  kubernetesIngress:
+    enabled: false
+  kubernetesGateway:
+    enabled: true
+  kubernetesCRD:
+    enabled: false
+
+service:
+  type: ClusterIP  # No LoadBalancer; Cilium handles external traffic
+
+ports:
+  web:
+    port: 8111
+
+gateway:
+  listeners:
+    web:
+      port: 8111
+
+
+# Optional: Enable logs and metrics
+logs:
+  general:
+    level: INFO
+metrics:
+  prometheus:
+    enabled: true

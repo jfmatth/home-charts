@@ -1,0 +1,115 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik-gateway
+  namespace: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: clusterissuer
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+
+# Just a placeholder, all certs will come from the gateway
+    - name: edge-https
+      protocol: HTTPS
+      port: 443
+      hostname: edge.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: edge-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: immich-https
+      protocol: HTTPS
+      port: 443
+      hostname: photos.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: immich-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: mc-router
+      protocol: TCP
+      port: 25565
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: matthewmechanical-https
+      protocol: HTTPS
+      port: 443
+      hostname: matthewmechanical.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: matthewmechanical-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: justneverlift-https
+      protocol: HTTPS
+      port: 443
+      hostname: justneverlift.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: justneverlift-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: images-https
+      protocol: HTTPS
+      port: 443
+      hostname: images.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: images-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: stocksonthebeach-https
+      protocol: HTTPS
+      port: 443
+      hostname: stocksonthebeach.com
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: stocksonthebeach-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: drmblog-test-https
+      protocol: HTTPS
+      port: 443
+      hostname: test.drmatthew.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: drmblog-test-https
+      allowedRoutes:
+        namespaces:
+          from: All
