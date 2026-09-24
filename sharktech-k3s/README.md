@@ -49,6 +49,7 @@ sudo nano /etc/sysctl.d/99-bastion.conf
 ```
 
 ```
+net.ipv4.ip_forward = 1
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
@@ -100,3 +101,43 @@ After install you need to do the following:
     ```
     sudo systemctl restart datadog-agent
     ```
+
+## K3s install
+- Turn off firewall blocking
+```
+sudo sed -i 's/^DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
+sudo ufw reload
+```
+
+- Create a config.yaml file
+```
+sudo mkdir -p /etc/rancher/k3s
+sudo nano /etc/rancher/k3s/config.yaml
+```
+```
+disable:
+- local-storage
+- metrics-server
+
+write-kubeconfig-mode: "0644"
+write-kubeconfig "/home/jfmatth/.kube/config"
+
+tls-san:
+- "k8s.3756home.org"
+```
+
+- Install
+```
+curl -sfL https://get.k3s.io | sh -
+```
+
+### Datadog for k3s
+- Install Helm
+```
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
+```
+
+- Datadog Operator
+https://us5.datadoghq.com/fleet/install-agent/latest?platform=kubernetes
+
+
