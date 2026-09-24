@@ -76,10 +76,12 @@ After install you need to do the following:
     ```    
 - Enable journald entries and disable datadog-agent logs  
     ``/etc/datadog-agent/conf.d/journald.d/conf.yaml``
+    ``/etc/datadog/conf.d/journald.d/conf.yaml``
     ```
     logs:
     - type: journald
         container_mode: true
+        
         exclude_units:
         - datadog-agent.service
     ```
@@ -264,3 +266,4 @@ sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto tcp
 sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto udp
 ```
 
+    ```
