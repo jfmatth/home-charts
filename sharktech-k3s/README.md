@@ -6,9 +6,6 @@ Sharktech 4x8, Ubuntu 25.10
 
 ``eth0`` = Public IP  
 
-- you should do a release upgrade to 26.10 ``do-release-upgrade``
-
-
 ### UFW
 ```
 sudo ufw enable
@@ -52,7 +49,6 @@ sudo nano /etc/sysctl.d/99-bastion.conf
 ```
 
 ```
-net.ipv4.ip_forward=1
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
@@ -61,3 +57,46 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 ```
 sudo sysctl --system
 ```
+
+## Datadog install
+
+Goto the Linux Install agent page
+https://us5.datadoghq.com/fleet/install-agent/latest?platform=linux
+
+After install you need to do the following:
+- Adjust so logs are captured  
+    ``datadog.yaml``
+    ```
+    logs_enabled: true
+    ```
+- Add datadog to the systemd-journal group
+    ```
+    sudo usermod -a -G systemd-journal dd-agent
+    ```    
+- Enable journald entries and disable datadog-agent logs  
+    ``/etc/datadog/conf.d/journald.d/conf.yaml``
+    ```
+    logs:
+    - type: journald
+        container_mode: true
+        
+        exclude_units:
+        - datadog-agent.service
+    ```
+<!-- - Create UFW logging
+    ```
+    sudo -u dd-agent mkdir /etc/datadog/config.d/ufw.d
+    sudo nano /etc/datadog/config.d/ufw.d/conf.yaml
+    ```
+    ```
+    logs:
+      - type: file
+        path: /var/log/ufw.log
+        service: ufw
+        source: ufw
+        pipeline: ufw-pipeline
+    ``` -->
+- Restart the datadog agent
+    ```
+    sudo systemctl restart datadog-agent
+    ```
