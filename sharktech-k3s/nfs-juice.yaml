@@ -1,0 +1,8 @@
+nfs:
+  server: k3s-1
+  path: /mnt/juicefs/sharktech
+
+storageClass:
+  name: nfs
+  defaultClass: true
+  archiveOnDelete: false
