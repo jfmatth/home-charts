@@ -75,12 +75,11 @@ After install you need to do the following:
     sudo usermod -a -G systemd-journal dd-agent
     ```    
 - Enable journald entries and disable datadog-agent logs  
-    ``/etc/datadog/conf.d/journald.d/conf.yaml``
+    ``/etc/datadog-agent/conf.d/journald.d/conf.yaml``
     ```
     logs:
     - type: journald
         container_mode: true
-        
         exclude_units:
         - datadog-agent.service
     ```
