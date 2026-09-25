@@ -120,7 +120,7 @@ disable:
 - metrics-server
 
 write-kubeconfig-mode: "0644"
-write-kubeconfig "/home/jfmatth/.kube/config"
+write-kubeconfig: "/home/jfmatth/.kube/config"
 
 tls-san:
 - "k8s.3756home.org"
