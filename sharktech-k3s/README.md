@@ -101,6 +101,71 @@ After install you need to do the following:
     sudo systemctl restart datadog-agent
     ```
 
+## JuiceFS
+We will setup Juice on the bastion box
+
+Bucketname on Sharktech = ``juicefs-sharktech``
+
+**Need Secret Keys**
+
+### Install v1.4x
+```
+curl -sSL https://d.juicefs.com/install | sh -
+
+sudo mkdir -p /opt/juicefs
+sudo juicefs format \
+    --storage s3 \
+    --bucket https://juicefs-sharktech.s3.lax.sharktech.net \
+    --access-key <access-key here> \
+    --secret-key <secret key here> \
+    sqlite3:///opt/juicefs/myjfs.db \
+    juicefs
+```
+Should see **``Volume is formated as ...``**
+
+### Create systemd.service
+```
+sudo nano /etc/systemd/system/juicefs.service
+```
+```
+[Unit]
+Description=JuiceFS FUSE Mount
+Before=nfs-server.service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/juicefs mount sqlite3:///opt/juicefs/myjfs.db /mnt/juicefs \
+    --writeback \
+    --o writeback_cache 
+ExecStop=/bin/fusermount -u /mnt/juicefs
+Restart=on-failure
+
+[Install]
+WantedBy=remote-fs.target
+WantedBy=multi-user.target
+```
+## Enable and Start the services
+```
+sudo systemctl enable juicefs.service --now
+```
+
+If no errors, check ```/mnt/juicefs``` exists
+
+## NFS Server
+```sudo apt install nfs-kernel-server```
+
+### Create NFS exports
+Make folders under /mnt/juicefs
+
+```
+sudo mkdir -p /mnt/juicefs/sharktech
+```
+
+update ```/etc/exports```
+```
+
 ## K3s install
 - Turn off firewall blocking
 ```
@@ -117,6 +182,7 @@ sudo nano /etc/rancher/k3s/config.yaml
 disable:
 - local-storage
 - metrics-server
+- traefik
 
 write-kubeconfig-mode: "0644"
 write-kubeconfig: "/home/jfmatth/.kube/config"
@@ -130,7 +196,7 @@ tls-san:
 curl -sfL https://get.k3s.io | sh -
 ```
 
-###  Traefik Gateway API
+###  Traefik Gateway API (by k3s standards)
 https://docs.k3s.io/networking/networking-services#gateway-api
 
 As of Traefik, gateway CRD's need to be installed
@@ -144,21 +210,13 @@ Experimental (needed for Minecraft TCPRoute)
 kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
 ```
 
-Create a HelmChartConfig ``/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml``  
-
 ```
----
-apiVersion: helm.cattle.io/v1
-kind: HelmChartConfig
-metadata:
-  name: traefik
-  namespace: kube-system
-spec:
-  valuesContent: |-
-    providers:
-      kubernetesGateway:
-        enabled: true
-        experimentalChannel: true (read warning below)
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+
+kubectl apply -f traefik-namespace.yaml
+helm install traefik traefik/traefik -f traefik-values.yaml -n traefik
+kubectl apply -f traefik-gateway.yaml
 ```
 
 
