@@ -130,6 +130,38 @@ tls-san:
 curl -sfL https://get.k3s.io | sh -
 ```
 
+###  Traefik Gateway API
+https://docs.k3s.io/networking/networking-services#gateway-api
+
+As of Traefik, gateway CRD's need to be installed
+
+Standard
+```
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/standard-install.yaml
+```
+Experimental (needed for Minecraft TCPRoute)  
+```
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
+```
+
+Create a HelmChartConfig ``/var/lib/rancher/k3s/server/manifests/k3s-traefik-config.yaml``  
+
+```
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    providers:
+      kubernetesGateway:
+        enabled: true
+        experimentalChannel: true (read warning below)
+```
+
+
 ### Datadog for k3s
 - Install Helm
 ```
