@@ -15,7 +15,6 @@ spec:
         namespaces:
           from: All
 
-
     - name: whoami-https
       protocol: HTTPS
       port: 443
@@ -28,3 +27,17 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+
+    - name: pics-immich-https
+      protocol: HTTPS
+      port: 443
+      hostname: pics.3756home.org
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: pics-immich-https
+      allowedRoutes:
+        namespaces:
+          from: All
+
