@@ -1,5 +1,47 @@
 # K3s on SharkTech
 
+**Architecture**
+
+- K3s Control-Plane
+    - 2x2
+    - 2 NICs (public, private)
+        - ``eth0`` = Public IP  
+        - ``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
+
+    - NFS
+    -  Sharktech 2x2x20, Ubuntu 25.10
+    - K3s CP
+    - tainted for kube workloads only + LB / Gateway
+
+- K3s Nodes x 2
+    - 3 x 7
+    - private NIC
+    - K3s node
+
+## Control Plane / Router
+
+- Wait for updates to complete
+- Remove the default route from the netplan file that was created, due to the DGW on the vlan
+    - Remove the default route on eth1
+    ```
+    sudo nano /etc/netplan/50-cloud-init.yaml
+    sudo netplan apply
+    ping google.com
+    ```
+- Since it couldn't reach the net for updates, you need to update the system first
+```
+sudo apt-get update && sudo apt-get upgrade -y
+```
+
+### UFW Changes: Fowarding, DNAT and masquerading
+- Enable UFW
+```
+sudo ufw enable
+sudo ufw logging low
+sudo ufw allow ssh
+```
+
+
 ## host
 **Architecture**
 Sharktech 4x8, Ubuntu 25.10
