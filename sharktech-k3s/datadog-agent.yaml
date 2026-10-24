@@ -5,7 +5,7 @@ metadata:
   namespace: "datadog"
 spec:
   global:
-    clusterName: "sharktech"
+    clusterName: "stk3s"
     site: "us5.datadoghq.com"
     credentials:
       apiSecret:

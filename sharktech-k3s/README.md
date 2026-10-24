@@ -18,8 +18,13 @@
     - private NIC
     - K3s node
 
-## Control Plane / Router
+- K3sup to install k3s
 
+# Build VM's
+
+## Control Plane (k3s-cp-1)
+### Sharktech
+    - LOS / PublicIP / 1x2 / Private VLAN attached / Ubuntu 25.10 / jfmatth /keys
 - Wait for updates to complete
 - Remove the default route from the netplan file that was created, due to the DGW on the vlan
     - Remove the default route on eth1
@@ -33,9 +38,7 @@
 sudo apt-get update && sudo apt-get upgrade -y
 ```
 
-
 ### SSH
-
 **Remove** all pre-generated sshd config files in ``/etc/ssh/sshd_config.d/``.  
 
 Create a file ``/etc/ssh/sshd_config.d/00-lockdown.conf
@@ -61,7 +64,10 @@ Check Journalctl ``journalctl -f``.  You should see a lot of denied logings with
 sudo systemctl disable multipathd.service --now
 sudo systemctl disable ModemManager.service --now
 ```
-### Un-attended updates (Security only)
+ 
+ 
+ 
+ ### Un-attended updates (Security only)
 
 ### Network 
 
@@ -110,7 +116,7 @@ COMMIT
 sudo ufw reload
 ```
 
-## Datadog install
+### Datadog install
 
 Goto the Linux Install agent page
 https://us5.datadoghq.com/fleet/install-agent/latest?platform=linux
@@ -140,40 +146,116 @@ After install you need to do the following:
     sudo systemctl restart datadog-agent
     ```
 
-## Juice / NFS install - See below
+### Juice / NFS install - See below
 
 
-## K3s install
-<!-- - Turn off firewall blocking
-```
-sudo sed -i 's/^DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
-sudo ufw reload
-``` -->
+## Node 1 and Node 2
+**Remove** all pre-generated sshd config files in ``/etc/ssh/sshd_config.d/``.  
 
-- Create a config.yaml file
+Create a file ``/etc/ssh/sshd_config.d/00-lockdown.conf
 ```
-sudo mkdir -p /etc/rancher/k3s
-sudo nano /etc/rancher/k3s/config.yaml
-```
-```
-disable:
-- local-storage
-- metrics-server
-- traefik
-
-write-kubeconfig-mode: "0644"
-write-kubeconfig: "/home/jfmatth/.kube/config"
-
-node-ip: 192.168.50.1
-
-tls-san:
-- "k8s.3756home.org"
+sudo rm /etc/ssh/sshd_config.d/*
+sudo nano /etc/ssh/sshd_config.d/00-lockdown.conf
 ```
 
-- Install
 ```
-curl -sfL https://get.k3s.io | sh -
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+
+AllowUsers john jfmatth
 ```
+```
+sudo systemctl reload sshd
+```
+Check Journalctl ``journalctl -f``.  You should see a lot of denied logings with [preauth]
+
+### Remove un-needed services
+```
+sudo systemctl disable multipathd.service --now
+sudo systemctl disable ModemManager.service --now
+```
+### IP Stuff
+```
+sudo nano /etc/sysctl.d/99-node.conf
+```
+
+```
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+```
+```
+sudo sysctl --system
+```
+
+
+### Datadog install
+
+Goto the Linux Install agent page
+https://us5.datadoghq.com/fleet/install-agent/latest?platform=linux
+
+After install you need to do the following:
+- Adjust so logs are captured  
+    ``datadog.yaml``
+    ```
+    logs_enabled: true
+    ```
+- Add datadog to the systemd-journal group
+    ```
+    sudo usermod -a -G systemd-journal dd-agent
+    ```    
+- Enable journald entries and disable datadog-agent logs  
+    ``/etc/datadog-agent/conf.d/journald.d/conf.yaml``
+    ```
+    logs:
+    - type: journald
+        container_mode: true
+        exclude_units:
+        - datadog-agent.service
+    ```
+
+- Restart the datadog agent
+    ```
+    sudo systemctl restart datadog-agent
+    ```
+
+# K3s install
+
+## K3sup
+- From k3sup install page
+```
+curl -sLS https://get.k3sup.dev | sh
+sudo install k3sup /usr/local/bin/
+k3sup --help
+```
+
+```
+cpIP=192.168.50.1
+node1=192.168.50.10
+node2=192.168.50.20
+user=jfmatth
+k3sup install \
+  --ip $cpIP \
+  --user $user \
+  --local-path ~/.kube/config \
+  --context default \
+  --merge \
+  --k3s-extra-args '--disable local-storage,metrics-server,traefik --tls-san k8s.3756home.org'
+
+k3sup join \
+  --ip $node1 \
+  --server-ip $cpIP \
+  --user $user
+
+k3sup join \
+  --ip $node2 \
+  --server-ip $cpIP \
+  --user $user
+```
+
+copy ~/.kube/config to local workstation
+
 
 ###  Traefik Gateway API (by k3s standards)
 https://docs.k3s.io/networking/networking-services#gateway-api
@@ -209,20 +291,12 @@ helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-pro
 
 
 ### Datadog for k3s
-- Install Helm
-```
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
-```
-
 - Datadog Operator
 https://us5.datadoghq.com/fleet/install-agent/latest?platform=kubernetes
 
 
 ## Certmanager
 - See certmanager folder
-
-
-
 
 
 
