@@ -33,27 +33,7 @@
 sudo apt-get update && sudo apt-get upgrade -y
 ```
 
-### UFW Changes: Fowarding, DNAT and masquerading
-- Enable UFW
-```
-sudo ufw enable
-sudo ufw logging low
-sudo ufw allow ssh
-```
 
-
-## host
-**Architecture**
-Sharktech 4x8, Ubuntu 25.10
-
-``eth0`` = Public IP  
-
-### UFW
-```
-sudo ufw enable
-sudo ufw allow ssh
-sudo ufw logging low
-```
 ### SSH
 
 **Remove** all pre-generated sshd config files in ``/etc/ssh/sshd_config.d/``.  
@@ -71,8 +51,9 @@ PubkeyAuthentication yes
 
 AllowUsers john jfmatth
 ```
-``sudo systemctl reload sshd``
-
+```
+sudo systemctl reload sshd
+```
 Check Journalctl ``journalctl -f``.  You should see a lot of denied logings with [preauth]
 
 ### Remove un-needed services
@@ -80,7 +61,6 @@ Check Journalctl ``journalctl -f``.  You should see a lot of denied logings with
 sudo systemctl disable multipathd.service --now
 sudo systemctl disable ModemManager.service --now
 ```
-
 ### Un-attended updates (Security only)
 
 ### Network 
@@ -96,9 +76,38 @@ net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 ```
-
 ```
 sudo sysctl --system
+```
+### UFW Changes
+- Enable UFW
+```
+sudo ufw enable
+sudo ufw logging low
+sudo ufw allow ssh
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow in on eth1
+sudo ufw allow out on eth0
+sudo ufw route allow in on eth1 out on eth0
+sudo ufw route allow in on eth0 out on eth1
+sudo ufw allow 6443/tcp #apiserver
+sudo ufw allow from 10.42.0.0/16 to any #pods
+sudo ufw allow from 10.43.0.0/16 to any #services
+```
+
+- Edit rules
+```
+sudo nano /etc/ufw/before.rules
+```
+```
+*nat
+:POSTROUTING ACCEPT [0:0]
+-A POSTROUTING -s 192.168.50.0/24 -o eth0 -j MASQUERADE
+COMMIT
+```
+```
+sudo ufw reload
 ```
 
 ## Datadog install
@@ -125,19 +134,7 @@ After install you need to do the following:
         exclude_units:
         - datadog-agent.service
     ```
-<!-- - Create UFW logging
-    ```
-    sudo -u dd-agent mkdir /etc/datadog/config.d/ufw.d
-    sudo nano /etc/datadog/config.d/ufw.d/conf.yaml
-    ```
-    ```
-    logs:
-      - type: file
-        path: /var/log/ufw.log
-        service: ufw
-        source: ufw
-        pipeline: ufw-pipeline
-    ``` -->
+
 - Restart the datadog agent
     ```
     sudo systemctl restart datadog-agent
@@ -147,11 +144,11 @@ After install you need to do the following:
 
 
 ## K3s install
-- Turn off firewall blocking
+<!-- - Turn off firewall blocking
 ```
 sudo sed -i 's/^DEFAULT_FORWARD_POLICY=.*/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
 sudo ufw reload
-```
+``` -->
 
 - Create a config.yaml file
 ```
@@ -166,6 +163,8 @@ disable:
 
 write-kubeconfig-mode: "0644"
 write-kubeconfig: "/home/jfmatth/.kube/config"
+
+node-ip: 192.168.50.1
 
 tls-san:
 - "k8s.3756home.org"
