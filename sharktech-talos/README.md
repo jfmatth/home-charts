@@ -1,11 +1,29 @@
-# Talos on SharkTech
+# K3s on SharkTech
 
-## Bastion host
 **Architecture**
-Sharktech 1x2, Ubuntu 25.10
 
-``eth0`` = Public IP  
-``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
+- K3s Control-Plane
+    - 2x2
+    - 2 NICs (public, private)
+        - ``eth0`` = Public IP  
+        - ``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
+
+    - NFS
+    - K3s CP
+    - tainted for kube workloads only + LB / Gateway
+
+- K3s Nodes x 2
+    - 3 x 7
+    - private NIC
+    - K3s node
+
+## Control Plane / Router
+
+Sharktech 2x2x20, Ubuntu 25.10
+
+
+
+
 
 ### Talos / Helm / Cilium / Kubectl
 ```
@@ -157,7 +175,7 @@ helm repo update
 helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
 ```
 
-### Cert-Manager **(Broken right now)**
+### Cert-Manager **(Broken right now)**22
 ```
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
