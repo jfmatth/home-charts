@@ -73,7 +73,8 @@ Wants=network-online.target
 Type=simple
 ExecStart=/usr/local/bin/juicefs mount sqlite3:///opt/juicefs/myjfs.db /mnt/juicefs \
     --writeback \
-    --o writeback_cache 
+    --o writeback_cache \
+    --free-space-ratio .5
 ExecStop=/bin/fusermount -u /mnt/juicefs
 Restart=on-failure
 

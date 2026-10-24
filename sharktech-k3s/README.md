@@ -101,6 +101,9 @@ After install you need to do the following:
     sudo systemctl restart datadog-agent
     ```
 
+## Juice / NFS install - See below
+
+
 ## K3s install
 - Turn off firewall blocking
 ```
@@ -117,6 +120,7 @@ sudo nano /etc/rancher/k3s/config.yaml
 disable:
 - local-storage
 - metrics-server
+- traefik
 
 write-kubeconfig-mode: "0644"
 write-kubeconfig: "/home/jfmatth/.kube/config"
@@ -130,6 +134,39 @@ tls-san:
 curl -sfL https://get.k3s.io | sh -
 ```
 
+###  Traefik Gateway API (by k3s standards)
+https://docs.k3s.io/networking/networking-services#gateway-api
+
+As of Traefik, gateway CRD's need to be installed
+
+Standard
+```
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/standard-install.yaml
+```
+Experimental (needed for Minecraft TCPRoute)  
+```
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
+```
+
+```
+helm repo add traefik https://traefik.github.io/charts
+helm repo update
+
+kubectl apply -f traefik-namespace.yaml
+helm install traefik traefik/traefik -f traefik-values.yaml -n traefik
+kubectl apply -f traefik-gateway.yaml
+```
+
+### NFS Storage
+https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner#with-helm
+
+```
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+helm repo update
+helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs-juice.yaml
+```
+
+
 ### Datadog for k3s
 - Install Helm
 ```
@@ -138,6 +175,15 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 
 - Datadog Operator
 https://us5.datadoghq.com/fleet/install-agent/latest?platform=kubernetes
+
+
+## Certmanager
+- See certmanager folder
+
+
+
+
+
 
 
 ## JuiceFS
@@ -218,11 +264,3 @@ sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto tcp
 sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto udp
 ```
 
-## NFS Storage
-https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner#with-helm
-
-```
-helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
-helm repo update
-helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs-juice.yaml
-```
