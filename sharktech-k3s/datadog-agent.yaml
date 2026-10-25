@@ -19,7 +19,6 @@ spec:
           operator: "Exists"
           effect: "NoSchedule"
 
-
   features:
     clusterChecks:
       enabled: true

@@ -1,11 +1,5 @@
 # Certmanager installation 
 
-
-Taken from Talos Readme.md
-
-https://cert-manager.io/docs/installation/helm/
-
-
 ## Helm install for Certmanager
 
 ```

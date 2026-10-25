@@ -100,6 +100,8 @@ sudo ufw route allow in on eth0 out on eth1
 sudo ufw allow 6443/tcp #apiserver
 sudo ufw allow from 10.42.0.0/16 to any #pods
 sudo ufw allow from 10.43.0.0/16 to any #services
+sudo ufw allow 80
+sudo ufw allow 443
 ```
 
 - Edit rules
@@ -288,6 +290,13 @@ kubectl apply -f traefik-gateway.yaml
 - Datadog Operator
 https://us5.datadoghq.com/fleet/install-agent/latest?platform=kubernetes
 
+### Certmanager
+- See certmanager folder
+
+
+
+
+VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV  Unvalidated VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
 ### NFS Storage (requires JuiceFS above)
 https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner#with-helm
@@ -297,9 +306,6 @@ helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/
 helm repo update
 helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs-juice.yaml
 ```
-
-## Certmanager
-- See certmanager folder
 
 
 
