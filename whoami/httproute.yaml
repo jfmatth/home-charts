@@ -8,6 +8,7 @@ spec:
   parentRefs:
     - name: traefik-gateway
       namespace: traefik
+      sectionName: http
 
   hostnames:
     - whoami.3756home.org

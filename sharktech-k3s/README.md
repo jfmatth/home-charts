@@ -223,13 +223,13 @@ After install you need to do the following:
 # K3s install
 
 ## K3sup
-- From k3sup install page
+From k3sup install page
 ```
 curl -sLS https://get.k3sup.dev | sh
 sudo install k3sup /usr/local/bin/
 k3sup --help
 ```
-
+My Install (from k3s-cp-1)
 ```
 cpIP=192.168.50.1
 node1=192.168.50.10
@@ -240,8 +240,7 @@ k3sup install \
   --user $user \
   --local-path ~/.kube/config \
   --context default \
-  --merge \
-  --k3s-extra-args '--disable local-storage,metrics-server,traefik --tls-san k8s.3756home.org'
+  --k3s-extra-args '--disable local-storage,metrics-server,traefik --tls-san k8s.3756home.org --flannel-iface=eth1'
 
 k3sup join \
   --ip $node1 \
@@ -254,23 +253,28 @@ k3sup join \
   --user $user
 ```
 
-copy ~/.kube/config to local workstation
-
+copy ~/.kube/config to local workstation and adjust IP to k8s.3756home.org
 
 ###  Traefik Gateway API (by k3s standards)
 https://docs.k3s.io/networking/networking-services#gateway-api
 
 As of Traefik, gateway CRD's need to be installed
 
-Standard
+Gateway CRD Standard
 ```
 kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/standard-install.yaml
 ```
-Experimental (needed for Minecraft TCPRoute)  
+Gateway CRD Experimental (needed for Minecraft TCPRoute)  
 ```
 kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
 ```
 
+Make sure LB only runs on the Control-Plane
+```
+kubectl label nodes k3s-cp-1 svccontroller.k3s.cattle.io/enablelb=true
+kubectl taint node k3s-cp-1 node-role.kubernetes.io/control-plane=true:NoSchedule
+```
+Install via Helm, since it was disabled on k3s install
 ```
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
@@ -280,7 +284,12 @@ helm install traefik traefik/traefik -f traefik-values.yaml -n traefik
 kubectl apply -f traefik-gateway.yaml
 ```
 
-### NFS Storage
+### Datadog for k3s
+- Datadog Operator
+https://us5.datadoghq.com/fleet/install-agent/latest?platform=kubernetes
+
+
+### NFS Storage (requires JuiceFS above)
 https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner#with-helm
 
 ```
@@ -288,12 +297,6 @@ helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/
 helm repo update
 helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs-juice.yaml
 ```
-
-
-### Datadog for k3s
-- Datadog Operator
-https://us5.datadoghq.com/fleet/install-agent/latest?platform=kubernetes
-
 
 ## Certmanager
 - See certmanager folder
