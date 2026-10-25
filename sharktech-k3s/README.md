@@ -2,23 +2,19 @@
 
 **Architecture**
 
-- K3s Control-Plane
+- K3s Control-Plane x 1
     - 2x2
     - 2 NICs (public, private)
         - ``eth0`` = Public IP  
         - ``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
-
     - NFS
-    -  Sharktech 2x2x20, Ubuntu 25.10
+         Sharktech 2x2x20, Ubuntu 25.10
     - K3s CP
-    - tainted for kube workloads only + LB / Gateway
-
 - K3s Nodes x 2
     - 3 x 7
     - private NIC
     - K3s node
-
-- K3sup to install k3s
+- K3sup for K3s install
 
 # Build VM's
 
@@ -39,9 +35,8 @@ sudo apt-get update && sudo apt-get upgrade -y
 ```
 
 ### SSH
-**Remove** all pre-generated sshd config files in ``/etc/ssh/sshd_config.d/``.  
+**Remove** all pre-generated sshd config files and create a file ``/etc/ssh/sshd_config.d/00-lockdown.conf``
 
-Create a file ``/etc/ssh/sshd_config.d/00-lockdown.conf
 ```
 sudo rm /etc/ssh/sshd_config.d/*
 sudo nano /etc/ssh/sshd_config.d/00-lockdown.conf
@@ -64,10 +59,8 @@ Check Journalctl ``journalctl -f``.  You should see a lot of denied logings with
 sudo systemctl disable multipathd.service --now
 sudo systemctl disable ModemManager.service --now
 ```
- 
- 
- 
- ### Un-attended updates (Security only)
+  
+### Un-attended updates (Security only)  **TODO**
 
 ### Network 
 
@@ -148,7 +141,10 @@ After install you need to do the following:
     sudo systemctl restart datadog-agent
     ```
 
-### Juice / NFS install - See below
+### NFS -> Juice -> NFS Mounts
+
+
+
 
 
 ## Node 1 and Node 2
@@ -191,7 +187,6 @@ net.ipv6.conf.lo.disable_ipv6 = 1
 sudo sysctl --system
 ```
 
-
 ### Datadog install
 
 Goto the Linux Install agent page
@@ -221,6 +216,7 @@ After install you need to do the following:
     ```
     sudo systemctl restart datadog-agent
     ```
+
 
 # K3s install
 
@@ -286,13 +282,19 @@ helm install traefik traefik/traefik -f traefik-values.yaml -n traefik
 kubectl apply -f traefik-gateway.yaml
 ```
 
+### Metrics Server
+```
+helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+helm repo update
+helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
+```
+
 ### Datadog for k3s
 - Datadog Operator
 https://us5.datadoghq.com/fleet/install-agent/latest?platform=kubernetes
 
 ### Certmanager
 - See certmanager folder
-
 
 
 
@@ -308,10 +310,7 @@ helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-pro
 ```
 
 
-
-
 ## JuiceFS
-We will setup Juice on the bastion box
 
 Bucketname on Sharktech = ``juicefs-sharktech``
 
@@ -343,7 +342,7 @@ Before=nfs-server.service
 After=network-online.target
 Wants=network-online.target
 
-[Service]
+*[Service]
 Type=simple
 ExecStart=/usr/local/bin/juicefs mount sqlite3:///opt/juicefs/myjfs.db /mnt/juicefs \
     --writeback \
@@ -388,3 +387,4 @@ sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto tcp
 sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto udp
 ```
 
+*
