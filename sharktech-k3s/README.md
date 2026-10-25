@@ -141,10 +141,15 @@ After install you need to do the following:
     sudo systemctl restart datadog-agent
     ```
 
-### NFS -> Juice -> NFS Mounts
+### NFS -> Juice -> NFS Mounts  **TBD**
 
+- NFS install for Linux
 
+- Juice Install
 
+- Mounts
+
+- Juice SystemD stuff
 
 
 ## Node 1 and Node 2
@@ -286,7 +291,7 @@ kubectl apply -f traefik-gateway.yaml
 ```
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo update
-helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system -f ./metrics-server.yaml
+helm upgrade --install metrics-server metrics-server/metrics-server -n kube-system
 ```
 
 ### Datadog for k3s
