@@ -27,3 +27,9 @@ spec:
     logCollection:
       enabled: true
       containerCollectAll: true
+
+
+    liveProcessCollection:
+      enabled: false
+
+    

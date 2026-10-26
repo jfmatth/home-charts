@@ -1,0 +1,136 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations:
+      pv.kubernetes.io/provisioned-by: cluster.local/nfs-storage-nfs-subdir-external-provisioner
+    creationTimestamp: "2026-05-24T05:01:23Z"
+    finalizers:
+    - kubernetes.io/pv-protection
+    name: pvc-334efc6f-0196-4353-a9cb-a9cfb2e534b9
+    resourceVersion: "144235"
+    uid: b2b443c1-aaa1-4b14-8524-1bd2664c22b0
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 5Gi
+    claimRef:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      name: immich-database-1
+      namespace: immich
+      resourceVersion: "144228"
+      uid: 334efc6f-0196-4353-a9cb-a9cfb2e534b9
+    nfs:
+      path: /mnt/juicefs/talos/immich-immich-database-1-pvc-334efc6f-0196-4353-a9cb-a9cfb2e534b9
+      server: 192.168.100.50
+    persistentVolumeReclaimPolicy: Delete
+    storageClassName: nfs
+    volumeMode: Filesystem
+  status:
+    lastPhaseTransitionTime: "2026-05-24T05:01:23Z"
+    phase: Bound
+
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations:
+      pv.kubernetes.io/provisioned-by: cluster.local/nfs-storage-nfs-subdir-external-provisioner
+    creationTimestamp: "2026-05-24T04:58:49Z"
+    finalizers:
+    - kubernetes.io/pv-protection
+    name: pvc-37da34c8-6d95-4c06-904d-953ee0bae088
+    resourceVersion: "143311"
+    uid: df7e9c3a-b54a-432f-bea7-1785be4e55ea
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 30Gi
+    claimRef:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      name: immich-library-pvc
+      namespace: immich
+      resourceVersion: "143306"
+      uid: 37da34c8-6d95-4c06-904d-953ee0bae088
+    nfs:
+      path: /mnt/juicefs/talos/immich-immich-library-pvc-pvc-37da34c8-6d95-4c06-904d-953ee0bae088
+      server: 192.168.100.50
+    persistentVolumeReclaimPolicy: Delete
+    storageClassName: nfs
+    volumeMode: Filesystem
+  status:
+    lastPhaseTransitionTime: "2026-05-24T04:58:49Z"
+    phase: Bound
+
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations:
+      pv.kubernetes.io/provisioned-by: cluster.local/nfs-storage-nfs-subdir-external-provisioner
+    creationTimestamp: "2026-05-30T01:02:35Z"
+    finalizers:
+    - kubernetes.io/pv-protection
+    name: pvc-4cdac298-b8a2-4d79-84ca-9eab09ab3b25
+    resourceVersion: "2539424"
+    uid: 2f8cbc79-0956-4ca2-8d37-ecce14dfdb7a
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 1Gi
+    claimRef:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      name: datadir-minecraft-0
+      namespace: minecraft
+      resourceVersion: "2539414"
+      uid: 4cdac298-b8a2-4d79-84ca-9eab09ab3b25
+    nfs:
+      path: /mnt/juicefs/talos/minecraft-datadir-minecraft-0-pvc-4cdac298-b8a2-4d79-84ca-9eab09ab3b25
+      server: 192.168.100.50
+    persistentVolumeReclaimPolicy: Delete
+    storageClassName: nfs
+    volumeMode: Filesystem
+  status:
+    lastPhaseTransitionTime: "2026-05-30T01:02:35Z"
+    phase: Bound
+
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations:
+      pv.kubernetes.io/provisioned-by: cluster.local/nfs-storage-nfs-subdir-external-provisioner
+    creationTimestamp: "2026-06-17T03:27:05Z"
+    finalizers:
+    - kubernetes.io/pv-protection
+    name: pvc-aeb78fb8-4504-4cce-9d6d-5fee81b617d4
+    resourceVersion: "9917512"
+    uid: 5879b6ea-d4cd-42c4-a425-d0baa245818b
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 1Gi
+    claimRef:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      name: images-pvc
+      namespace: images
+      resourceVersion: "9917492"
+      uid: aeb78fb8-4504-4cce-9d6d-5fee81b617d4
+    nfs:
+      path: /mnt/juicefs/talos/images-images-pvc-pvc-aeb78fb8-4504-4cce-9d6d-5fee81b617d4
+      server: 192.168.100.50
+    persistentVolumeReclaimPolicy: Delete
+    storageClassName: nfs
+    volumeMode: Filesystem
+  status:
+    lastPhaseTransitionTime: "2026-06-17T03:27:06Z"
+    phase: Bound
+kind: List
+metadata:
+  resourceVersion: ""
