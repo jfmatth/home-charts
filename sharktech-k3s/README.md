@@ -144,6 +144,7 @@ After install you need to do the following:
 ### JuiceFS
 - See JuiceFS folder, sans the LXC stuff
 
+
 ## Node 1 and Node 2
 **Remove** all pre-generated sshd config files in ``/etc/ssh/sshd_config.d/``.  
 
@@ -214,6 +215,14 @@ After install you need to do the following:
     sudo systemctl restart datadog-agent
     ```
 
+### NFS Common
+used by NFS provisioner
+
+```
+
+sudo apt update
+sudo apt install -y nfs-common
+```
 
 # K3s install
 
