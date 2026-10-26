@@ -49,6 +49,13 @@ Create a bucket in SharkTech called ```juicefs```
 
 This ties to the URL below
 
+### Create folders on system
+```
+sudo mkdir -p /opt/juicefs
+```
+
+### Create filesystem
+
 ```
 sudo juicefs format \
     --storage s3 \
@@ -60,7 +67,9 @@ sudo juicefs format \
 ```
 
 ## Create systemd.service
-```/etc/systemd/system/juicefs.service```
+```
+sudo nano /etc/systemd/system/juicefs.service
+```
 
 ```
 [Unit]
@@ -90,13 +99,15 @@ systemctl enable juicefs.service --now
 If no errors, check ```/mnt/juicefs``` exists
 
 ## NFS Server
-```apt install nfs-kernel-server```
+```
+sudo apt install nfs-kernel-server
+```
 
 ### Create NFS exports
 Make folders under /mnt/juicefs
 
 ```
-/mnt/juicefs/talos
+sudo mkdir /mnt/juicefs/...
 ```
 
 update ```/etc/exports```

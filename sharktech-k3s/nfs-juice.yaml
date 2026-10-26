@@ -1,8 +1,9 @@
 nfs:
-  server: k3s-1
+  server: 192.168.50.1
   path: /mnt/juicefs/sharktech
 
 storageClass:
   name: nfs
   defaultClass: true
   archiveOnDelete: false
+  reclaimPolicy: Retain

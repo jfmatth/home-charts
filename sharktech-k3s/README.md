@@ -141,16 +141,8 @@ After install you need to do the following:
     sudo systemctl restart datadog-agent
     ```
 
-### NFS -> Juice -> NFS Mounts  **TBD**
-
-- NFS install for Linux
-
-- Juice Install
-
-- Mounts
-
-- Juice SystemD stuff
-
+### JuiceFS
+- See JuiceFS folder, sans the LXC stuff
 
 ## Node 1 and Node 2
 **Remove** all pre-generated sshd config files in ``/etc/ssh/sshd_config.d/``.  
@@ -301,10 +293,6 @@ https://us5.datadoghq.com/fleet/install-agent/latest?platform=kubernetes
 ### Certmanager
 - See certmanager folder
 
-
-
-VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV  Unvalidated VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-
 ### NFS Storage (requires JuiceFS above)
 https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner#with-helm
 
@@ -314,6 +302,11 @@ helm repo update
 helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs-juice.yaml
 ```
 
+### CloudNative Postgres
+- See cloudnativepg 
+
+
+<!-- 
 
 ## JuiceFS
 
@@ -392,4 +385,4 @@ sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto tcp
 sudo ufw allow in on eth1 from 192.168.50.10 to any port 2049 proto udp
 ```
 
-*
+ -->
