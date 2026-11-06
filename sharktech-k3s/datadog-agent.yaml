@@ -14,11 +14,19 @@ spec:
   
   override:
     nodeAgent:
-      tolerations:
-        - key: "node-role.kubernetes.io/control-plane"
-          operator: "Exists"
-          effect: "NoSchedule"
-
+      containers:
+        agent:
+          securityContext:
+            appArmorProfile:
+              type: Unconfined
+        process-agent:
+          securityContext:
+            appArmorProfile:
+              type: Unconfined
+        system-probe:
+          securityContext:
+            appArmorProfile:
+              type: Unconfined
   features:
     clusterChecks:
       enabled: true
@@ -26,10 +34,23 @@ spec:
       enabled: true
     logCollection:
       enabled: true
-      containerCollectAll: true
-
-
+      containerCollectAll: false
     liveProcessCollection:
+      enabled: false
+    processDiscovery:
+      enabled: false
+  
+    serviceDiscovery:
+      enabled: false
+    npm:
+      enabled: false
+    cws:
+      enabled: false
+    cspm:
+      enabled: false
+    usm:
+      enabled: false
+    oomKill:
       enabled: false
 
     
