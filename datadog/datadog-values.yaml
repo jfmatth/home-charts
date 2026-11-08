@@ -41,6 +41,8 @@ datadog:
   ignoreAutoConfig:
     - cilium
 
+  remoteConfiguration:
+    enabled: true
 
 agents: {}
   # tolerations:
@@ -52,4 +54,3 @@ providers:
   talos:
     enabled: true
 
-  

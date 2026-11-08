@@ -120,6 +120,32 @@ update ```/etc/exports```
 sudo exportfs -ra
 ```
 
+## Datadog integration
+```
+sudo nano /etc/datadog-agent/conf.d/openmetrics.d/juicefs.yaml
+```
+```
+init_config:
+  use_openmetrics: true
+
+instances:
+  - openmetrics_endpoint: "http://localhost:9567/metrics"
+    namespace: juicefs
+
+    enable_histograms: true
+    collect_histogram_buckets: true
+    tags:
+      - exporter:juicefs
+
+    metrics:
+      - .*
+```
+```
+sudo systemctl restart datadog-agent
+```
+
+
+
 ## Restoring
 https://juicefs.com/docs/community/metadata_dump_load
 
