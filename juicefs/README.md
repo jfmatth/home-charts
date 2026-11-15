@@ -3,6 +3,9 @@
 
 IP = 192.168.100.50
 
+# **DO NOT USE LXC** 
+FUSE and Proxmox do not mix, replication will hang the LXC indefinately.
+
 ## LXC Requirements
 - un-check Unpriviledged container **Mandatory before power-on**
 - Features: fuse, nfs, nesting
