@@ -92,6 +92,8 @@ We are using Sharktech for now
 
 ### Restore from json dump file
 
+**might need ``sudo``**
+
 Assuming file is restore-dump.json
 ```
 juicefs load sqlite3:///opt/juicefs/myjfs.db restore-dump.json
@@ -106,5 +108,3 @@ juicefs config --secret-key xxxx sqlite3:///opt/juicefs/myjfs.db
 juicefs fsck sqlite3:///opt/juicefs/myjfs.db
 ```
 If no errors, proceed
-
-
