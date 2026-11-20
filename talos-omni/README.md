@@ -84,6 +84,7 @@ https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kub
 ```
 helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs.yaml
 ```
+Cluster takes ~5m to fully boot
 
 ## Cert-manager
 ```
@@ -106,6 +107,18 @@ https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-
 https://cert-manager.io/docs/installation/helm/#installing-cert-manager  
 
 
+**This will throw warnings, don't be alarmed**
+### Traefik install
+```
+kubectl apply -f traefik-namespace.yaml
+helm install traefik traefik/traefik -f .\traefik.yaml -n traefik
+kubectl apply -f traefik-gateway.yaml
+```
+This will create a Traefik load balancer service which is where the gateway will connect
+#### References
+https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
+https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values  
+https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
 
 ## Postgres Operator
 See cloudnativepg folder for installation

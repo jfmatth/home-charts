@@ -3,7 +3,7 @@
 providers:
   kubernetesGateway:
     enabled: true
-    # experimentalChannel: true
+    experimentalChannel: true
   
   kubernetesIngress:
     enabled: false
