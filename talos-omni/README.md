@@ -17,11 +17,10 @@ helm repo update
 helm template `
     cilium `
     cilium/cilium `
-    --version 1.18.0 `
+    --version 1.20.5 `
     --namespace kube-system `
     --values cilium-values.yaml > cilium.yaml
 ```
-
 
 ```
 omnictl apply -f machine-class.yaml
