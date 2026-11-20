@@ -1,0 +1,43 @@
+kind: Cluster
+name: home-talos-testing
+kubernetes:
+  version: v1.37.2
+  manifests:
+    - name: cilium
+      file: cilium.yaml
+      mode: one-time
+
+talos:
+  version: v1.14.6
+    
+---
+kind: ControlPlane
+machineClass:
+  name: home-control-planes
+  size: unlimited
+patches:
+  - name: controlplane-vip
+    inline:
+      apiVersion: v1alpha1
+      kind: Layer2VIPConfig
+      name: 192.168.100.141
+      link: eth0 # Update to match your nodes' NIC name
+
+  - name: disable-default-cni-and-proxy
+    inline:
+      apiVersion: v1alpha1
+      kind: KubeFlannelCNIConfig
+      $patch: delete
+      
+  - name: disable-kube-proxy
+    inline:
+      apiVersion: v1alpha1
+      kind: KubeProxyConfig
+      enabled: false
+
+
+---
+kind: Workers
+machineClass:
+  name: home-workers
+  size: unlimited

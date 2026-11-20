@@ -1,0 +1,15 @@
+metadata:
+  namespace: default
+  type: MachineClasses.omni.sidero.dev
+  id: home-control-planes
+spec:
+  matchlabels:
+    - role = controlplane
+---
+metadata:
+  namespace: default
+  type: MachineClasses.omni.sidero.dev
+  id: home-workers
+spec:
+  matchlabels:
+    - role = worker
