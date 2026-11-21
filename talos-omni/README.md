@@ -43,8 +43,6 @@
 
 After cluster is created, Cilium is installed on the nodes and working!
 
-Remove ISO from each VM
-
 ## Cilium L2 / Pool
 Need to setup an IP Pool and what nodes answer to LoadBalancer types
 ```
@@ -106,8 +104,6 @@ traefik     traefik-gateway   traefik   192.168.100.140   True         6m28s
 https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver  
 https://cert-manager.io/docs/installation/helm/#installing-cert-manager  
 
-
-**This will throw warnings, don't be alarmed**
 ### Traefik install
 ```
 kubectl apply -f traefik-namespace.yaml
@@ -115,7 +111,7 @@ helm install traefik traefik/traefik -f .\traefik.yaml -n traefik
 kubectl apply -f traefik-gateway.yaml
 ```
 This will create a Traefik load balancer service which is where the gateway will connect
-#### References
+- References  
 https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values  
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
