@@ -1,5 +1,6 @@
 kind: Cluster
-name: home-talos-testing
+name: omni-home
+
 kubernetes:
   version: v1.37.2
   manifests:
