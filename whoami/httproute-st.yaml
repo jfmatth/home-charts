@@ -10,8 +10,7 @@ spec:
       namespace: traefik
 
   hostnames:
-    - whoami.208.98.56.209.nip.io
-    - whoami.3756home.org
+    - whoami.192.168.100.141.nip.io
 
   rules:
     - matches:
