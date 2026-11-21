@@ -43,6 +43,8 @@
 
 After cluster is created, Cilium is installed on the nodes and working!
 
+Remove ISO from each VM
+
 ## Cilium L2 / Pool
 Need to setup an IP Pool and what nodes answer to LoadBalancer types
 ```
