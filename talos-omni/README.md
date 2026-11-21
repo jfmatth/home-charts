@@ -22,7 +22,6 @@
     ### Boot VM's for CP / WO
 
     - Boot VM's on Proxmox for CP and WO nodes
-    - 1xCP, 3xWO
     - Label them in UI for various roles (role:controlplane or role:worker)
 
 ## Create cluster
@@ -43,6 +42,8 @@
     ```
 
 After cluster is created, Cilium is installed on the nodes and working!
+
+Remove ISO from each VM
 
 ## Cilium L2 / Pool
 Need to setup an IP Pool and what nodes answer to LoadBalancer types
