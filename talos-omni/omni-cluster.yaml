@@ -36,6 +36,27 @@ patches:
       kind: KubeProxyConfig
       enabled: false
 
+  - name: expose-scheduler-metrics
+    inline:
+      apiVersion: v1alpha1
+      kind: KubeSchedulerConfig
+      extraArgs:
+        bind-address: "0.0.0.0"
+
+  - name: expose-controllermanager-metrics
+    inline:
+      apiVersion: v1alpha1
+      kind: KubeControllerManagerConfig
+      extraArgs:
+        bind-address: "0.0.0.0"
+
+  - name: expose-etcd-metrics
+    inline:
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0
+
 
 ---
 kind: Workers
