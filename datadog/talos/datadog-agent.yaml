@@ -37,7 +37,19 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 128Mi
+              memory: 256Mi
             limits:
               cpu: 250m
-              memory: 256Mi
+              memory: 512Mi
+          env:
+            - name: DD_IGNORE_AUTOCONF
+              value: "cilium"
+
+      extraConfd:
+        configDataMap:
+          envoy.yaml: |-
+            ad_identifiers:
+              - cilium-envoy
+            init_config:
+            instances:
+              - openmetrics_endpoint: http://%%host%%:9964/metrics
