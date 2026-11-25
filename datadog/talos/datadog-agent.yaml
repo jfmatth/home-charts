@@ -54,12 +54,6 @@ spec:
 
       extraConfd:
         configDataMap:
-          # envoy.yaml: |-
-          #   ad_identifiers:
-          #     - cilium-envoy
-          #   init_config:
-          #   instances:
-          #     - openmetrics_endpoint: http://%%host%%:9964/metrics
           openmetrics.yaml: |-
             ad_identifiers:
               - cilium-envoy
@@ -70,6 +64,12 @@ spec:
                 metrics:
                   - .*
 
+          # etcd.yaml: |-
+          #   ad_identifiers:
+          #     - kube-scheduler
+          #   init_config: {}
+          #   instances:
+          #     - prometheus_url: http://%%host%%:2381/metrics
 
       # Monitor the Talos control plane nodes
       tolerations:
