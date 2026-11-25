@@ -1,0 +1,78 @@
+kind: "DatadogAgent"
+apiVersion: "datadoghq.com/v2alpha1"
+metadata:
+  name: "datadog"
+  namespace: "datadog"
+  annotations:
+    agent.datadoghq.com/cluster-provider: talos
+spec:
+  global:
+    clusterName: "omni-home"
+    site: "us5.datadoghq.com"
+    credentials:
+      apiSecret:
+        secretName: "datadog-secret"
+        keyName: "api-key"
+
+
+    # Gets rid of errors due to Talos Self-signed certs.
+    kubelet:
+      tlsVerify: false
+
+  features:
+    clusterChecks:
+      enabled: true
+
+    orchestratorExplorer:
+      enabled: true
+    
+    logCollection:
+      enabled: true
+      containerCollectAll: true
+
+  override:
+    clusterAgent:
+      containers:
+        cluster-agent:
+          env:
+            - name: DD_IGNORE_AUTOCONF
+              value: "etcd"
+  
+    nodeAgent:
+      containers:
+        agent:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+          env:
+            - name: DD_IGNORE_AUTOCONF
+              value: "cilium etcd"
+
+      extraConfd:
+        configDataMap:
+          openmetrics.yaml: |-
+            ad_identifiers:
+              - cilium-envoy
+            init_config: {}
+            instances:
+              - openmetrics_endpoint: http://%%host%%:9964/metrics
+                namespace: envoy
+                metrics:
+                  - .*
+
+          # etcd.yaml: |-
+          #   ad_identifiers:
+          #     - kube-scheduler
+          #   init_config: {}
+          #   instances:
+          #     - prometheus_url: http://%%host%%:2381/metrics
+
+      # Monitor the Talos control plane nodes
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
