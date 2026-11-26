@@ -1,0 +1,9 @@
+nfs:
+  server: 192.168.100.55
+  path: /mnt/juicefs/omnihome
+
+storageClass:
+  name: nfs
+  defaultClass: true
+  archiveOnDelete: false
+  reclaimPolicy: Retain

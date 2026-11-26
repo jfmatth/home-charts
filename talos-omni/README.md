@@ -79,3 +79,33 @@ https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
 https://doc.traefik.io/traefik/setup/kubernetes/#prepare-helm-chart-configuration-values  
 https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/#traefik-kubernetes-with-gateway-api  
 
+
+## NFS Storage https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner
+```
+helm install nfs-storage nfs-subdir-external-provisioner/nfs-subdir-external-provisioner --namespace kube-system -f nfs.yaml
+```
+
+## Cert-manager
+```
+kubectl apply -f cert-manager-namespace.yaml
+helm install cert-manager jetstack/cert-manager --namespace cert-manager  --create-namespace -f cert-manager.yaml
+```
+
+### Add ClusterIssuer
+```
+kubectl apply -f cert-manager-clusterissuer.yaml
+```
+After Certmanager is installed, and everything working - the gateway should be programmed like below
+```
+kubectl get gateway -A
+NAMESPACE   NAME              CLASS     ADDRESS           PROGRAMMED   AGE
+traefik     traefik-gateway   traefik   192.168.100.140   True         6m28s
+```
+### References
+https://cert-manager.io/docs/configuration/acme/http01/#configuring-the-http-01-gateway-api-solver  
+https://cert-manager.io/docs/installation/helm/#installing-cert-manager  
+
+
+
+## Postgres Operator
+See cloudnativepg folder for installation
