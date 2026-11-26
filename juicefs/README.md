@@ -36,7 +36,7 @@ s3.us-west-000.backblazeb2.com
 sudo mkdir -p /opt/juicefs
 sudo juicefs format \
   --storage s3 \
-  --bucket https://s3.us-west-000.backblazeb2.com/juicehome \
+  --bucket https://s3.us-west-000.backblazeb2.com/bucketname \
   --access-key <access-key here> \
   --secret-key <secret key here> \
   sqlite3:///opt/juicefs/myjfs.db \
