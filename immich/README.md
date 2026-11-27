@@ -38,7 +38,7 @@ kubectl apply -f immich-httproute.yaml
 ## Migration / Import from immich-go.exe
 https://github.com/simulot/immich-go/blob/main/docs/examples.md#server-migration
 
-```
+
 ### Migration 
 
 ```
