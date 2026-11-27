@@ -8,7 +8,7 @@
 https://juicefs.com/docs/community/getting-started/standalone
 
 ```
-curl -sSL https://d.juicefs.com/install | sh -
+sudo curl -sSL https://d.juicefs.com/install | sh -
 ```
 
 ### Format S3 for storage
@@ -25,6 +25,24 @@ sudo juicefs format \
     sqlite3:///opt/juicefs/myjfs.db \
     juicefs
 ```
+
+### Backblaze example  
+https://www.backblaze.com/docs/cloud-storage-juicefs-integration-with-backblaze-b2  
+
+Bucket endpoint  
+s3.us-west-000.backblazeb2.com
+
+```
+sudo mkdir -p /opt/juicefs
+sudo juicefs format \
+  --storage s3 \
+  --bucket https://s3.us-west-000.backblazeb2.com/bucketname \
+  --access-key <access-key here> \
+  --secret-key <secret key here> \
+  sqlite3:///opt/juicefs/myjfs.db \
+  juicefs
+```
+
 
 ### Create systemd.service
 ```/etc/systemd/system/juicefs.service```
@@ -51,24 +69,24 @@ WantedBy=multi-user.target
 ```
 ### Enable and Start the services
 ```
-systemctl enable juicefs.service --now
+sudo systemctl enable juicefs.service --now
 ```
 
 If no errors, check ```/mnt/juicefs``` exists
 
 ## NFS Server
-```apt install nfs-kernel-server```
+```sudo apt install nfs-kernel-server```
 
 ### Create NFS exports
 Make folders under /mnt/juicefs
 
 ```
-/mnt/juicefs/talos
+sudo mkdir -p /mnt/juicefs/foldernamegoeshere
 ```
 
 update ```/etc/exports```
 ```
-/mnt/juicefs/talos 192.168.100.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
+/mnt/juicefs/foldernamegoeshere 192.168.100.0/24(rw,sync,no_subtree_check,fsid=2,no_root_squash)
 ```
 
 ### export NFS mounts

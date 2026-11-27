@@ -1,6 +1,7 @@
 # Talos on SharkTech
 
 ## Bastion host
+## Bastion host
 **Architecture**
 Sharktech 1x2, Ubuntu 25.10
 
@@ -8,9 +9,12 @@ Sharktech 1x2, Ubuntu 25.10
 ``eth1`` = Private VNET (192.168.50.0/24) 192.168.50.1 (DGW)
 
 ### Talos / Helm / Cilium / Kubectl
+### Talos / Helm / Cilium / Kubectl
 ```
 curl -sL https://talos.dev/install | sh
 wget https://get.helm.sh/helm-v4.2.3-linux-amd64.tar.gz && \
+    tar xvfz helm-v4.2.3-linux-amd64.tar.gz && \
+    sudo install linux-amd64/helm /usr/local/bin/
     tar xvfz helm-v4.2.3-linux-amd64.tar.gz && \
     sudo install linux-amd64/helm /usr/local/bin/
 helm repo add cilium https://helm.cilium.io/
@@ -18,19 +22,26 @@ helm repo update
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     sudo install kubectl /usr/local/bin && \
     rm kubectl 
+    sudo install kubectl /usr/local/bin && \
+    rm kubectl 
 ```
 
 ### UFW Changes: Fowarding, DNAT and masquerading
+### UFW Changes: Fowarding, DNAT and masquerading
 ```
+sudo printf "%s\n" "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-bastion.conf
 sudo printf "%s\n" "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-bastion.conf
 sudo sysctl --system
 ```
 
 Change forward policy default
+Change forward policy default
 ```
+sudo sed -i 's/^DEFAULT_FORWARD_POLICY=".*"/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
 sudo sed -i 's/^DEFAULT_FORWARD_POLICY=".*"/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
 ```
 
+Add the following to the top of ``/etc/ufw/before.rules`` before the ``*filter`` section
 Add the following to the top of ``/etc/ufw/before.rules`` before the ``*filter`` section
 ```
 # NAT table rules
@@ -56,6 +67,7 @@ COMMIT
 ```
 
 UFW Inbound
+UFW Inbound
 ```
 sudo ufw route allow proto tcp to 192.168.50.10 port 80
 sudo ufw route allow proto tcp to 192.168.50.10 port 443
@@ -76,13 +88,17 @@ sudo ufw reload
 
 ### Provision
 Provision a Talos Control Plane on the vNetLAS network
+### Control Plane
+Provision a Talos Control Plane on the vNetLAS network
 
 - Max vm
 - Talos 1.13.5 template
 - Admin name / password don't matter
 - No public IP
 - Private network, 192.168.50.10/24, G/W 192.168.50.1
+- Private network, 192.168.50.10/24, G/W 192.168.50.1
 
+From the bastion host VM...  
 From the bastion host VM...  
 
 Following the instructions [here](https://docs.siderolabs.com/talos/v1.13/getting-started/getting-started#step-3-store-your-node-ip-addresses-in-a-variable)
@@ -124,6 +140,12 @@ talosctl dashboard --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 **Dashboard will show everything ready, except the cluster, you need to get Cilium installed**
 
 ### Cillium
+Set Hostname
+```
+talosctl patch machineconfig --talosconfig=./talosconfig --nodes $CONTROL_PLANE_IP -p @cp-patch-hostname.yaml
+``` -->
+
+**Cillium**
 ```
 helm install cilium cilium/cilium --namespace kube-system -f cilium-values.yaml --version 1.18.9
 sleep 5
@@ -137,7 +159,13 @@ talosctl --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig health
 ```
 
 
-### Traefik
+Test cluster health
+```
+talosctl --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig health
+```
+
+
+**Traefik**  
 https://docs.siderolabs.com/kubernetes-guides/advanced-guides/deploy-traefik#deploy-traefik-as-a-gateway-api
 
 ```
@@ -151,6 +179,7 @@ kubectl apply -f traefik-gateway.yaml
 ```
 
 ### Metrics Server
+**Metrics Server**
 ```
 helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
 helm repo update
@@ -200,6 +229,22 @@ Might be worth having a pulse site to reference, whoami does that
 
 Follow README in whoami folder
 
+### Node
+Provision a Talos Node on the vNetLAS network
+
+- 1x2 vm
+- Talos 1.13.5 template
+- Admin name / password don't matter
+- No public IP
+- Private network, 192.168.50.11/24, G/W 192.168.50.1
+
+From the bastion host VM...  
+
+```
+talosctl apply-config --insecure --nodes 192.168.50.11 --file worker.yaml
+talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-network.yaml
+talosctl patch machineconfig --talosconfig=./talosconfig --nodes 192.168.50.11 -p @nd1-patch-hostname.yaml
+``` -->
 
 ## Talos Upgrades
 Current Sharktech template is v1.13.5

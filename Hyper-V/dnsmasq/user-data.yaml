@@ -2,6 +2,9 @@
 package_update: false
 package_upgrade: false
 package_reboot_if_required: true
+package_update: true
+package_upgrade: true
+package_reboot_if_required: false
 packages:
   - dnsmasq
   - linux-azure
@@ -62,6 +65,12 @@ runcmd:
   - systemctl disable snapd.socket
   - systemctl stop snapd.service
   - systemctl stop snapd.socket
+  # - systemctl disable snapd.service
+  # - systemctl disable snapd.socket
+  # - systemctl stop snapd.service
+  # - systemctl stop snapd.socket
+  # - systemctl disable unattended-upgrades.service
+  # - systemctl stop unattended-upgrades.service
 
 apt:
   preserve_sources_list: false
@@ -116,3 +125,6 @@ ca-certs:
       xFNjavxrHmsH8jPHVvgc1VD0Opja0l/BRVauTrUaoW6tE+wFG5rEcPGS80jjHK4S
       pB5iDj2mUZH1T8lzYtuZy0ZPirxmtsk3135+CKNa2OCAhhFjE0xd
       -----END CERTIFICATE-----
+  - systemctl disable unattended-upgrades.service
+  - systemctl stop unattended-upgrades.service
+    - "${distro_id}:${distro_codename}-backports"

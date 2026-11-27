@@ -1,6 +1,6 @@
 # CloudnativePG - Cloud Native PostgresSQL v1.29.1
 
-https://cloudnative-pg.io/docs/1.29/quickstart
+https://cloudnative-pg.io/
 
 ## Install via CRD
 ```
