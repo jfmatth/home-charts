@@ -126,3 +126,29 @@ juicefs fsck sqlite3:///opt/juicefs/myjfs.db
 If no errors, proceed
 
 
+## Datadog integration
+JuiceFS integrates using openmetrics.  
+
+- Create the juicefs openmetrics file  
+```sudo nano /etc/datadog-agent/conf.d/openmetrics.d/juicefs.conf```
+
+```
+init_config:
+  use_openmetrics: true
+
+instances:
+  - openmetrics_endpoint: "http://localhost:9567/metrics"
+    namespace: juicefs
+
+    enable_histograms: true
+    collect_histogram_buckets: true
+    tags:
+      - exporter:juicefs
+
+    metrics:
+      - .*
+```
+- Restart the datadog agent
+```
+sudo systemctl restart datadog-agent.service
+```
